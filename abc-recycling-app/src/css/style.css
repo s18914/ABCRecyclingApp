@@ -13,15 +13,21 @@
 body {
   font-family: PoppinsRegular;
 }
-body .scroller {
-  overflow: auto;
-  scrollbar-color: #205225 #153418;
-  scrollbar-width: thin;
-}
-body .list-actions {
+body .btn-panel {
   display: flex;
-  flex-direction: row-reverse;
-  justify-content: flex-start;
+  justify-content: flex-end;
+  width: 70%;
+}
+body .btn-panel .btn {
+  display: inline-block;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
 }
 body .header {
   background-color: #153418;
@@ -30,7 +36,12 @@ body .header {
   justify-content: start;
   align-items: center;
 }
+body .header h1 {
+  color: #FFFFFF;
+  font-family: PoppinsLight;
+}
 body .header .menu-bars {
+  width: 250px;
   margin-left: 2rem;
   font-size: 2rem;
   background: none;
@@ -38,14 +49,6 @@ body .header .menu-bars {
 body .header > img {
   width: 170px;
   padding: 15px 10px;
-}
-body footer {
-  grid-column: 1;
-  grid-row: 2;
-  background-color: #205225;
-}
-body footer nav {
-  background-color: #205225;
 }
 body .menu-bars {
   margin-left: 2rem;
@@ -104,146 +107,40 @@ body .nav-menu .nav-menu-items .navbar-toggle {
 body span {
   margin-left: 16px;
 }
-body main {
-  grid-column: 2;
-  grid-row: 1/span 2;
-  padding: 25px;
-}
-body main .list-actions-sale {
+body .main {
   display: flex;
-  flex-direction: row-reverse;
-  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
 }
-body main .login {
-  position: absolute;
-  height: 100px;
-  width: 300px;
-  left: calc(100vw - 300px);
-  top: -35px;
-  border-radius: 0px 0px 0px 37px;
-  background: #7c807c;
-}
-body main .login > div {
-  padding-top: 45px;
-  padding-left: 60px;
-  width: 178px;
-  height: 39px;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 26px;
-  line-height: 39px;
-  color: #FFFFFF;
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}
-body main h1 {
-  height: 47px;
-  width: 470px;
-  border-radius: 20px;
-  background: #0E3612;
-  color: #FFFFFF;
-  margin-left: 30px;
-  margin-top: 30px;
-  margin-bottom: 45px;
-  text-align: center;
-  padding-top: 10px;
-  font-family: PoppinsLight;
-  font-weight: 300;
-  line-height: 1.2;
-}
-body main .strong-table {
+body .main .strong-table {
   font-size: large;
 }
-body main table {
+body .main table {
   border-style: solid;
   border-width: 1px;
   border-color: grey;
   border-collapse: collapse;
   border-radius: 1em;
   overflow: hidden;
-  width: 100%;
+  width: 70%;
 }
-body main table tr:last-child td:first-child {
+body .main table tr:last-child td:first-child {
   border-bottom-left-radius: 10px;
 }
-body main table tr:last-child td:last-child {
+body .main table tr:last-child td:last-child {
   border-bottom-right-radius: 10px;
 }
-body main table h2 {
+body .main table h2 {
   text-align: center;
 }
-body main table tr td {
+body .main table tr td {
   padding: 0.5rem;
 }
-body main table tbody tr:nth-child(odd) {
+body .main table tbody tr:nth-child(odd) {
   background-color: #d9d9d9;
 }
-body main table tbody tr:nth-child(even) {
+body .main table tbody tr:nth-child(even) {
   background-color: #f2f2f2;
-}
-body main #panel {
-  background-color: #E5E5E5;
-  width: 95%;
-  height: calc(100vh - 390px);
-  border: 1px solid #AFAFAF;
-  border-radius: 10px;
-  padding: 30px;
-  display: grid;
-  grid-template-columns: 1fr 1.5fr;
-  grid-template-rows: 1fr;
-}
-body main #panel h3 {
-  margin: 0;
-  width: fit-content;
-}
-body main #panel input {
-  height: 30px;
-  border: 1px solid #AFAFAF;
-  border-radius: 10px;
-}
-body main #panel .large {
-  width: 230px;
-  border: 1px solid #AFAFAF;
-  border-radius: 10px;
-}
-body main #panel .small {
-  width: 90px;
-}
-body main #panel .in-frame {
-  border: 1px solid #AFAFAF;
-  background-color: #e2e2e2;
-  border-radius: 10px;
-  height: 90%;
-  width: 90%;
-  padding: 10px;
-}
-body main #panel .in-flex {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: stretch;
-  flex-direction: column;
-  flex-wrap: wrap;
-}
-body main ul {
-  display: flex;
-  padding: 0;
-  list-style-type: none;
-}
-body main ul li {
-  float: right;
-}
-body main ul li a {
-  display: inline-block;
-  color: #2c3e50;
-  padding: 1rem 2rem;
-  text-decoration: none;
-}
-body main ul li a:hover {
-  background-color: #d35400;
-  color: #ecf0f1;
-}
-body main ul li a.active {
-  background-color: #95a5a6;
-  color: #ecf0f1;
 }
 
 /*# sourceMappingURL=style.css.map */
