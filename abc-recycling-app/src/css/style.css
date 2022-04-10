@@ -16,7 +16,6 @@ body {
 body .btn-panel {
   display: flex;
   justify-content: flex-end;
-  width: 70%;
 }
 body .btn-panel .btn {
   display: inline-block;
@@ -108,9 +107,7 @@ body span {
   margin-left: 16px;
 }
 body .main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding: 8% 3% 3% 250px;
 }
 body .main .strong-table {
   font-size: large;
@@ -143,4 +140,7 @@ body .main table tbody tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
+.rdt_TableCol {
+  max-width: 250px;
+}
 /*# sourceMappingURL=style.css.map */
