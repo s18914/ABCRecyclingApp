@@ -3,7 +3,7 @@ import Header from '../Header'
 
 const Home = () => {
   return (
-    <div> h</div>
+    <h1>panel główny</h1>
 
   )
 }

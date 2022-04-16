@@ -43,6 +43,10 @@ const Transports = () => {
   const [pending, setPending] = React.useState(true);
   const [rows, setRows] = React.useState([]);
 
+  const onClick = () => {
+    console.log('+')
+  }
+
   React.useEffect(() => {
     const timeout = setTimeout(() => {
       setRows(data);
@@ -61,7 +65,7 @@ const Transports = () => {
         pagination
       />
       <div className='btn-panel'>
-        <Button color={'green'} text={'Dodaj'}/>
+        <Button color={'green'} text={'Dodaj'} />
         <Button color={'red'} text={'Usuń'}/>
         <Button color={'blue'} text={'Edytuj'}/>
       </div>

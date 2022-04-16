@@ -139,8 +139,18 @@ body .main table tbody tr:nth-child(odd) {
 body .main table tbody tr:nth-child(even) {
   background-color: #f2f2f2;
 }
-
-.rdt_TableCol {
-  max-width: 250px;
+body .main form {
+  display: flex;
+  flex-direction: column;
 }
+body .main form input, body .main form select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
 /*# sourceMappingURL=style.css.map */
