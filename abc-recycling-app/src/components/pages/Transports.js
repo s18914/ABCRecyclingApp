@@ -65,7 +65,7 @@ const Transports = () => {
         pagination
       />
       <div className='btn-panel'>
-        <Button color={'green'} text={'Dodaj'} />
+        <Button color={'green'} text={'Dodaj'} to={'/transports/add'}/>
         <Button color={'red'} text={'Usuń'}/>
         <Button color={'blue'} text={'Edytuj'}/>
       </div>

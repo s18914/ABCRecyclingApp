@@ -1,16 +1,19 @@
+import React, { useState } from 'react';
 import PropTypes from 'prop-types'  
 
-const Button = ({color, text, onClick}) => {
+const Button = ({color, text, onClick, to}) => {
 
     
     return (
-        <button 
-            className='btn' 
-            style={{backgroundColor: color}}
-            onClick = {onClick}
-        >
-            {text}
-        </button>
+        <a href={to}>
+            <button 
+                className='btn' 
+                style={{backgroundColor: color}}
+                onClick = {onClick}
+            >
+                {text}
+            </button>
+        </a>
     )
 }
  

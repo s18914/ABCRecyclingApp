@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 const Header = ({text}) => {
   return (
     <h1 className='main'>
