@@ -8,6 +8,9 @@ const TransportEdit = () => {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
 
+  function addTransport() {
+    console.log("dodaj transport");
+  }
 
   return (
     <div className='main'>
