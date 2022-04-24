@@ -32,6 +32,16 @@ app.post("/transportCreate", (req, res) => {
 });
 
 app.get("/transports", (req, res) => {
+  db.query("SELECT * FROM Transports", (err, result) => {
+    if (err) {
+      console.log(err)
+    } else {
+      res.send(response)
+    }
+  });
+})
+
+app.get("/transports", (req, res) => {
   db.query("SELECT * FROM transports", (err, result) => {
     if (err) {
       console.log(err);

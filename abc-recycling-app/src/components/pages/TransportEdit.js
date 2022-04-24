@@ -8,8 +8,10 @@ function TransportEdit() {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
 
+  const [transportList, setTransportList] = useState();
+
   const addTransport = () => {
-    console.log(date);
+    //console.log(date);
     Axios.post('http://localhost:3001/transportCreate', {
       date: date, 
       phone: phone, 
@@ -17,6 +19,12 @@ function TransportEdit() {
     }).then(() => {
       console.log("success");
     })
+  };
+
+  const getTransport = () => {
+    Axios.get('http://localhost:3001/transports').then((response) => {
+      setTransportList(response.data);
+    });
   };
 
   return (
@@ -46,6 +54,12 @@ function TransportEdit() {
         </select> */}
         <div className='btn-panel'>
           <button onClick={addTransport}>Dodaj</button>
+        </div>
+        <div className='btn-panel'>
+          <button onClick={getTransport}>Pokaż transporty</button>
+          {/* {transportList.map((val, key) => {
+            return <div> {val.name} </div> 
+          })} */}
         </div>
       </form>
     </div>
