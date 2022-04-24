@@ -3,14 +3,21 @@ import Button from '../Button'
 import { useState } from "react";
 import Axios from "axios";
 
-const TransportEdit = () => {
+function TransportEdit() {
   const [date, setDate] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
 
-  function addTransport() {
-    console.log("dodaj transport");
-  }
+  const addTransport = () => {
+    console.log(date);
+    Axios.post('http://localhost:3001/transportCreate', {
+      date: date, 
+      phone: phone, 
+      address: address
+    }).then(() => {
+      console.log("success");
+    })
+  };
 
   return (
     <div className='main'>
