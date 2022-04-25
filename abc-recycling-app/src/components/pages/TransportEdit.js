@@ -8,25 +8,37 @@ function TransportEdit() {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
 
-  const [transportList, setTransportList] = useState();
+  const [newPhone, setNewPhone] = useState(0);
 
-  const addTransport = () => {
-    //console.log(date);
+  const [transportList, setTransportList] = useState([]);
+
+  const addTransport = (event) => {
+    event.preventDefault();
     Axios.post('http://localhost:3001/transportCreate', {
       date: date, 
       phone: phone, 
       address: address
-    }).then(() => {
-      console.log("success");
+    }).then((data) => {
+      console.log("success", data.data);
     })
   };
 
   const getTransport = () => {
     Axios.get('http://localhost:3001/transports').then((response) => {
       setTransportList(response.data);
+      //console.log(response.data);
     });
   };
 
+  const updateTransport = (id) => {
+    Axios.put('http://localhost:3001/transportUpdate', {
+      phone: newPhone, 
+      id: id
+    }).then((response) => {
+      alert("update");
+    });
+  };
+console.log(transportList);
   return (
     <div className='main'>
       <h1>Dodaj nowy transport</h1>
@@ -55,13 +67,15 @@ function TransportEdit() {
         <div className='btn-panel'>
           <button onClick={addTransport}>Dodaj</button>
         </div>
-        <div className='btn-panel'>
-          <button onClick={getTransport}>Pokaż transporty</button>
-          {/* {transportList.map((val, key) => {
-            return <div> {val.name} </div> 
-          })} */}
-        </div>
       </form>
+      <div className='btn-panel'>
+          <button onClick={getTransport}>Pokaż transporty</button>
+          <ol>
+          {transportList.map((val, key) => {
+            return <li key={val.transport_id}> {val.phone} </li> 
+          })}
+          </ol>
+        </div>
     </div>
   )
 }

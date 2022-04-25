@@ -1,16 +1,23 @@
 const express = require("express");
 const app = express();
-const mysql = require("mysql");
+const pg = require("pg");
 const cors = require("cors");
 
 app.use(cors());
 app.use(express.json());
 
-const db = mysql.createConnection({
-  user: "root",
-  host: "localhost",
-  password: "password",
-  database: "recyclingSystem",
+
+const { Client } = require('pg')
+const client = new Client({
+  user: 'postgres',
+  host: 'localhost',
+  database: 'recyclingapp',
+  password: 'postgres',
+  port: 5432,
+})
+client.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected!");
 });
 
 app.post("/transportCreate", (req, res) => {
@@ -18,35 +25,25 @@ app.post("/transportCreate", (req, res) => {
   const phone = req.body.phone;
   const address = req.body.address;
 
-  db.query(
-    "INSERT INTO transports (date, phone, address) VALUES (?,?,?)",
+  client.query(
+    "INSERT INTO transports (date, phone, address) VALUES ($1,$2,$3)",
     [date, phone, address],
     (err, result) => {
       if (err) {
         console.log(err);
       } else {
-        res.send("Values Inserted");
+        res.json({value:"siema"});
       }
     }
   );
 });
 
 app.get("/transports", (req, res) => {
-  db.query("SELECT * FROM Transports", (err, result) => {
-    if (err) {
-      console.log(err)
-    } else {
-      res.send(response)
-    }
-  });
-})
-
-app.get("/transports", (req, res) => {
-  db.query("SELECT * FROM transports", (err, result) => {
+  client.query("SELECT * FROM transports", (err, result) => {
     if (err) {
       console.log(err);
     } else {
-      res.send(result);
+      res.json(result.rows);
     }
   });
 });
@@ -54,8 +51,8 @@ app.get("/transports", (req, res) => {
 app.put("/transportUpdate", (req, res) => {
   const id = req.body.id;
   const wage = req.body.wage;
-  db.query(
-    "UPDATE transports SET phone = ? WHERE id = ?",
+  client.query(
+    "UPDATE transports SET phone = $1 WHERE transport_id = $2",
     [phone, id],
     (err, result) => {
       if (err) {
@@ -69,7 +66,7 @@ app.put("/transportUpdate", (req, res) => {
 
 app.delete("/transportDelete/:id", (req, res) => {
   const id = req.params.id;
-  db.query("DELETE FROM transports WHERE id = ?", id, (err, result) => {
+  client.query("DELETE FROM transports WHERE transport_id = $1", [id], (err, result) => {
     if (err) {
       console.log(err);
     } else {
