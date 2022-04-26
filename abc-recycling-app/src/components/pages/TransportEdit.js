@@ -37,6 +37,10 @@ function TransportEdit() {
     });
   };
 
+  const deleteTransport =  (id) => {
+    Axios.delete('http://localhost:3001/transportDelete/${id}');
+  }
+
 //console.log(transportList);
   return (
     <div className='main'>
@@ -76,6 +80,11 @@ function TransportEdit() {
               <div> Telefon: {val.phone} </div>
               <div> Data: {val.date} </div>
               <div> Adres: {val.address} </div>
+              <button title="DELETE" onClick={() => {
+                deleteTransport(val.transport_id);
+              }} > 
+              delete
+              </button>
             </li> 
             )
           })}
