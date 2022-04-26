@@ -7,9 +7,7 @@ function TransportEdit() {
   const [date, setDate] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-
   const [newPhone, setNewPhone] = useState(0);
-
   const [transportList, setTransportList] = useState([]);
 
   const addTransport = (event) => {
@@ -38,7 +36,8 @@ function TransportEdit() {
       alert("update");
     });
   };
-console.log(transportList);
+
+//console.log(transportList);
   return (
     <div className='main'>
       <h1>Dodaj nowy transport</h1>
@@ -72,7 +71,13 @@ console.log(transportList);
           <button onClick={getTransport}>Pokaż transporty</button>
           <ol>
           {transportList.map((val, key) => {
-            return <li key={val.transport_id}> {val.phone} </li> 
+            return ( 
+            <li key={val.transport_id}> 
+              <div> Telefon: {val.phone} </div>
+              <div> Data: {val.date} </div>
+              <div> Adres: {val.address} </div>
+            </li> 
+            )
           })}
           </ol>
         </div>

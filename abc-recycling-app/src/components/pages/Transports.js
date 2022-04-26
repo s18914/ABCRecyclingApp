@@ -1,6 +1,8 @@
 import React from 'react'
 import Button from '../Button'
 import DataTable from 'react-data-table-component'
+import { useState } from "react";
+import Axios from "axios";
 
 
 const columns = [
@@ -14,7 +16,7 @@ const columns = [
     },
     {
       name: 'Telefon',
-      selector: row => row.telephone,
+      selector: row => row.phone,
     },
     {
       name: 'Status',
@@ -22,26 +24,41 @@ const columns = [
     },
 ];
 
-const data = [
-    {
-      id: 1,
-      address: 'Jutrzenki 7a/44 Warszawa',
-      date: '01.01.2022',
-      telephone: '515 765 543',
-      status: 'Planowany',
-    },
-    {
-      id: 1,
-      address: 'Jutrzenki 7a/44 Warszawa',
-      date: '01.01.2022',
-      telephone: '515 765 543',
-      status: 'Planowany',
-    },
-]
+// const data = [
+//     {
+//       id: 1,
+//       address: 'Jutrzenki 7a/44 Warszawa',
+//       date: '01.01.2022',
+//       phone: '515 765 543',
+//       status: 'Planowany',
+//     }
+// ]
 
 const Transports = () => {
   const [pending, setPending] = React.useState(true);
   const [rows, setRows] = React.useState([]);
+  const [transportList, setTransportList] = useState([]);
+
+  Axios.get('http://localhost:3001/transports').then((response) => {
+    setTransportList(response.data);
+  });
+
+  
+  
+  // var data = transportList.map((val, key) => {
+  //   return (
+      
+  //   )
+  // });
+  const data = [
+    {
+      id: transportList.transport_id,
+      address: transportList.address,
+      date: transportList.data,
+      phone: transportList.phone,
+      status: 'Planowany',
+    }
+]
 
   const onClick = () => {
     console.log('+')
