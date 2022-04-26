@@ -8,16 +8,26 @@ app.use(express.json());
 
 
 const { Client } = require('pg')
+
 const client = new Client({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'recyclingapp',
-  password: 'postgres',
+  user: '35952342_4321',
+  host: 'serwer2293331.home.pl',
+  database: '35952342_4321',
+  password: 'Adminadmin123}',
   port: 5432,
-})
+});
+
 client.connect(function(err) {
   if (err) throw err;
   console.log("Connected!");
+  client.query("SELECT * FROM transports", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("udało się")
+      console.log(result.rows);
+    }
+  });
 });
 
 app.post("/transportCreate", (req, res) => {
@@ -43,6 +53,7 @@ app.get("/transports", (req, res) => {
     if (err) {
       console.log(err);
     } else {
+      console.log("udało się pobrać transporty")
       res.json(result.rows);
     }
   });

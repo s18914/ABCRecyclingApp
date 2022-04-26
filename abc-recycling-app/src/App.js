@@ -16,7 +16,7 @@ const App = () => {
           <Route path='/transports'exact element={<Transports/>} />
           <Route path='/transports/add'exact element={<TransportEdit/>} />
           <Route path='/transports/edit/:id'exact element={<TransportEdit/>} />
-          {/* <Route path='/sales' component={Sales} /> */}
+          {/* <Route path='/sales' component={<Sales/>} /> */}
         </Routes>
       </Router>
     </div>
