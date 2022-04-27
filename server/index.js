@@ -55,6 +55,7 @@ app.get("/transports", (req, res) => {
     } else {
       console.log("udało się pobrać transporty")
       res.json(result.rows);
+      return;
     }
   });
 });
