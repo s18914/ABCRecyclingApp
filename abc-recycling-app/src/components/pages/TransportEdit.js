@@ -77,13 +77,13 @@ function TransportEdit() {
           {transportList.map((val, key) => {
             return ( 
             <li key={val.transport_id}> 
+              <div> Id: {val.transport_id} </div>
               <div> Telefon: {val.phone} </div>
               <div> Data: {val.date} </div>
               <div> Adres: {val.address} </div>
               <button title="DELETE" onClick={() => {
                 deleteTransport(val.transport_id);
               }} > 
-              delete
               </button>
             </li> 
             )

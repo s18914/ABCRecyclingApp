@@ -60,8 +60,7 @@ app.get("/transports", (req, res) => {
 });
 
 app.put("/transportUpdate", (req, res) => {
-  const id = req.body.id;
-  const wage = req.body.wage;
+  const id = req.body.transport_id;
   client.query(
     "UPDATE transports SET phone = $1 WHERE transport_id = $2",
     [phone, id],
@@ -76,12 +75,15 @@ app.put("/transportUpdate", (req, res) => {
 });
 
 app.delete("/transportDelete/:id", (req, res) => {
-  const id = req.params.id;
-  client.query("DELETE FROM transports WHERE transport_id = $1", [id], (err, result) => {
+  const id = req.body.transport_id;
+  client.query("DELETE FROM transports WHERE transport_id = $1", 
+  [id], 
+  (err, result) => {
     if (err) {
       console.log(err);
     } else {
       res.send(result);
+      res.json({value:"usun sie"});
     }
   });
 });
