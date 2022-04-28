@@ -52,7 +52,7 @@ app.get("/transports", (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      console.log("udało się pobrać transporty")
+      //console.log("udało się pobrać transporty")
       res.json(result.rows);
       return;
     }
@@ -74,17 +74,17 @@ app.put("/transportUpdate", (req, res) => {
   );
 });
 
-app.delete("/transports/delete/:id", (req, res) => {
-  console.log("jestem tu " + req);
-  const id = req.body.transport_id;
+app.delete("/transportDelete/:id", (req, res) => {
+  const id = req.params.id;
+  console.log(id + " to jest id")
   client.query("DELETE FROM transports WHERE transport_id = $1", 
   [id], 
   (err, result) => {
     if (err) {
       console.log(err);
     } else {
+      console.log("jestem tuuuu")
       res.send(result);
-      //res.json({value:"usun sie"});
     }
   });
 });

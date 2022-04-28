@@ -16,7 +16,7 @@ body {
 body .btn-panel {
   display: flex;
   justify-content: center;
-  margin-top: 50px;
+  margin-top: 100px;
 }
 body .btn-panel .btn {
   display: inline-block;

@@ -64,9 +64,9 @@ const Transports = props => {
       )
     },
   ];
-
+  
   const deleteTransport =  (id) => {
-    Axios.post(`http://localhost:3001//transports/delete/${id}`).then((response) => {
+    Axios.delete(`http://localhost:3001/transportDelete/${id}`).then((response) => {
       setTransportList(
         transportList.filter((row) => {
           console.log(id + " to moje id")
