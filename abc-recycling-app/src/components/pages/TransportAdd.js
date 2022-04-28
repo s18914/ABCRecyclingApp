@@ -70,25 +70,6 @@ function TransportAdd() {
           <button onClick={addTransport}>Dodaj</button>
         </div>
       </form>
-      <div className='btn-panel'>
-          <button onClick={getTransport}>Pokaż transporty</button>
-          <ol>
-          {transportList.map((val, key) => {
-            return ( 
-            <li key={val.transport_id}> 
-              <div> Id: {val.transport_id} </div>
-              <div> Telefon: {val.phone} </div>
-              <div> Data: {val.date} </div>
-              <div> Adres: {val.address} </div>
-              <button title="DELETE" onClick={() => {
-                deleteTransport(val.transport_id);
-              }} > 
-              </button>
-            </li> 
-            )
-          })}
-          </ol>
-        </div>
     </div>
   )
 }

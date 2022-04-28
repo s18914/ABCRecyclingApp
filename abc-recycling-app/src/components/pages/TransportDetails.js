@@ -1,8 +1,8 @@
 import React from 'react'
 import Axios from "axios";
 
-function TransportEdit() {
-    
+function TransportDetails() {
+
   return (
     <div className='main'>
       <h1>Szczegóły transportu</h1>
@@ -19,27 +19,8 @@ function TransportEdit() {
             <button>Powrót</button>
         </a>
       </div>
-      {/* <div className='btn-panel'>
-          <button onClick={getTransport}>Pokaż transporty</button>
-          <ol>
-          {transportList.map((val, key) => {
-            return ( 
-            <li key={val.transport_id}> 
-              <div> Id: {val.transport_id} </div>
-              <div> Telefon: {val.phone} </div>
-              <div> Data: {val.date} </div>
-              <div> Adres: {val.address} </div>
-              <button title="DELETE" onClick={() => {
-                deleteTransport(val.transport_id);
-              }} > 
-              </button>
-            </li> 
-            )
-          })}
-          </ol>
-        </div> */}
     </div>
   )
 }
 
-export default TransportEdit
+export default TransportDetails
