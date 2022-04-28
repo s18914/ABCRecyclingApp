@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Button from '../Button'
 import DataTable from 'react-data-table-component'
 import { useState } from "react";
@@ -8,6 +8,7 @@ import { FaPen } from 'react-icons/fa'
 
 const Transports = props => {
 
+  const [transportList, setTransportList] = useState([]);
   const columns =  [
     {
       name: 'Id',
@@ -46,16 +47,18 @@ const Transports = props => {
       )
     },
   ];
+
   const deleteTransport =  (id) => {
     Axios.delete(`http://localhost:3001/transportDelete/${id}`);
   }
 
-  const [transportList, setTransportList] = useState([]);
-
-  Axios.get('http://localhost:3001/transports').then((response) => {
-    setTransportList(response.data);
+  useEffect(() => {
+    Axios('http://localhost:3001/transports').then(
+      response => {
+        setTransportList(response.data);
+      }
+    )
   });
-
 
   return (
     <div className='main'>
@@ -64,9 +67,9 @@ const Transports = props => {
         columns={columns}
         data={transportList}
       />
-      {/* <div className='btn-panel'>
+      <div className='btn-panel'>
         <Button color={'green'} text={'Dodaj'} to={'/transports/add'}/>
-        <Button 
+        {/* <Button 
           onClick={() => {
             console.log('clicked');
             deleteTransport(transportList.transport_id);
@@ -75,8 +78,8 @@ const Transports = props => {
           text={'Usuń'}
         >
         </Button>
-        <Button color={'blue'} text={'Edytuj'}/>
-      </div> */}
+        <Button color={'blue'} text={'Edytuj'}/> */}
+      </div>
     </div>
   );
 }
