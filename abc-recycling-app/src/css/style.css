@@ -15,7 +15,8 @@ body {
 }
 body .btn-panel {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  margin-top: 50px;
 }
 body .btn-panel .btn {
   display: inline-block;
@@ -107,7 +108,7 @@ body span {
   margin-left: 16px;
 }
 body .main {
-  padding: 8% 3% 3% 250px;
+  padding: 8% 8% 3% 250px;
 }
 body .main .strong-table {
   font-size: large;

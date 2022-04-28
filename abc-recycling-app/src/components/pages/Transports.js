@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react'
-import Button from '../Button'
 import DataTable from 'react-data-table-component'
 import { useState } from "react";
 import Axios from "axios";
+import { FaBalanceScale, FaGlasses } from 'react-icons/fa'
 import { FaTimes } from 'react-icons/fa'
 import { FaPen } from 'react-icons/fa'
+import {AiOutlinePlusSquare} from 'react-icons/ai'
 
 const Transports = props => {
 
@@ -12,6 +13,7 @@ const Transports = props => {
   const columns =  [
     {
       name: 'Id',
+      width: '60px',
       selector: row => row.transport_id,
     },
     {
@@ -20,37 +22,59 @@ const Transports = props => {
     },
     {
       name: 'Telefon',
+      width: '180px',
       selector: row => row.phone,
     },
     {
       name: 'Data',
+      width: '180px',
       selector: row => row.date,
     },
     {
       name: "",
       button: true,
+      width: '60px',
       cell: row => (
-        <FaPen
-          style={{color: 'grey', cursor: 'pointer'}} 
-          //onClick={() => onEdit(task.id)}
+        <FaGlasses
+          style={{color: '#3286DA', cursor: 'pointer', transform: 'scale(1.4)'}} 
+          //onClick={() => onShow(task.id)}
         />
       )
     },
     {
       name: "",
       button: true,
+      width: '60px',
+      cell: row => (
+        <FaPen
+          style={{color: 'grey', cursor: 'pointer', transform: 'scale(1.4)'}} 
+          //onClick={onEdit(task.id)}
+        />
+      )
+    },
+    {
+      name: "",
+      button: true,
+      width: '60px',
       cell: row => (
         <FaTimes
-            style={{color: 'red', cursor: 'pointer'}} 
-            //onClick={() => onDelete(task.id)}
+            style={{color: '#D83232', cursor: 'pointer', transform: 'scale(1.5)'}}
+            onClick={() => deleteTransport(row.transport_id)}
         />
       )
     },
   ];
 
   const deleteTransport =  (id) => {
-    Axios.delete(`http://localhost:3001/transportDelete/${id}`);
-  }
+    Axios.post(`http://localhost:3001//transports/delete/${id}`).then((response) => {
+      setTransportList(
+        transportList.filter((row) => {
+          console.log(id + " to moje id")
+          return row.transport_id !== id;
+        })
+      );
+    });
+  };
 
   useEffect(() => {
     Axios('http://localhost:3001/transports').then(
@@ -68,17 +92,9 @@ const Transports = props => {
         data={transportList}
       />
       <div className='btn-panel'>
-        <Button color={'green'} text={'Dodaj'} to={'/transports/add'}/>
-        {/* <Button 
-          onClick={() => {
-            console.log('clicked');
-            deleteTransport(transportList.transport_id);
-          }}
-          color={'red'}
-          text={'Usuń'}
-        >
-        </Button>
-        <Button color={'blue'} text={'Edytuj'}/> */}
+        <a href={'/transports/add'}>
+          <AiOutlinePlusSquare style={{color: 'grey', cursor: 'pointer', transform: 'scale(5.2)'}} />
+        </a>
       </div>
     </div>
   );

@@ -24,7 +24,6 @@ client.connect(function(err) {
     if (err) {
       console.log(err);
     } else {
-      console.log("udało się")
       console.log(result.rows);
     }
   });
@@ -75,7 +74,8 @@ app.put("/transportUpdate", (req, res) => {
   );
 });
 
-app.delete("/transportDelete/:id", (req, res) => {
+app.delete("/transports/delete/:id", (req, res) => {
+  console.log("jestem tu " + req);
   const id = req.body.transport_id;
   client.query("DELETE FROM transports WHERE transport_id = $1", 
   [id], 
@@ -84,11 +84,11 @@ app.delete("/transportDelete/:id", (req, res) => {
       console.log(err);
     } else {
       res.send(result);
-      res.json({value:"usun sie"});
+      //res.json({value:"usun sie"});
     }
   });
 });
 
 app.listen(3001, () => {
-  console.log("Yey, your server is running on port 3001");
+  console.log("Your server is running on port 3001");
 });
