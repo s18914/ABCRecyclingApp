@@ -35,10 +35,12 @@ const Transports = props => {
       button: true,
       width: '60px',
       cell: row => (
+        <a href={'/transports/details'}>
         <FaGlasses
           style={{color: '#3286DA', cursor: 'pointer', transform: 'scale(1.4)'}} 
           //onClick={() => onShow(task.id)}
         />
+        </a>
       )
     },
     {
@@ -46,10 +48,12 @@ const Transports = props => {
       button: true,
       width: '60px',
       cell: row => (
+        <a href={'/transports/edit'}>
         <FaPen
           style={{color: 'grey', cursor: 'pointer', transform: 'scale(1.4)'}} 
           //onClick={onEdit(task.id)}
         />
+        </a>
       )
     },
     {

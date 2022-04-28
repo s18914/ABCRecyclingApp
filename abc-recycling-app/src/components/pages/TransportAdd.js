@@ -2,15 +2,11 @@ import React from 'react'
 import { useState } from "react";
 import Axios from "axios";
 
-function TransportEdit() {
+function TransportAdd() {
   const [date, setDate] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-
-  const [newDate, setNewDate] = useState("");
-  const [newPhone, setNewPhone] = useState("");
-  const [newAddress, setNewAddress] = useState("");
-
+  const [newPhone, setNewPhone] = useState(0);
   const [transportList, setTransportList] = useState([]);
 
   const addTransport = (event) => {
@@ -32,7 +28,7 @@ function TransportEdit() {
   };
 
   const updateTransport = (id) => {
-    Axios.put('http://localhost:3001/TransportEdit', {
+    Axios.put('http://localhost:3001/transportUpdate', {
       phone: newPhone, 
       id: id
     }).then((response) => {
@@ -47,24 +43,29 @@ function TransportEdit() {
 //console.log(transportList);
   return (
     <div className='main'>
-      <h1>Edycja transportu</h1>
+      <h1>Dodaj nowy transport</h1>
       <form>
-        <label>Data</label>
+        <label>Wybierz datę</label>
         <input type="text" id="date" name="date" placeholder="Data.."
           onChange={(event) => {
             setDate(event.target.value);
           }}>
         </input>
-        <label>Telefon odbiorcy</label>
+        <label>Wpisz telefon odbiorcy</label>
         <input type="text" id="phone" name="phone" placeholder="Telefon.." onChange={(event) => {
             setPhone(event.target.value);
           }}>
         </input>
-        <label>Adres</label>
+        <label>Wpisz adres</label>
         <input type="text" id="address" name="address" placeholder="Adres.." onChange={(event) => {
             setAddress(event.target.value);
           }}>
         </input>
+        <label>Wybierz ciężarówkę</label>
+        {/* <select>
+          <option value="Ford 1">ford XYUD825</option>
+          <option value="Ford 2">ford XZUD825</option>
+        </select> */}
         <div className='btn-panel'>
           <button onClick={addTransport}>Dodaj</button>
         </div>
@@ -79,18 +80,10 @@ function TransportEdit() {
               <div> Telefon: {val.phone} </div>
               <div> Data: {val.date} </div>
               <div> Adres: {val.address} </div>
-              <div>
-              <input 
-              type='text' 
-              placeholder='zmien nr telefonu'
-              onChange={(event) => {
-                setNewPhone(event.target.value);
-              }}
-              />
-              <button onClick={()=>{updateTransport(val.transport_id)}}>
-                update
+              <button title="DELETE" onClick={() => {
+                deleteTransport(val.transport_id);
+              }} > 
               </button>
-              </div>
             </li> 
             )
           })}
@@ -100,4 +93,4 @@ function TransportEdit() {
   )
 }
 
-export default TransportEdit
+export default TransportAdd

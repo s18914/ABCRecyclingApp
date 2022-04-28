@@ -59,8 +59,9 @@ app.get("/transports", (req, res) => {
   });
 });
 
-app.put("/transportUpdate", (req, res) => {
+app.put("/transportEdit", (req, res) => {
   const id = req.body.transport_id;
+  const phone = req.body.phone;
   client.query(
     "UPDATE transports SET phone = $1 WHERE transport_id = $2",
     [phone, id],
