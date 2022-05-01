@@ -20,15 +20,10 @@ const client = new Client({
 client.connect(function(err) {
   if (err) throw err;
   console.log("Connected!");
-  client.query("SELECT * FROM transports", (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(result.rows);
-    }
-  });
 });
 
+
+//Transport
 app.post("/transportCreate", (req, res) => {
   const date = req.body.date;
   const phone = req.body.phone;
@@ -86,6 +81,18 @@ app.delete("/transportDelete/:id", (req, res) => {
     } else {
       console.log("jestem tuuuu")
       res.send(result);
+    }
+  });
+});
+
+//Klient
+app.get("/customers", (req, res) => {
+  client.query("SELECT * FROM customers", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows);
+      return;
     }
   });
 });
