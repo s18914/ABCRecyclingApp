@@ -79,7 +79,6 @@ app.delete("/transportDelete/:id", (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      console.log("jestem tuuuu")
       res.send(result);
     }
   });
@@ -93,6 +92,19 @@ app.get("/customers", (req, res) => {
     } else {
       res.json(result.rows);
       return;
+    }
+  });
+});
+
+app.delete("/customerDelete/:id", (req, res) => {
+  const id = req.params.id;
+  client.query("DELETE FROM customers WHERE customer_id = $1", 
+  [id], 
+  (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
     }
   });
 });

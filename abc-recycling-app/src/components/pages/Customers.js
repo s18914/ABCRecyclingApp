@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import DataTable from 'react-data-table-component'
 import { useState } from "react";
 import Axios from "axios";
-import { FaBalanceScale, FaGlasses } from 'react-icons/fa'
 import { FaTimes } from 'react-icons/fa'
 import { FaPen } from 'react-icons/fa'
 import {AiOutlinePlusSquare} from 'react-icons/ai'
@@ -18,6 +17,7 @@ const Customers = props => {
     },
     {
       name: 'Imię',
+      width: '180px',
       selector: row => row.name,
     },
     {
@@ -27,21 +27,8 @@ const Customers = props => {
     },
     {
       name: 'Numer dowodu',
-      width: '180px',
-      selector: row => row.IDnumber,
-    },
-    {
-      name: "",
-      button: true,
-      width: '60px',
-      cell: row => (
-        <a href={'/customers/details'}>
-        <FaGlasses
-          style={{color: '#3286DA', cursor: 'pointer', transform: 'scale(1.4)'}} 
-          //onClick={() => onShow(task.id)}
-        />
-        </a>
-      )
+      width: '280px',
+      selector: row => row.IdNumber,
     },
     {
       name: "",

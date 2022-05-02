@@ -8,6 +8,7 @@ import TransportEdit from './components/pages/TransportEdit';
 import TransportDetails from './components/pages/TransportDetails';
 import Sales from './components/pages/Sales';
 import Customers from './components/pages/Customers';
+import CustomerAdd from './components/pages/CustomerAdd';
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
           <Route path='/transportDelete/:id'exact element={<Transports/>} />
           <Route path='/sales' exact element={<Sales/>} />
           <Route path='/customers' exact element={<Customers/>} />
+          <Route path='/customers/add' exact element={<CustomerAdd/>} />
         </Routes>
       </Router>
     </div>
