@@ -45,14 +45,12 @@ app.get("/transports", (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      //console.log("udało się pobrać transporty")
       res.json(result.rows);
       return;
     }
   });
 });
 
-//napisac select where id = ?
 app.get("/transport/:id", (req, res) => {
   const id = req.params.id;
   client.query("SELECT * FROM transports WHERE transport_id = $1", [id], (err, result) => {
@@ -64,15 +62,45 @@ app.get("/transport/:id", (req, res) => {
   });
 });
 
-app.put("/transportEdit", (req, res) => {
+app.put("/transportEditPhone", (req, res) => {
   const id = req.body.id;
   const phone = req.body.phone;
-  const address = req.body.address;
-  const date = req.body.date;
   console.log(id);
   client.query(
-    "UPDATE transports SET phone = $1 WHERE transport_id = $4",
+    "UPDATE transports SET phone = $1 WHERE transport_id = $2",
     [phone, id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.put("/transportEditAddress", (req, res) => {
+  const id = req.body.id;
+  const address = req.body.address;
+  client.query(
+    "UPDATE transports SET address = $1 WHERE transport_id = $2",
+    [address, id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.put("/transportEditDate", (req, res) => {
+  const id = req.body.id;
+  const date = req.body.date;
+  client.query(
+    "UPDATE transports SET date = $1 WHERE transport_id = $2",
+    [date, id],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -85,14 +113,12 @@ app.put("/transportEdit", (req, res) => {
 
 app.delete("/transportDelete/:id", (req, res) => {
   const id = req.params.id;
-  console.log(id + " to jest id")
   client.query("DELETE FROM transports WHERE transport_id = $1", 
   [id], 
   (err, result) => {
     if (err) {
       console.log(err);
     } else {
-      console.log("jestem tuuuu")
       res.send(result);
     }
   });

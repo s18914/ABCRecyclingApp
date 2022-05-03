@@ -14,7 +14,7 @@ function TransportDetails() {
       console.log(response.data);
     });
   };
-  console.log(transport);
+  //console.log(transport);
 
   useEffect(() => {
     getTransport(id);

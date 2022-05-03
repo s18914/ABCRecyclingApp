@@ -30,19 +30,40 @@ function TransportEdit() {
     getTransport(id);
   }, []);
 
-  const updateTransport = (id) => {
-    Axios.put(`http://localhost:3001/TransportEdit/${id}`, {
-      phone: newPhone, 
+  const updateTransportPhone = (id) => {
+    Axios.put(`http://localhost:3001/transportEditPhone`, {
+      phone: newPhone,
+      id: id
+    }).then((response) => {
+      setTransportList(transportList.map((val) => {
+        return val.transport_id = id ? {id: val.transport_id, address: val.address, date: val.date, phone: newPhone} : val
+      }));
+    });
+  };
+
+  const updateTransportAddress = (id) => {
+    Axios.put(`http://localhost:3001/transportEditAddress`, {
       address: newAddress,
+      id: id
+    }).then((response) => {
+      setTransportList(transportList.map((val) => {
+        return val.transport_id = id ? {id: val.transport_id, date: val.date, phone: val.phone, address: newAddress} : val
+      }));
+    });
+  };
+
+  const updateTransportDate = (id) => {
+    Axios.put(`http://localhost:3001/transportEditDate`, {
       date: newDate,
       id: id
     }).then((response) => {
-      alert("update");
+      setTransportList(transportList.map((val) => {
+        return val.transport_id = id ? {id: val.transport_id, address: val.address, phone: val.phone, date: newDate} : val
+      }));
     });
   };
 
 
-//console.log(transportList);
   return (
     <div className='main'>
       <h1>Edycja transportu</h1>
@@ -67,39 +88,22 @@ function TransportEdit() {
         </input>
       </form>
       <div className='btn-panel'>
-        <a href={'/transports'}>
-          <button onClick={updateTransport}>
+      <a href={'/transports'} onClick={() => {
+        updateTransportPhone(transport.transport_id); 
+        updateTransportAddress(transport.transport_id);
+        updateTransportDate(transport.transport_id);
+      }}>Zatwierdź(poprawić)</a>
+        {/* <a href={'/transports'}>
+          <button onClick={()=>{updateTransportPhone(transport.transport_id)}}>
             Zatwierdź
           </button>
-        </a>
+        </a> */}
+        <a href={'/transports'}>
+          <button>
+            Anuluj
+          </button>
+        </a> 
       </div>
-      <div className='btn-panel'>
-          <button onClick={getTransport}>Pokaż transporty</button>
-          <ol>
-          {transportList.map((val, key) => {
-            return ( 
-            <li key={val.transport_id}> 
-              <div> Id: {val.transport_id} </div>
-              <div> Telefon: {val.phone} </div>
-              <div> Data: {val.date} </div>
-              <div> Adres: {val.address} </div>
-              {/* <div>
-              <input 
-              type='text' 
-              placeholder='zmien nr telefonu'
-              onChange={(event) => {
-                setNewPhone(event.target.value);
-              }}
-              />
-              <button onClick={()=>{updateTransport(val.transport_id)}}>
-                update
-              </button>
-              </div> */}
-            </li> 
-            )
-          })}
-          </ol>
-        </div>
     </div>
   )
 }
