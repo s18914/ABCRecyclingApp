@@ -1,13 +1,18 @@
 import React from 'react'
 import { useState } from "react";
 import Axios from "axios";
+import { useParams } from 'react-router';
 
 function TransportAdd() {
   const [date, setDate] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-  const [newPhone, setNewPhone] = useState(0);
+  const [newDate, setNewDate] = useState("");
+  const [newPhone, setNewPhone] = useState("");
+  const [newAddress, setNewAddress] = useState("");
   const [transportList, setTransportList] = useState([]);
+
+  const {id} = useParams();
 
   const addTransport = (event) => {
     event.preventDefault();
@@ -28,17 +33,15 @@ function TransportAdd() {
   };
 
   const updateTransport = (id) => {
-    Axios.put('http://localhost:3001/transportUpdate', {
-      phone: newPhone, 
+    Axios.put(`http://localhost:3001/TransportEdit`, {
+      phone: newPhone,
       id: id
     }).then((response) => {
       alert("update");
+      console.log(id + " to moje id")
     });
   };
 
-  const deleteTransport =  (id) => {
-    Axios.delete('http://localhost:3001/transportDelete/${id}');
-  }
 
 //console.log(transportList);
   return (
@@ -70,6 +73,33 @@ function TransportAdd() {
           <button onClick={addTransport}>Dodaj</button>
         </div>
       </form>
+      <div className='btn-panel'>
+          <button onClick={getTransport}>Pokaż transporty</button>
+          <ol>
+          {transportList.map((val, key) => {
+            return ( 
+            <li key={val.transport_id}> 
+              <div> Id: {val.transport_id} </div>
+              <div> Telefon: {val.phone} </div>
+              <div> Data: {val.date} </div>
+              <div> Adres: {val.address} </div>
+              <div>
+              <input 
+              type='text' 
+              placeholder='zmien nr telefonu'
+              onChange={(event) => {
+                setNewPhone(event.target.value);
+              }}
+              />
+              <button onClick={()=>{updateTransport(val.transport_id)}}>
+                update
+              </button>
+              </div>
+            </li> 
+            )
+          })}
+          </ol>
+        </div>
     </div>
   )
 }

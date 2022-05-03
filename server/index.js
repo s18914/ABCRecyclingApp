@@ -69,10 +69,10 @@ app.put("/transportEdit", (req, res) => {
   const phone = req.body.phone;
   const address = req.body.address;
   const date = req.body.date;
-  
+  console.log(id);
   client.query(
-    "UPDATE transports SET phone = $1, address = $2, date = $3 WHERE transport_id = $4",
-    [phone, address, date, id],
+    "UPDATE transports SET phone = $1 WHERE transport_id = $4",
+    [phone, id],
     (err, result) => {
       if (err) {
         console.log(err);

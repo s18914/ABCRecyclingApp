@@ -74,9 +74,7 @@ function TransportEdit() {
         </a>
       </div>
       <div className='btn-panel'>
-          <a href={'/transports'}>
           <button onClick={getTransport}>Pokaż transporty</button>
-        </a>
           <ol>
           {transportList.map((val, key) => {
             return ( 
@@ -85,7 +83,7 @@ function TransportEdit() {
               <div> Telefon: {val.phone} </div>
               <div> Data: {val.date} </div>
               <div> Adres: {val.address} </div>
-              <div>
+              {/* <div>
               <input 
               type='text' 
               placeholder='zmien nr telefonu'
@@ -96,7 +94,7 @@ function TransportEdit() {
               <button onClick={()=>{updateTransport(val.transport_id)}}>
                 update
               </button>
-              </div>
+              </div> */}
             </li> 
             )
           })}
