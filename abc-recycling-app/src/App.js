@@ -17,8 +17,8 @@ const App = () => {
           <Route path='/' exact element={<Home/>} />
           <Route path='/transports'exact element={<Transports/>} />
           <Route path='/transports/add'exact element={<TransportAdd/>} />
-          <Route path='/transports/edit'exact element={<TransportEdit/>} />
-          <Route path='/transports/details'exact element={<TransportDetails/>} />
+          <Route path='/transports/edit/:id'exact element={<TransportEdit/>} />
+          <Route path='/transports/details/:id'exact element={<TransportDetails/>} />
           <Route path='/transportDelete/:id'exact element={<Transports/>} />
           {/* <Route path='/sales' component={<Sales/>} /> */}
         </Routes>

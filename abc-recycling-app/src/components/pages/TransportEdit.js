@@ -1,6 +1,7 @@
-import React from 'react'
-import { useState } from "react";
+import React from 'react';
+import { useState, useEffect } from "react";
 import Axios from "axios";
+import { useParams } from 'react-router';
 
 function TransportEdit() {
   const [date, setDate] = useState("");
@@ -12,37 +13,34 @@ function TransportEdit() {
   const [newAddress, setNewAddress] = useState("");
 
   const [transportList, setTransportList] = useState([]);
+  
+  const [transport, setTransport] = useState();
 
-  const addTransport = (event) => {
-    event.preventDefault();
-    Axios.post('http://localhost:3001/transportCreate', {
-      date: date, 
-      phone: phone, 
-      address: address
-    }).then((data) => {
-      console.log("success", data.data);
-    })
-  };
+  const {id} = useParams();
 
-  const getTransport = () => {
-    Axios.get('http://localhost:3001/transports').then((response) => {
-      setTransportList(response.data);
-      //console.log(response.data);
+  const getTransport = (id) => {
+    Axios.get(`http://localhost:3001/transport/${id}`).then((response) => {
+      setTransport(response.data);
+      console.log(response.data);
     });
   };
+  //console.log(transport);
+
+  useEffect(() => {
+    getTransport(id);
+  }, []);
 
   const updateTransport = (id) => {
-    Axios.put('http://localhost:3001/TransportEdit', {
+    Axios.put(`http://localhost:3001/TransportEdit/${id}`, {
       phone: newPhone, 
+      address: newAddress,
+      date: newDate,
       id: id
     }).then((response) => {
       alert("update");
     });
   };
 
-  const deleteTransport =  (id) => {
-    Axios.delete('http://localhost:3001/transportDelete/${id}');
-  }
 
 //console.log(transportList);
   return (
@@ -50,27 +48,35 @@ function TransportEdit() {
       <h1>Edycja transportu</h1>
       <form>
         <label>Data</label>
-        <input type="text" id="date" name="date" placeholder="Data.."
+        <input type="text" id="date" name="date" defaultValue={transport?.date}
           onChange={(event) => {
-            setDate(event.target.value);
+            setNewDate(event.target.value);
           }}>
         </input>
         <label>Telefon odbiorcy</label>
-        <input type="text" id="phone" name="phone" placeholder="Telefon.." onChange={(event) => {
-            setPhone(event.target.value);
+        <input type="text" id="phone" name="phone" defaultValue={transport?.phone}
+        onChange={(event) => {
+            setNewPhone(event.target.value);
           }}>
         </input>
         <label>Adres</label>
-        <input type="text" id="address" name="address" placeholder="Adres.." onChange={(event) => {
-            setAddress(event.target.value);
+        <input type="text" id="address" name="address" defaultValue={transport?.address}
+         onChange={(event) => {
+            setNewAddress(event.target.value);
           }}>
         </input>
-        <div className='btn-panel'>
-          <button onClick={addTransport}>Dodaj</button>
-        </div>
       </form>
       <div className='btn-panel'>
+        <a href={'/transports'}>
+          <button onClick={updateTransport}>
+            Zatwierdź
+          </button>
+        </a>
+      </div>
+      <div className='btn-panel'>
+          <a href={'/transports'}>
           <button onClick={getTransport}>Pokaż transporty</button>
+        </a>
           <ol>
           {transportList.map((val, key) => {
             return ( 

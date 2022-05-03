@@ -20,13 +20,6 @@ const client = new Client({
 client.connect(function(err) {
   if (err) throw err;
   console.log("Connected!");
-  client.query("SELECT * FROM transports", (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(result.rows);
-    }
-  });
 });
 
 app.post("/transportCreate", (req, res) => {
@@ -59,12 +52,27 @@ app.get("/transports", (req, res) => {
   });
 });
 
+//napisac select where id = ?
+app.get("/transport/:id", (req, res) => {
+  const id = req.params.id;
+  client.query("SELECT * FROM transports WHERE transport_id = $1", [id], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows[0]);
+    }
+  });
+});
+
 app.put("/transportEdit", (req, res) => {
-  const id = req.body.transport_id;
+  const id = req.body.id;
   const phone = req.body.phone;
+  const address = req.body.address;
+  const date = req.body.date;
+  
   client.query(
-    "UPDATE transports SET phone = $1 WHERE transport_id = $2",
-    [phone, id],
+    "UPDATE transports SET phone = $1, address = $2, date = $3 WHERE transport_id = $4",
+    [phone, address, date, id],
     (err, result) => {
       if (err) {
         console.log(err);
