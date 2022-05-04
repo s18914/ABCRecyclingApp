@@ -13,7 +13,7 @@ const Customers = props => {
     {
       name: 'Id',
       width: '60px',
-      selector: row => row.customer_id,
+      selector: row => row.contractor_id,
     },
     {
       name: 'Imię',
@@ -28,17 +28,16 @@ const Customers = props => {
     {
       name: 'Numer dowodu',
       width: '280px',
-      selector: row => row.IdNumber,
+      selector: row => row.idnumber,
     },
     {
       name: "",
       button: true,
       width: '60px',
       cell: row => (
-        <a href={'/customers/edit'}>
+        <a href={`/customers/edit/${row.contractor_id}`}>
         <FaPen
-          style={{color: 'grey', cursor: 'pointer', transform: 'scale(1.4)'}} 
-          //onClick={onEdit(task.id)}
+          style={{color: 'grey', cursor: 'pointer', transform: 'scale(1.4)'}}
         />
         </a>
       )
@@ -50,7 +49,7 @@ const Customers = props => {
       cell: row => (
         <FaTimes
             style={{color: '#D83232', cursor: 'pointer', transform: 'scale(1.5)'}}
-            onClick={() => deleteCustomer(row.customer_id)}
+            onClick={() => deleteCustomer(row.contractor_id)}
         />
       )
     },
@@ -60,7 +59,7 @@ const Customers = props => {
     Axios.delete(`http://localhost:3001/customerDelete/${id}`).then((response) => {
       setCustomerList(
         customerList.filter((row) => {
-          return row.customer_id !== id;
+          return row.contractor_id !== id;
         })
       );
     });

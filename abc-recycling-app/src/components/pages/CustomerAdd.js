@@ -3,17 +3,21 @@ import { useState } from "react";
 import Axios from "axios";
 import { FaCheckCircle } from 'react-icons/fa'
 
-function CustomerAdd() {
+function CustomerAdd({ editedId }) {
+  
+  const isAddMode = !editedId;
+
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
-  const [IdNumber, setIdNumber] = useState("");
+  const [idnumber, setIdNumber] = useState("");
 
+  
   const addCustomer = (event) => {
     event.preventDefault();
     Axios.post('http://localhost:3001/customerCreate', {
       name: name, 
       surname: surname, 
-      IdNumber: IdNumber
+      idnumber: idnumber
     }).then((data) => {
       console.log("success", data.data);
     })
@@ -23,7 +27,7 @@ function CustomerAdd() {
     Axios.put('http://localhost:3001/customerUpdate', {
       name: name, 
       surname: surname,
-      IdNumber: IdNumber,
+      idnumber: idnumber,
       id: id
     }).then((response) => {
       alert("update");
@@ -50,7 +54,7 @@ function CustomerAdd() {
           }}>
         </input>
         <label>Wpisz numer dowodu</label>
-        <input type="text" id="IdNumber" name="IdNumber" placeholder="Numer dowodu.." onChange={(event) => {
+        <input type="text" id="idnumber" name="idnumber" placeholder="Numer dowodu.." onChange={(event) => {
             setIdNumber(event.target.value);
           }}>
         </input>
