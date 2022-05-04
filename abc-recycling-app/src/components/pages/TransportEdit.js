@@ -1,6 +1,7 @@
-import React from 'react'
-import { useState } from "react";
+import React from 'react';
+import { useState, useEffect } from "react";
 import Axios from "axios";
+import { useParams } from 'react-router';
 
 function TransportEdit() {
   const [date, setDate] = useState("");
@@ -12,90 +13,97 @@ function TransportEdit() {
   const [newAddress, setNewAddress] = useState("");
 
   const [transportList, setTransportList] = useState([]);
+  
+  const [transport, setTransport] = useState();
 
-  const addTransport = (event) => {
-    event.preventDefault();
-    Axios.post('http://localhost:3001/transportCreate', {
-      date: date, 
-      phone: phone, 
-      address: address
-    }).then((data) => {
-      console.log("success", data.data);
-    })
-  };
+  const {id} = useParams();
 
-  const getTransport = () => {
-    Axios.get('http://localhost:3001/transports').then((response) => {
-      setTransportList(response.data);
-      //console.log(response.data);
+  const getTransport = (id) => {
+    Axios.get(`http://localhost:3001/transport/${id}`).then((response) => {
+      setTransport(response.data);
+      console.log(response.data);
     });
   };
+  //console.log(transport);
 
-  const updateTransport = (id) => {
-    Axios.put('http://localhost:3001/TransportEdit', {
-      phone: newPhone, 
+  useEffect(() => {
+    getTransport(id);
+  }, []);
+
+  const updateTransportPhone = (id) => {
+    Axios.put(`http://localhost:3001/transportEditPhone`, {
+      phone: newPhone,
       id: id
     }).then((response) => {
-      alert("update");
+      setTransportList(transportList.map((val) => {
+        return val.transport_id = id ? {id: val.transport_id, address: val.address, date: val.date, phone: newPhone} : val
+      }));
     });
   };
 
-  const deleteTransport =  (id) => {
-    Axios.delete('http://localhost:3001/transportDelete/${id}');
-  }
+  const updateTransportAddress = (id) => {
+    Axios.put(`http://localhost:3001/transportEditAddress`, {
+      address: newAddress,
+      id: id
+    }).then((response) => {
+      setTransportList(transportList.map((val) => {
+        return val.transport_id = id ? {id: val.transport_id, date: val.date, phone: val.phone, address: newAddress} : val
+      }));
+    });
+  };
 
-//console.log(transportList);
+  const updateTransportDate = (id) => {
+    Axios.put(`http://localhost:3001/transportEditDate`, {
+      date: newDate,
+      id: id
+    }).then((response) => {
+      setTransportList(transportList.map((val) => {
+        return val.transport_id = id ? {id: val.transport_id, address: val.address, phone: val.phone, date: newDate} : val
+      }));
+    });
+  };
+
+
   return (
     <div className='main'>
       <h1>Edycja transportu</h1>
       <form>
         <label>Data</label>
-        <input type="text" id="date" name="date" placeholder="Data.."
+        <input type="text" id="date" name="date" defaultValue={transport?.date}
           onChange={(event) => {
-            setDate(event.target.value);
+            setNewDate(event.target.value);
           }}>
         </input>
         <label>Telefon odbiorcy</label>
-        <input type="text" id="phone" name="phone" placeholder="Telefon.." onChange={(event) => {
-            setPhone(event.target.value);
+        <input type="text" id="phone" name="phone" defaultValue={transport?.phone}
+        onChange={(event) => {
+            setNewPhone(event.target.value);
           }}>
         </input>
         <label>Adres</label>
-        <input type="text" id="address" name="address" placeholder="Adres.." onChange={(event) => {
-            setAddress(event.target.value);
+        <input type="text" id="address" name="address" defaultValue={transport?.address}
+         onChange={(event) => {
+            setNewAddress(event.target.value);
           }}>
         </input>
-        <div className='btn-panel'>
-          <button onClick={addTransport}>Dodaj</button>
-        </div>
       </form>
       <div className='btn-panel'>
-          <button onClick={getTransport}>Pokaż transporty</button>
-          <ol>
-          {transportList.map((val, key) => {
-            return ( 
-            <li key={val.transport_id}> 
-              <div> Id: {val.transport_id} </div>
-              <div> Telefon: {val.phone} </div>
-              <div> Data: {val.date} </div>
-              <div> Adres: {val.address} </div>
-              <div>
-              <input 
-              type='text' 
-              placeholder='zmien nr telefonu'
-              onChange={(event) => {
-                setNewPhone(event.target.value);
-              }}
-              />
-              <button onClick={()=>{updateTransport(val.transport_id)}}>
-                update
-              </button>
-              </div>
-            </li> 
-            )
-          })}
-          </ol>
-        </div>
+      <a href={'/transports'} onClick={() => {
+        updateTransportPhone(transport.transport_id); 
+        updateTransportAddress(transport.transport_id);
+        updateTransportDate(transport.transport_id);
+      }}>Zatwierdź(poprawić)</a>
+        {/* <a href={'/transports'}>
+          <button onClick={()=>{updateTransportPhone(transport.transport_id)}}>
+            Zatwierdź
+          </button>
+        </a> */}
+        <a href={'/transports'}>
+          <button>
+            Anuluj
+          </button>
+        </a> 
+      </div>
     </div>
   )
 }

@@ -47,16 +47,27 @@ app.get("/transports", (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      //console.log("udało się pobrać transporty")
       res.json(result.rows);
       return;
     }
   });
 });
 
-app.put("/transportEdit", (req, res) => {
-  const id = req.body.transport_id;
+app.get("/transport/:id", (req, res) => {
+  const id = req.params.id;
+  client.query("SELECT * FROM transports WHERE transport_id = $1", [id], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows[0]);
+    }
+  });
+});
+
+app.put("/transportEditPhone", (req, res) => {
+  const id = req.body.id;
   const phone = req.body.phone;
+  console.log(id);
   client.query(
     "UPDATE transports SET phone = $1 WHERE transport_id = $2",
     [phone, id],
@@ -70,9 +81,40 @@ app.put("/transportEdit", (req, res) => {
   );
 });
 
+app.put("/transportEditAddress", (req, res) => {
+  const id = req.body.id;
+  const address = req.body.address;
+  client.query(
+    "UPDATE transports SET address = $1 WHERE transport_id = $2",
+    [address, id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.put("/transportEditDate", (req, res) => {
+  const id = req.body.id;
+  const date = req.body.date;
+  client.query(
+    "UPDATE transports SET date = $1 WHERE transport_id = $2",
+    [date, id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
 app.delete("/transportDelete/:id", (req, res) => {
   const id = req.params.id;
-  console.log(id + " to jest id")
   client.query("DELETE FROM transports WHERE transport_id = $1", 
   [id], 
   (err, result) => {

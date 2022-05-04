@@ -1,13 +1,14 @@
 import React from 'react'
 import { useState } from "react";
 import Axios from "axios";
+import { useParams } from 'react-router';
 
 function TransportAdd() {
   const [date, setDate] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-  const [newPhone, setNewPhone] = useState(0);
-  const [transportList, setTransportList] = useState([]);
+
+  const {id} = useParams();
 
   const addTransport = (event) => {
     event.preventDefault();
@@ -20,27 +21,6 @@ function TransportAdd() {
     })
   };
 
-  const getTransport = () => {
-    Axios.get('http://localhost:3001/transports').then((response) => {
-      setTransportList(response.data);
-      //console.log(response.data);
-    });
-  };
-
-  const updateTransport = (id) => {
-    Axios.put('http://localhost:3001/transportUpdate', {
-      phone: newPhone, 
-      id: id
-    }).then((response) => {
-      alert("update");
-    });
-  };
-
-  const deleteTransport =  (id) => {
-    Axios.delete('http://localhost:3001/transportDelete/${id}');
-  }
-
-//console.log(transportList);
   return (
     <div className='main'>
       <h1>Dodaj nowy transport</h1>
@@ -66,10 +46,19 @@ function TransportAdd() {
           <option value="Ford 1">ford XYUD825</option>
           <option value="Ford 2">ford XZUD825</option>
         </select> */}
-        <div className='btn-panel'>
-          <button onClick={addTransport}>Dodaj</button>
-        </div>
       </form>
+      <div className='btn-panel'>
+        <a href={'/transports'}>
+          <button onClick={addTransport}>
+            Zatwierdź
+          </button>
+        </a> 
+        <a href={'/transports'}>
+          <button>
+            Anuluj
+          </button>
+        </a> 
+      </div>
     </div>
   )
 }
