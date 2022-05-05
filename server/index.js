@@ -138,6 +138,17 @@ app.get("/customers", (req, res) => {
   });
 });
 
+app.get("/customer/:id", (req, res) => {
+  const id = req.params.id;
+  client.query("SELECT * FROM customers WHERE contractor_id = $1", [id], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows[0]);
+    }
+  });
+});
+
 app.post("/customerCreate", (req, res) => {
   const name = req.body.name;
   const surname = req.body.surname;
@@ -146,6 +157,25 @@ app.post("/customerCreate", (req, res) => {
   client.query(
     "INSERT INTO customers (name, surname, idnumber) VALUES ($1,$2,$3)",
     [name, surname, idnumber],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.put("/customerUpdate", (req, res) => {
+  const name = req.body.name;
+  const surname = req.body.surname;
+  const idnumber = req.body.idnumber;
+  const id = req.body.id;
+
+  client.query(
+    "Update customers set name = $1, surname = $2, idnumber = $3 where contractor_id = $4",
+    [name, surname, idnumber, id],
     (err, result) => {
       if (err) {
         console.log(err);
