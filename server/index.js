@@ -124,6 +124,82 @@ app.delete("/transportDelete/:id", (req, res) => {
   });
 });
 
+<<<<<<< Updated upstream
+=======
+//Car
+app.post("/carCreate", (req, res) => {
+  const registrationNumber = req.body.registrationNumber;
+  const overviewDate = req.body.overviewDate;
+
+  client.query(
+    "INSERT INTO transports (registrationNumber, overviewDate) VALUES ($1,$2)",
+    [date, phone],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json({value:"siema"});
+      }
+    }
+  );
+});
+
+app.get("/cars", (req, res) => {
+  client.query("SELECT * FROM cars", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows);
+      return;
+    }
+  });
+});
+
+
+//Klient
+app.get("/customers", (req, res) => {
+  client.query("SELECT * FROM customers", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows);
+      return;
+    }
+  });
+});
+
+app.post("/customerCreate", (req, res) => {
+  const name = req.body.name;
+  const surname = req.body.surname;
+  const idnumber = req.body.idnumber;
+
+  client.query(
+    "INSERT INTO customers (name, surname, idnumber) VALUES ($1,$2,$3)",
+    [name, surname, idnumber],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.delete("/customerDelete/:id", (req, res) => {
+  const id = req.params.id;
+  client.query("DELETE FROM customers WHERE contractor_id = $1", 
+  [id], 
+  (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+>>>>>>> Stashed changes
 app.listen(3001, () => {
   console.log("Your server is running on port 3001");
 });
