@@ -22,8 +22,6 @@ client.connect(function(err) {
   console.log("Connected!");
 });
 
-
-//Transport
 app.post("/transportCreate", (req, res) => {
   const date = req.body.date;
   const phone = req.body.phone;
@@ -125,6 +123,36 @@ app.delete("/transportDelete/:id", (req, res) => {
     }
   });
 });
+
+//Car
+// app.post("/carCreate", (req, res) => {
+//   const registrationNumber = req.body.registrationNumber;
+//   const overviewDate = req.body.overviewDate;
+
+//   client.query(
+//     "INSERT INTO transports (registrationNumber, overviewDate) VALUES ($1,$2)",
+//     [date, phone],
+//     (err, result) => {
+//       if (err) {
+//         console.log(err);
+//       } else {
+//         res.json({value:"siema"});
+//       }
+//     }
+//   );
+// });
+
+// app.get("/cars", (req, res) => {
+//   client.query("SELECT * FROM cars", (err, result) => {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       res.json(result.rows);
+//       return;
+//     }
+//   });
+// });
+
 
 //Klient
 app.get("/customers", (req, res) => {
