@@ -9,6 +9,10 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import DatePicker from "@material-ui/lab/DatePicker";
+import LocalizationProvider from "@material-ui/lab/LocalizationProvider";
+import DateFNSUtils from "@material-ui/lab/AdapterDateFns";
+
 
 function TransportAdd() {
   const [date, setDate] = useState("");
@@ -22,6 +26,9 @@ function TransportAdd() {
   const {id} = useParams();
 
   const [open, setOpen] = React.useState(false);
+
+  
+  const [value, setValue] = React.useState(null);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -67,6 +74,22 @@ function TransportAdd() {
             setDate(event.target.value);
           }}>
         </input>
+        <div className='Date'>
+        <LocalizationProvider dateAdapter={DateFNSUtils}>
+        <DatePicker
+          value={value}
+          onChange={(newValue) => {
+            console.log(newValue.toUTCString());
+            setValue(newValue);
+          }}
+          renderInput={(startProps) => (
+            <React.Fragment>
+              <TextField {...startProps} />
+            </React.Fragment>
+          )}
+        />
+        </LocalizationProvider>
+        </div>
         <label>Wpisz telefon odbiorcy</label>
         <input type="text" id="phone" name="phone" placeholder="Telefon.." onChange={(event) => {
             setPhone(event.target.value);
