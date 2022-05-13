@@ -29,13 +29,7 @@ export const SidebarData = [
     cName: 'nav-text'
   },
   {
-    title: 'Firmy',
-    path: '/companies',
-    icon: <FaIcons.FaBuilding />,
-    cName: 'nav-text'
-  },
-  {
-    title: 'Klienci indywidualni',
+    title: 'Klienci',
     path: '/customers',
     icon: <AiIcons.AiOutlineUser />,
     cName: 'nav-text'

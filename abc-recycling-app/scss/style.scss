@@ -61,6 +61,8 @@ body {
         margin-left: 2rem;
         font-size: 2rem;
         background: none;
+        padding-top: 10px;
+        margin-left: 40px;
     }
 
     .nav-menu.active {
@@ -70,7 +72,7 @@ body {
 
     .nav-menu {
         background-color: #205225;
-        width: 250px;
+        width: 220px;
         height: 100vh;
         display: flex;
         justify-content: center;
@@ -86,6 +88,8 @@ body {
 
         .nav-menu-items {
             width: 100%;
+            padding-left: 10px;
+            margin-top: 10px;
             
             .nav-text {
                 display: flex;
