@@ -128,7 +128,7 @@ app.delete("/transportDelete/:id", (req, res) => {
 
 //Klient
 app.get("/customers", (req, res) => {
-  client.query("SELECT *, CASE WHEN f.nip is not null then 'C' else 'P' END AS type FROM contractors c left join companies f on c.contractor_id= f.contractor_id left join customers k on c.contractor_id= k.contractor_id", (err, result) => {
+  client.query("SELECT c.contractor_id as id, *, CASE WHEN f.nip is not null then 'C' else 'P' END AS type FROM contractors c left join companies f on c.contractor_id= f.contractor_id left join customers k on c.contractor_id= k.contractor_id", (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -188,7 +188,7 @@ app.put("/customerUpdate", (req, res) => {
 
 app.delete("/customerDelete/:id", (req, res) => {
   const id = req.params.id;
-  client.query("DELETE FROM customers WHERE contractor_id = $1", 
+  client.query("DELETE FROM contractors WHERE contractor_id = $1", 
   [id], 
   (err, result) => {
     if (err) {

@@ -11,9 +11,9 @@ const Customers = props => {
   const [customerList, setCustomerList] = useState([]);
   const columns =  [
     {
-      name: 'Id',
+      name: 'Typ',
       width: '60px',
-      selector: row => row.contractor_id,
+      selector: row => row.type,
     },
     {
       name: 'Imię',
@@ -50,7 +50,7 @@ const Customers = props => {
       button: true,
       width: '60px',
       cell: row => (
-        <a href={`/customers/edit/${row.contractor_id}`}>
+        <a href={`/customers/edit/${row.id}`}>
         <FaPen
           style={{color: 'grey', cursor: 'pointer', transform: 'scale(1.4)'}}
         />
@@ -64,7 +64,7 @@ const Customers = props => {
       cell: row => (
         <FaTimes
             style={{color: '#D83232', cursor: 'pointer', transform: 'scale(1.5)'}}
-            onClick={() => deleteCustomer(row.contractor_id)}
+            onClick={() => deleteCustomer(row.id)}
         />
       )
     },
@@ -90,7 +90,7 @@ const Customers = props => {
     Axios.delete(`http://localhost:3001/customerDelete/${id}`).then((response) => {
       setCustomerList(
         customerList.filter((row) => {
-          return row.contractor_id !== id;
+          return row.id !== id;
         })
       );
     });
