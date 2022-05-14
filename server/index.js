@@ -156,7 +156,7 @@ app.get("/cars", (req, res) => {
 
 //Klient
 app.get("/customers", (req, res) => {
-  client.query("SELECT * FROM customers", (err, result) => {
+  client.query("SELECT c.contractor_id as id, *, CASE WHEN f.nip is not null then 'C' else 'P' END AS type FROM contractors c left join companies f on c.contractor_id= f.contractor_id left join customers k on c.contractor_id= k.contractor_id", (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -166,14 +166,44 @@ app.get("/customers", (req, res) => {
   });
 });
 
+app.get("/customer/:id", (req, res) => {
+  const id = req.params.id;
+  client.query("SELECT * FROM customers WHERE contractor_id = $1", [id], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows[0]);
+    }
+  });
+});
+
 app.post("/customerCreate", (req, res) => {
   const name = req.body.name;
   const surname = req.body.surname;
-  const idnumber = req.body.idnumber;
+  const id_number = req.body.id_number;
 
   client.query(
-    "INSERT INTO customers (name, surname, idnumber) VALUES ($1,$2,$3)",
-    [name, surname, idnumber],
+    "INSERT INTO customers (name, surname, id_number) VALUES ($1,$2,$3)",
+    [name, surname, id_number],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.put("/customerUpdate", (req, res) => {
+  const name = req.body.name;
+  const surname = req.body.surname;
+  const id_number = req.body.id_number;
+  const id = req.body.id;
+
+  client.query(
+    "Update customers set name = $1, surname = $2, id_number = $3 where contractor_id = $4",
+    [name, surname, id_number, id],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -186,7 +216,7 @@ app.post("/customerCreate", (req, res) => {
 
 app.delete("/customerDelete/:id", (req, res) => {
   const id = req.params.id;
-  client.query("DELETE FROM customers WHERE contractor_id = $1", 
+  client.query("DELETE FROM contractors WHERE contractor_id = $1", 
   [id], 
   (err, result) => {
     if (err) {
@@ -195,6 +225,25 @@ app.delete("/customerDelete/:id", (req, res) => {
       res.send(result);
     }
   });
+});
+
+//company
+app.post("/companyCreate", (req, res) => {
+  const nip = req.body.nip;
+  const account_number = req.body.account_number;
+  const email = req.body.email;
+ 
+  client.query(
+    "INSERT INTO companies (nip, account_number, email) VALUES ($1,$2,$3)",
+    [nip, account_number, email],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
 });
 
 app.listen(3001, () => {
