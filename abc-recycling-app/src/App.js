@@ -10,6 +10,8 @@ import Sales from './components/pages/Sales';
 import Customers from './components/pages/Customers';
 import CustomerAdd from './components/pages/CustomerAdd';
 import Purchases from './components/pages/Purchases';
+import Workers from './components/pages/Workers';
+import WorkerAdd from './components/pages/WorkerAdd';
 
 const App = () => {
   return (
@@ -28,6 +30,8 @@ const App = () => {
           <Route path='/customers/add' exact element={<CustomerAdd/>} />
           <Route path='/customers/edit/:id' exact element={<CustomerAdd/>} />
           <Route path='/purchases' exact element={<Purchases/>} />
+          <Route path='/workers' exact element={<Workers/>} />
+          <Route path='/workers/add' exact element={<WorkerAdd/>} />
         </Routes>
       </Router>
     </div>

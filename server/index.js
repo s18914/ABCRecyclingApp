@@ -22,6 +22,7 @@ client.connect(function(err) {
   console.log("Connected!");
 });
 
+//Transport
 app.post("/transportCreate", (req, res) => {
   const date = req.body.date;
   const phone = req.body.phone;
@@ -62,45 +63,15 @@ app.get("/transport/:id", (req, res) => {
   });
 });
 
-app.put("/transportEditPhone", (req, res) => {
-  const id = req.body.id;
-  const phone = req.body.phone;
-  console.log(id);
-  client.query(
-    "UPDATE transports SET phone = $1 WHERE transport_id = $2",
-    [phone, id],
-    (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.send(result);
-      }
-    }
-  );
-});
-
-app.put("/transportEditAddress", (req, res) => {
-  const id = req.body.id;
-  const address = req.body.address;
-  client.query(
-    "UPDATE transports SET address = $1 WHERE transport_id = $2",
-    [address, id],
-    (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.send(result);
-      }
-    }
-  );
-});
-
-app.put("/transportEditDate", (req, res) => {
+app.put("/transportUpdate", (req, res) => {
   const id = req.body.id;
   const date = req.body.date;
+  const phone = req.body.phone;
+  const address = req.body.address;
+
   client.query(
-    "UPDATE transports SET date = $1 WHERE transport_id = $2",
-    [date, id],
+    "Update transports set date = $1, phone = $2, address = $3 where transport_id = $4",
+    [id, date, phone, address],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -110,6 +81,7 @@ app.put("/transportEditDate", (req, res) => {
     }
   );
 });
+
 
 app.delete("/transportDelete/:id", (req, res) => {
   const id = req.params.id;
@@ -258,6 +230,82 @@ app.get("/purchases", (req, res) => {
     } else {
       res.json(result.rows);
       return;
+    }
+  });
+});
+
+
+//Worker
+app.post("/workerCreate", (req, res) => {
+  const worker_id = req.body.worker_id;
+  const name = req.body.name;
+  const surname = req.body.surname;
+  const id_number = req.body.id_number;
+
+  client.query(
+    "INSERT INTO workers (name, surname, id_number) VALUES ($1,$2,$3)",
+    [name, surname, id_number],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.get("/workers", (req, res) => {
+  client.query("SELECT * FROM workers", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows);
+      return;
+    }
+  });
+});
+
+app.get("/worker/:id", (req, res) => {
+  const id = req.params.id;
+  client.query("SELECT * FROM workers WHERE worker_id = $1", [id], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows[0]);
+    }
+  });
+});
+
+app.put("/workerUpdate", (req, res) => {
+  const id = req.body.id;
+  const name = req.body.name;
+  const surname = req.body.surname;
+  const id_number = req.body.id_number;
+
+  client.query(
+    "Update workers set name = $1, surname = $2, id_number = $3 where worker_id = $4",
+    [name, surname, id_number, id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+
+app.delete("/workerDelete/:id", (req, res) => {
+  const id = req.params.id;
+  client.query("DELETE FROM workers WHERE worker_id = $1", 
+  [id], 
+  (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
     }
   });
 });
