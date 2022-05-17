@@ -9,6 +9,7 @@ import LocalizationProvider from "@material-ui/lab/LocalizationProvider";
 import AdapterDateFns from "@material-ui/lab/AdapterDateFns";
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
+import { Lookup } from 'react-rainbow-components';
 
 
 function TransportAdd() {
@@ -49,6 +50,17 @@ function TransportAdd() {
       console.log("success", data.data);
     })
   };
+
+  const options = [
+    {
+        label: 'Paris',
+        description: 'This is an awesome city',
+    },
+    {
+        label: 'New York',
+        description: 'This is an awesome city',
+    }
+  ]
 
   const addCar = (event) => {
     event.preventDefault();
@@ -150,10 +162,17 @@ function TransportAdd() {
           }}>
         </input>
         <label>Wybierz ciężarówkę</label>
-        <select>
-          <option value="Ford 1">ford XYUD825</option>
-          <option value="Ford 2">ford XZUD825</option>
-        </select>
+        <Lookup
+          id="lookup-1"
+          label="Wybierz samochód"
+          //placeholder="Find"
+          options={options}
+          //value={option}
+          //onChange={option => setState({ option })}
+          //onSearch={search}
+          //style={containerStyles}
+          className="rainbow-m-vertical_x-large rainbow-p-horizontal_medium rainbow-m_auto"
+        />;
         <div>
         {/* <Button onClick={handleOpen}>Dodaj nowy adres</Button>
           <Modal

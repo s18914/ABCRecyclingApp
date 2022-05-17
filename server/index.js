@@ -156,7 +156,7 @@ app.get("/cars", (req, res) => {
 
 //Klient
 app.get("/customers", (req, res) => {
-  client.query("SELECT c.contractor_id as id, *, CASE WHEN f.nip is not null then 'C' else 'P' END AS type FROM contractors c left join companies f on c.contractor_id= f.contractor_id left join customers k on c.contractor_id= k.contractor_id", (err, result) => {
+  client.query("SELECT c.contractor_id as id, *, c.name, CASE WHEN f.nip is not null then 'C' else 'P' END AS type FROM contractors c left join companies f on c.contractor_id= f.contractor_id left join customers k on c.contractor_id= k.contractor_id", (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -248,4 +248,16 @@ app.post("/companyCreate", (req, res) => {
 
 app.listen(3001, () => {
   console.log("Your server is running on port 3001");
+});
+
+//Purchase
+app.get("/purchases", (req, res) => {
+  client.query("SELECT * from get_purchases()", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows);
+      return;
+    }
+  });
 });
