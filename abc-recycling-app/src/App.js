@@ -9,6 +9,7 @@ import TransportDetails from './components/pages/TransportDetails';
 import Sales from './components/pages/Sales';
 import Customers from './components/pages/Customers';
 import CustomerAdd from './components/pages/CustomerAdd';
+import Purchases from './components/pages/Purchases';
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
           <Route path='/customers' exact element={<Customers/>} />
           <Route path='/customers/add' exact element={<CustomerAdd/>} />
           <Route path='/customers/edit/:id' exact element={<CustomerAdd/>} />
+          <Route path='/purchases' exact element={<Purchases/>} />
         </Routes>
       </Router>
     </div>

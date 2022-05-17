@@ -16,8 +16,8 @@ const Customers = props => {
       selector: row => row.type,
     },
     {
-      name: 'Imię',
-      width: '100px',
+      name: 'Klient',
+      width: '200px',
       selector: row => row.name,
     },
     {
@@ -80,9 +80,7 @@ const Customers = props => {
 
   const showPersons = () => {
     setCustomerList(
-      customerList.filter((e) => {
-        return e.type === 'P';
-      })
+      customerList.filter(e => e.type === 'P')
     );
   }
 
