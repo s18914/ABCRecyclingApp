@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import DataTable from 'react-data-table-component'
 import { useState } from "react";
 import Axios from "axios";
-import { FaBalanceScale, FaGlasses } from 'react-icons/fa'
+import { FaGlasses } from 'react-icons/fa'
 import { FaTimes } from 'react-icons/fa'
 import { FaPen } from 'react-icons/fa'
 import {AiOutlinePlusSquare} from 'react-icons/ai'
@@ -18,12 +18,18 @@ const Purchases = props => {
     },
     {
       name: 'Kontrahent',
-      width: '180px',
-      selector: row => row.customerName,
+      width: '280px',
+      selector: row => row.name,
     },
     {
         name: 'Cena',
+        width: '100px',
         selector: row => row.price,
+    },
+    {
+      name: 'Transport',
+      width: '180px',
+      selector: row => row.transport_info,
     },
     {
       name: "",
