@@ -168,7 +168,7 @@ app.get("/customers", (req, res) => {
 
 app.get("/customer/:id", (req, res) => {
   const id = req.params.id;
-  client.query("SELECT * FROM customers WHERE contractor_id = $1", [id], (err, result) => {
+  client.query("SELECT c.*, cu.*, co.* FROM contractors c left join customers cu on cu.contractor_id = c.contractor_id left join companies co on co.contractor_id = c.contractor_id where c.contractor_id = $1", [id], (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -229,6 +229,7 @@ app.delete("/customerDelete/:id", (req, res) => {
 
 //company
 app.post("/companyCreate", (req, res) => {
+  const name = req.body.name;
   const nip = req.body.nip;
   const account_number = req.body.account_number;
   const email = req.body.email;
@@ -246,8 +247,24 @@ app.post("/companyCreate", (req, res) => {
   );
 });
 
-app.listen(3001, () => {
-  console.log("Your server is running on port 3001");
+app.put("/companyUpdate", (req, res) => {
+  const name = req.body.name;
+  const nip = req.body.nip;
+  const account_number = req.body.account_number;
+  const email = req.body.email;
+  const id = req.body.id;
+
+  client.query(
+    "Update companies set name = $1, nip = $2, account_number = $3, email = $4 where contractor_id = $5",
+    [name, nip, account_number, email, id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
 });
 
 //Purchase
@@ -272,4 +289,8 @@ app.get("/sales", (req, res) => {
       return;
     }
   });
+});
+
+app.listen(3001, () => {
+  console.log("Your server is running on port 3001");
 });
