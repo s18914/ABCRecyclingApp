@@ -64,10 +64,6 @@ function CustomerAdd() {
     });
   };
 
-  const deleteCustomer =  (id) => {
-    Axios.delete(`http://localhost:3001/customerDelete/${id}`);
-  }
-
   return (
     <div className='main'>
       {isAddMode && 

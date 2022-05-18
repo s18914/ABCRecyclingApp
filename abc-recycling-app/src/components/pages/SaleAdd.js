@@ -3,15 +3,15 @@ import Axios from "axios";
 import { FaCheckCircle} from 'react-icons/fa'
 import { useParams } from "react-router-dom";
 
-function PurchaseAdd() {
+function SaleAdd() {
   
   let { id } = useParams();
   let isAddMode = ({id}.id === undefined ? true : false);
 
   return (
     <div className='main'>
-      {isAddMode &&<h1>Dodaj nowy dokument zakupu</h1>}
-      {!isAddMode && <h1>Edytuj dokument zakupu</h1>}
+      {isAddMode &&<h1>Dodaj nowy dokument sprzedaży</h1>}
+      {!isAddMode && <h1>Edytuj dokument sprzedaży</h1>}
       <form>
         <label>Wybierz klienta</label>
         <input type="text" id="nip" name="nip" placeholder="Kontrahent" 
@@ -23,7 +23,7 @@ function PurchaseAdd() {
         <label>Dodaj transport: </label>
         <input type="text" id="email" name="email" placeholder="E-mail.." >
         </input>
-        <a className='btn-panel' href="/purchases" style={{transform: 'scale(4.0)'}}>
+        <a className='btn-panel' href="/sales" style={{transform: 'scale(4.0)'}}>
             {isAddMode && <FaCheckCircle style={{color: 'green', cursor: 'pointer'}}/>}
             {!isAddMode && <FaCheckCircle  style={{color: 'green', cursor: 'pointer'}}/>}
         </a>
@@ -32,4 +32,4 @@ function PurchaseAdd() {
   )
 }
 
-export default PurchaseAdd
+export default SaleAdd

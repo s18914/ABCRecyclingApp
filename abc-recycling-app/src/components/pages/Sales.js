@@ -18,17 +18,23 @@ const Sales = props => {
     },
     {
       name: 'Kontrahent',
-      width: '180px',
-      selector: row => row.customerName,
+      width: '120px',
+      selector: row => row.name,
     },
     {
         name: 'Cena',
+        width: '100px',
         selector: row => row.price,
     },
     {
-      name: 'Status wysyłki',
+      name: 'Adres',
       width: '180px',
-      selector: row => row.transportAddress,
+      selector: row => row.transport_info,
+    },
+    {
+      name: 'Status wysyłki',
+      width: '120px',
+      selector: row => row.status,
     },
     {
       name: "",

@@ -261,3 +261,15 @@ app.get("/purchases", (req, res) => {
     }
   });
 });
+
+//Sales
+app.get("/sales", (req, res) => {
+  client.query("SELECT * from get_sales()", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows);
+      return;
+    }
+  });
+});
