@@ -5,7 +5,7 @@ import * as FiIcons from 'react-icons/fi';
 
 export const SidebarData = [
   {
-    title: 'Home',
+    title: 'Strona główna',
     path: '/',
     icon: <AiIcons.AiFillHome />,
     cName: 'nav-text'
@@ -44,6 +44,12 @@ export const SidebarData = [
     title: 'Dokumenty',
     path: '/invoices',
     icon: <FaIcons.FaFileAlt />,
+    cName: 'nav-text'
+  },
+  {
+    title: 'Pracownicy',
+    path: '/workers',
+    icon: <AiIcons.AiOutlineUser />,
     cName: 'nav-text'
   }
 ];
