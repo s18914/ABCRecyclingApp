@@ -7,8 +7,11 @@ import { FaPen } from 'react-icons/fa'
 import {AiOutlinePlusSquare} from 'react-icons/ai'
 
 const Customers = props => {
-  let filteredList;
+  
+  const companyBtn = document.getElementById('companyBtn');
+  const personBtn = document.getElementById('personBtn');
   const [customerList, setCustomerList] = useState([]);
+  const [onlyCompanies, setMode] = useState(true);
   const columns =  [
     {
       name: 'Typ',
@@ -71,17 +74,15 @@ const Customers = props => {
   ];
   
   const showCompanies = () => {
-    setCustomerList(
-      customerList.filter((e) => {
-        return e.type === 'C';
-      })
-    );
+    setMode(true);
+    personBtn.style.color = 'grey';
+    companyBtn.style.color = 'green';
   }
 
   const showPersons = () => {
-    setCustomerList(
-      customerList.filter(e => e.type === 'P')
-    );
+    setMode(false);
+    personBtn.style.color = 'green';
+    companyBtn.style.color = 'grey';
   }
 
   const deleteCustomer =  (id) => {
@@ -97,7 +98,9 @@ const Customers = props => {
   useEffect(() => {
     Axios('http://localhost:3001/customers').then(
       response => {
-        setCustomerList(response.data);
+        setCustomerList(
+          onlyCompanies ? response.data.filter(e => e.type === 'C') : response.data.filter(e => e.type === 'P') 
+        );
       }
     )
   });
@@ -106,10 +109,10 @@ const Customers = props => {
     <div className='main'>
       <div className='btn-panel'>
       <div onClick={() => showCompanies()}>
-          <FaBuilding style={{color: 'grey', cursor: 'pointer', transform: 'scale(2.2)', margin: '0 50px'}} />
+          <FaBuilding id='companyBtn' style={{color: 'green', cursor: 'pointer', transform: 'scale(2.2)', margin: '0 50px'}} />
         </div>
         <div onClick={() => showPersons()}>
-          <FaUserAlt style={{color: 'grey', cursor: 'pointer', transform: 'scale(2.2)', margin: '0 50px'}} />
+          <FaUserAlt id='personBtn' style={{color: 'grey', cursor: 'pointer', transform: 'scale(2.2)', margin: '0 50px'}} />
         </div>
       </div>
       <DataTable

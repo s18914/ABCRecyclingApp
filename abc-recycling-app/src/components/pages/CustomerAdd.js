@@ -8,7 +8,6 @@ function CustomerAdd() {
   let { id } = useParams();
   let isAddMode = ({id}.id === undefined ? true : false);
 
-
   const [customer, setCustomer] = useState();
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
@@ -22,6 +21,13 @@ function CustomerAdd() {
     if(!isAddMode) {
       Axios.get(`http://localhost:3001/customer/${id}`).then((response) => {
         setCustomer(response.data);
+        setName(response.data?.name);
+        setSurname(response.data?.surname);
+        setIdNumber(response.data?.id_number);
+        setNip(response.data?.nip);
+        setAccountNumber(response.data?.account_number);
+        setEmail(response.data?.email);
+        console.log(response)
       });
     }
   };
@@ -36,8 +42,8 @@ function CustomerAdd() {
       name: name, 
       surname: surname, 
       id_number: id_number
-    }).then((data) => {
-      console.log("success", data.data);
+    }).then((response) => {
+      console.log("success", response.data);
     })
   };
 
@@ -47,8 +53,8 @@ function CustomerAdd() {
       nip: nip, 
       account_number: account_number, 
       email: email
-    }).then((data) => {
-      console.log("success", data.data);
+    }).then((response) => {
+      console.log("success", response.data);
     })
   };
 
@@ -60,13 +66,22 @@ function CustomerAdd() {
       id_number: id_number,
       id: {id}.id
     }).then((response) => {
-      alert("update");
+      console.log("success", response.data);
     });
   };
 
-  const deleteCustomer =  (id) => {
-    Axios.delete(`http://localhost:3001/customerDelete/${id}`);
-  }
+  const updateCompany = (e) => {
+    e.preventDefault();
+    Axios.put('http://localhost:3001/companyUpdate', {
+      name: name, 
+      nip: nip, 
+      account_number: account_number, 
+      email: email,
+      id: {id}.id
+    }).then((response) => {
+      console.log("success", response.data);
+    });
+  };
 
   return (
     <div className='main'>
@@ -85,13 +100,18 @@ function CustomerAdd() {
           {isAddMode &&<h1>Dodaj nową firmę</h1>}
           {!isAddMode && <h1>Edytuj firmę</h1>}
           <form>
+            <label>Wpisz nazwę</label>
+            <input type="text" id="name" name="name" placeholder="Imię.." defaultValue={customer?.name}
+              onChange={e => setName(e.target.value)}
+              >
+            </input>
             <label>Wpisz numer NIP</label>
             <input type="text" id="nip" name="nip" placeholder="NIP.." defaultValue={customer?.nip}
               onChange={e => setNip(e.target.value)}
               >
             </input>
             <label>Wpisz numer konta</label>
-            <input type="text" id="account_number" name="account_number" placeholder="Nr konta.." defaultValue={customer?.accountNumber} onChange={(event) => {
+            <input type="text" id="account_number" name="account_number" placeholder="Nr konta.." defaultValue={customer?.account_number} onChange={(event) => {
                 setAccountNumber(event.target.value);
               }}>
             </input>
@@ -102,7 +122,7 @@ function CustomerAdd() {
             </input>
             <a className='btn-panel' href="/customers" style={{transform: 'scale(4.0)'}}>
               {isAddMode && <FaCheckCircle onClick={addCompany} style={{color: 'green', cursor: 'pointer'}}/>}
-              {!isAddMode && <FaCheckCircle onClick={updateCustomer} style={{color: 'green', cursor: 'pointer'}}/>}
+              {!isAddMode && <FaCheckCircle onClick={updateCompany} style={{color: 'green', cursor: 'pointer'}}/>}
             </a>
           </form>
         </>
@@ -115,7 +135,6 @@ function CustomerAdd() {
             <label>Wpisz imię</label>
             <input type="text" id="name" name="name" placeholder="Imię.." defaultValue={customer?.name}
               onChange={e => setName(e.target.value)}
-            
               >
             </input>
             <label>Wpisz nazwisko</label>
