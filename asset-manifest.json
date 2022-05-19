@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/react-gh-pages/static/css/main.0be9ee73.css",
-    "main.js": "/react-gh-pages/static/js/main.e0d7c446.js",
-    "static/js/787.70997009.chunk.js": "/react-gh-pages/static/js/787.70997009.chunk.js",
-    "static/media/Poppins-Light.ttf": "/react-gh-pages/static/media/Poppins-Light.f41b63c0bb0963ace821.ttf",
-    "static/media/Poppins-Regular.ttf": "/react-gh-pages/static/media/Poppins-Regular.8081832fc5cfbf634aa6.ttf",
-    "index.html": "/react-gh-pages/index.html",
-    "main.0be9ee73.css.map": "/react-gh-pages/static/css/main.0be9ee73.css.map",
-    "main.e0d7c446.js.map": "/react-gh-pages/static/js/main.e0d7c446.js.map",
-    "787.70997009.chunk.js.map": "/react-gh-pages/static/js/787.70997009.chunk.js.map"
+    "main.css": "/ABCRecyclingApp/static/css/main.f193ea71.css",
+    "main.js": "/ABCRecyclingApp/static/js/main.daec1443.js",
+    "static/js/787.70997009.chunk.js": "/ABCRecyclingApp/static/js/787.70997009.chunk.js",
+    "static/media/Poppins-Light.ttf": "/ABCRecyclingApp/static/media/Poppins-Light.f41b63c0bb0963ace821.ttf",
+    "static/media/Poppins-Regular.ttf": "/ABCRecyclingApp/static/media/Poppins-Regular.8081832fc5cfbf634aa6.ttf",
+    "index.html": "/ABCRecyclingApp/index.html",
+    "main.f193ea71.css.map": "/ABCRecyclingApp/static/css/main.f193ea71.css.map",
+    "main.daec1443.js.map": "/ABCRecyclingApp/static/js/main.daec1443.js.map",
+    "787.70997009.chunk.js.map": "/ABCRecyclingApp/static/js/787.70997009.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.0be9ee73.css",
-    "static/js/main.e0d7c446.js"
+    "static/css/main.f193ea71.css",
+    "static/js/main.daec1443.js"
   ]
 }
