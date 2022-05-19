@@ -1,12 +1,13 @@
 import { useState, useEffect} from "react";
 import Axios from "axios";
 import { FaCheckCircle, FaBuilding, FaUserAlt } from 'react-icons/fa'
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 function CustomerAdd() {
   
   let { id } = useParams();
   let isAddMode = ({id}.id === undefined ? true : false);
+  const navigate = useNavigate();
 
   const [customer, setCustomer] = useState();
   const [name, setName] = useState("");
@@ -27,7 +28,7 @@ function CustomerAdd() {
         setNip(response.data?.nip);
         setAccountNumber(response.data?.account_number);
         setEmail(response.data?.email);
-        console.log(response)
+        if(response.data?.nip === null) {setMode(false)}
       });
     }
   };
@@ -44,17 +45,20 @@ function CustomerAdd() {
       id_number: id_number
     }).then((response) => {
       console.log("success", response.data);
+      navigate("/customers");
     })
   };
 
   const addCompany = (event) => {
     event.preventDefault();
     Axios.post('http://localhost:3001/companyCreate', {
+      name: name,
       nip: nip, 
       account_number: account_number, 
       email: email
     }).then((response) => {
       console.log("success", response.data);
+      navigate("/customers");
     })
   };
 
@@ -67,6 +71,7 @@ function CustomerAdd() {
       id: {id}.id
     }).then((response) => {
       console.log("success", response.data);
+      navigate("/customers");
     });
   };
 
@@ -80,20 +85,40 @@ function CustomerAdd() {
       id: {id}.id
     }).then((response) => {
       console.log("success", response.data);
+      navigate("/customers");
     });
   };
 
   return (
     <div className='main'>
       {isAddMode && 
-        <div className='btn-panel'>
-          <div onClick={() => {setMode(true)}}>
-            <FaBuilding style={{color: 'grey', cursor: 'pointer', transform: 'scale(2.2)', margin: '0 60px'}} />
-          </div>
-          <div onClick={() => {setMode(false)}}>
-            <FaUserAlt style={{color: 'grey', cursor: 'pointer', transform: 'scale(2.2)', margin: '0 60px'}} />
-          </div>
-        </div>
+      <>
+        {isCompany && 
+          <>
+            <div className='btn-panel'>
+              <div onClick={() => {setMode(true)}}>
+                <FaBuilding style={{color: 'green', cursor: 'pointer', transform: 'scale(2.2)', margin: '0 60px'}} />
+              </div>
+              <div onClick={() => {setMode(false)}}>
+                <FaUserAlt style={{color: 'grey', cursor: 'pointer', transform: 'scale(2.2)', margin: '0 60px'}} />
+              </div>
+            </div>
+          </>
+        }
+        {!isCompany && 
+          <>
+            <div className='btn-panel'>
+              <div onClick={() => {setMode(true)}}>
+                <FaBuilding style={{color: 'grey', cursor: 'pointer', transform: 'scale(2.2)', margin: '0 60px'}} />
+              </div>
+              <div onClick={() => {setMode(false)}}>
+                <FaUserAlt style={{color: 'green', cursor: 'pointer', transform: 'scale(2.2)', margin: '0 60px'}} />
+              </div>
+            </div>
+          </>
+        }
+      </>
+        
       }
       {isCompany && 
         <>
@@ -101,7 +126,7 @@ function CustomerAdd() {
           {!isAddMode && <h1>Edytuj firmę</h1>}
           <form>
             <label>Wpisz nazwę</label>
-            <input type="text" id="name" name="name" placeholder="Imię.." defaultValue={customer?.name}
+            <input type="text" id="name" name="name" placeholder="Nazwa.." defaultValue={customer?.name}
               onChange={e => setName(e.target.value)}
               >
             </input>
@@ -120,10 +145,10 @@ function CustomerAdd() {
                 setEmail(event.target.value);
               }}>
             </input>
-            <a className='btn-panel' href="/customers" style={{transform: 'scale(4.0)'}}>
+            <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
               {isAddMode && <FaCheckCircle onClick={addCompany} style={{color: 'green', cursor: 'pointer'}}/>}
-              {!isAddMode && <FaCheckCircle onClick={updateCompany} style={{color: 'green', cursor: 'pointer'}}/>}
-            </a>
+              {!isAddMode && <FaCheckCircle onClick={updateCompany} style={{color: 'green', cursor: 'pointer'}} />}
+            </div>
           </form>
         </>
       }
@@ -147,10 +172,10 @@ function CustomerAdd() {
                 setIdNumber(event.target.value);
               }}>
             </input>
-            <a className='btn-panel' href="/customers" style={{transform: 'scale(4.0)'}}>
+            <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
               {isAddMode && <FaCheckCircle onClick={addCustomer} style={{color: 'green', cursor: 'pointer'}}/>}
               {!isAddMode && <FaCheckCircle onClick={updateCustomer} style={{color: 'green', cursor: 'pointer'}}/>}
-            </a>
+            </div>
           </form>
         </>
       }
