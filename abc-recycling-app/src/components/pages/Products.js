@@ -17,8 +17,12 @@ const Products = props => {
       selector: row => row.product_id,
     },
     {
+      name: 'Nazwa',
+      selector: row => row.name,
+    },
+    {
       name: 'Typ produktu',
-      selector: row => row.address,
+      selector: row => row.type,
     },
     {
       name: 'Cena',
@@ -26,7 +30,7 @@ const Products = props => {
       selector: row => row.price,
     },
     {
-      name: 'waga',
+      name: 'Waga',
       width: '180px',
       selector: row => row.weight,
     },
@@ -88,16 +92,17 @@ const Products = props => {
   return (
     <div className='main'>
       <DataTable
-        title="Lista produktów"
+        title="Stany magazynowe"
         columns={columns}
         data={productsList}
       />
       <div className='btn-panel'>
-        <a href={'/Products/add'}>
+        <a href={'/product/add'}>
           <AiOutlinePlusSquare style={{color: 'grey', cursor: 'pointer', transform: 'scale(5.2)'}} />
         </a>
       </div>
     </div>
   );
 }
+
 export default Products

@@ -19,11 +19,7 @@ function Navbar() {
               <Link to='#' className='menu-bars'>
                 <FaIcons.FaBars onClick={showSidebar} />
               </Link>
-              {/* <h1 class="logo">
-                <a tabindex="2" accesskey="1" href="/">
-                  <img src="logo.png"/>
-                </a> 
-              </h1> */}
+            <img src="logo.png"/>
             </div>
             <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
               <ul className='nav-menu-items' onClick={showSidebar}>

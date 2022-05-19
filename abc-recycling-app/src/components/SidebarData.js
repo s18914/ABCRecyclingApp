@@ -24,7 +24,7 @@ export const SidebarData = [
   },
   {
     title: 'Magazyn',
-    path: '/stocks',
+    path: '/products',
     icon: <FiIcons.FiPackage />,
     cName: 'nav-text'
   },
