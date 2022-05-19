@@ -23,10 +23,10 @@ function PurchaseAdd() {
         <label>Dodaj transport: </label>
         <input type="text" id="email" name="email" placeholder="E-mail.." >
         </input>
-        <a className='btn-panel' href="/purchases" style={{transform: 'scale(4.0)'}}>
+        <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
             {isAddMode && <FaCheckCircle style={{color: 'green', cursor: 'pointer'}}/>}
             {!isAddMode && <FaCheckCircle  style={{color: 'green', cursor: 'pointer'}}/>}
-        </a>
+        </div>
         </form>
     </div>
   )

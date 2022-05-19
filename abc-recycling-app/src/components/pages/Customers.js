@@ -14,11 +14,6 @@ const Customers = props => {
   const [onlyCompanies, setMode] = useState(true);
   const columns =  [
     {
-      name: 'Typ',
-      width: '60px',
-      selector: row => row.type,
-    },
-    {
       name: 'Klient',
       width: '200px',
       selector: row => row.name,
@@ -31,7 +26,7 @@ const Customers = props => {
     {
       name: 'Numer dowodu',
       width: '180px',
-      selector: row => row.idnumber,
+      selector: row => row.id_number,
     },
     {
       name: 'NIP',
