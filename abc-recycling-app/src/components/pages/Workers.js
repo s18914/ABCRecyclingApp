@@ -18,16 +18,17 @@ const Workers = props => {
     },
     {
       name: 'Imię',
+      width: '200px',
       selector: row => row.name,
     },
     {
       name: 'Nazwisko',
-      width: '180px',
+      width: '200px',
       selector: row => row.surname,
     },
     {
       name: 'Numer dowodu',
-      width: '180px',
+      width: '550px',
       selector: row => row.idNumber,
     },
     {

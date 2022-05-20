@@ -14,6 +14,8 @@ import Purchases from './components/pages/Purchases';
 import Workers from './components/pages/Workers';
 import WorkerAdd from './components/pages/WorkerAdd';
 import PurchaseAdd from './components/pages/PurchaseAdd';
+import Products from './components/pages/Products';
+import ProductAdd from './components/pages/ProductAdd';
 
 const App = () => {
   return (
@@ -36,6 +38,8 @@ const App = () => {
           <Route path='/workers' exact element={<Workers/>} />
           <Route path='/workers/add' exact element={<WorkerAdd/>} />
           <Route path='/purchases/add' exact element={<PurchaseAdd/>} />
+          <Route path='/products' exact element={<Products/>} />
+          <Route path='/product/add' exact element={<ProductAdd/>} />
         </Routes>
       </Router>
     </div>

@@ -255,6 +255,14 @@ app.get("/purchases", (req, res) => {
 //Sales
 app.get("/sales", (req, res) => {
   client.query("SELECT * from get_sales()", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows);
+      return;
+    }
+  });
+});
 
 //Worker
 app.post("/workerCreate", (req, res) => {
@@ -328,6 +336,83 @@ app.delete("/workerDelete/:id", (req, res) => {
       res.send(result);
     }
   });
+});
+
+//Product
+app.post("/productCreate", (req, res) => {
+  const product_id = req.body.product_id;
+  const name = req.body.name;
+  const type = req.body.type;
+  const price = req.body.price;
+  const weight = req.body.weight;
+
+  client.query(
+    "INSERT INTO products (name, type, price, weight) VALUES ($1,$2,$3,$4)",
+    [name, type, price, weight],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.get("/products", (req, res) => {
+  client.query("SELECT * FROM products", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows);
+      return;
+    }
+  });
+});
+    
+app.get("/product/:id", (req, res) => {
+  const id = req.params.id;
+  client.query("SELECT * FROM products WHERE product_id = $1", [id], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows[0]);
+    }
+  });
+});
+
+app.put("/productUpdate", (req, res) => {
+  const product_id = req.body.product_id;
+  const name = req.body.name;
+  const type = req.body.type;
+  const price = req.body.price;
+  const weight = req.body.weight;
+
+  client.query(
+    "Update products set name = $1, type = $2, price = $3, weight = $4 where product_id = $4",
+    [name, type, price, weight, product_id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.delete("/productDelete/:id", (req, res) => {
+  const id = req.params.id;
+  client.query("DELETE FROM products WHERE product_id = $1", 
+  [id], 
+  (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
 
 app.listen(3001, () => {
   console.log("Your server is running on port 3001");
