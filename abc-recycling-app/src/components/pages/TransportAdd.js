@@ -164,14 +164,14 @@ function TransportAdd() {
         <label>Wybierz ciężarówkę</label>
         <Lookup
           id="lookup-1"
-          label="Wybierz samochód"
+          //label="Wybierz samochód"
           //placeholder="Find"
           options={options}
           //value={option}
           //onChange={option => setState({ option })}
           //onSearch={search}
           //style={containerStyles}
-          className="rainbow-m-vertical_x-large rainbow-p-horizontal_medium rainbow-m_auto"
+          //className="rainbow-m-vertical_x-large rainbow-p-horizontal_medium rainbow-m_auto"
         />;
         <div>
         {/* <Button onClick={handleOpen}>Dodaj nowy adres</Button>
