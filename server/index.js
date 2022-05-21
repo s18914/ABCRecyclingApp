@@ -264,10 +264,23 @@ app.get("/sales", (req, res) => {
   });
 });
 
-app.get("/saleUpdateStatus/:id", (req, res) => {
-  const id = req.params.id;
-  const status_id = req.params.status_id;
-  client.query("update sales set status_id = $2 WHERE sale_id = $1", [id, status_id], (err, result) => {
+app.put("/saleUpdateStatus", (req, res) => {
+  const id = req.body.id;
+  const status_id = req.body.status_id;
+  if(status_id >= 0 && status_id <=3 ) {
+    client.query("update sales set status_id = $2 WHERE document_id = $1", [id, status_id], (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(result.rows[0]);
+      }
+    });
+  }
+});
+
+app.put("/SaleUpdatePayment", (req, res) => {
+  const id = req.body.id;
+  client.query("update sales set is_paid = 'true' WHERE document_id = $1", [id], (err, result) => {
     if (err) {
       console.log(err);
     } else {
