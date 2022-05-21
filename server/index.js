@@ -264,6 +264,18 @@ app.get("/sales", (req, res) => {
   });
 });
 
+app.get("/saleUpdateStatus/:id", (req, res) => {
+  const id = req.params.id;
+  const status_id = req.params.status_id;
+  client.query("update sales set status_id = $2 WHERE sale_id = $1", [id, status_id], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows[0]);
+    }
+  });
+});
+
 //Worker
 app.post("/workerCreate", (req, res) => {
   const worker_id = req.body.worker_id;
