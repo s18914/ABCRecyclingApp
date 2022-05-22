@@ -12,11 +12,6 @@ const Purchases = props => {
   const [purchaseList, setPurchaseList] = useState([]);
   const columns =  [
     {
-      name: 'Id',
-      width: '60px',
-      selector: row => row.purchase_id,
-    },
-    {
       name: 'Kontrahent',
       width: '280px',
       selector: row => row.name,
@@ -27,21 +22,23 @@ const Purchases = props => {
         selector: row => row.price,
     },
     {
-      name: 'Transport',
-      width: '180px',
-      selector: row => row.transport_info,
-    },
-    {
-      name: "",
-      button: true,
-      width: '60px',
-      cell: row => (
-        <a href={'/purchases/details'}>
-        <FaGlasses
-          style={{color: '#3286DA', cursor: 'pointer', transform: 'scale(1.4)'}}
-        />
-        </a>
-      )
+      name: 'Adres',
+      width: '200px',
+      padding: '0',
+      cell: row => {
+        if (row.transport_info === 'Nieustalony') {
+          return (
+            <div
+              style={{backgroundColor: '#41B53D', color: 'white', cursor: 'pointer', width: '150px', textAlign: 'center', fontWeight: '600', borderRadius: '3px', padding: '0'}}
+              onClick={() => addAddress(row.sales_id)}
+            >+</div>
+          );
+        } else {
+          return (
+            row.status
+          );
+        }
+      },
     },
     {
       name: "",
@@ -76,6 +73,10 @@ const Purchases = props => {
         })
       );
     });
+  };
+
+  const addAddress =  (id) => {
+    return 1;
   };
 
   useEffect(() => {
