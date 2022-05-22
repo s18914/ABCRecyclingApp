@@ -102,8 +102,8 @@ app.post("/carCreate", (req, res) => {
   const overviewDate = req.body.overviewDate;
 
   client.query(
-    "INSERT INTO transports (registrationNumber, overviewDate) VALUES ($1,$2)",
-    [date, phone],
+    "INSERT INTO cars (registration_number, overview_date) VALUES ($1,$2)",
+    [registrationNumber, overviewDate],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -114,6 +114,17 @@ app.post("/carCreate", (req, res) => {
   );
 });
 
+app.get("/car/:id", (req, res) => {
+  const id = req.params.id;
+  client.query("SELECT * FROM cars WHERE car_id = $1", [id], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows[0]);
+    }
+  });
+});
+
 app.get("/cars", (req, res) => {
   client.query("SELECT * FROM cars", (err, result) => {
     if (err) {
@@ -121,6 +132,37 @@ app.get("/cars", (req, res) => {
     } else {
       res.json(result.rows);
       return;
+    }
+  });
+});
+
+app.put("/carUpdate", (req, res) => {
+  const id = req.body.id;
+  const registrationNumber = req.body.registrationNumber;
+  const overviewDate = req.body.overviewDate;
+
+  client.query(
+    "Update cars set registration_number = $1, overview_date = $2 where car_id = $3",
+    [registrationNumber, overviewDate, id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.delete("/carDelete/:id", (req, res) => {
+  const id = req.params.id;
+  client.query("DELETE FROM cars WHERE car_id = $1", 
+  [id], 
+  (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
     }
   });
 });
@@ -272,7 +314,7 @@ app.post("/workerCreate", (req, res) => {
   const id_number = req.body.id_number;
 
   client.query(
-    "INSERT INTO workers (name, surname, id_number) VALUES ($1,$2,$3)",
+    "INSERT INTO workers (worker_name, surname, id_number, role_name) VALUES ($1,$2,$3)",
     [name, surname, id_number],
     (err, result) => {
       if (err) {
@@ -285,7 +327,7 @@ app.post("/workerCreate", (req, res) => {
 });
 
 app.get("/workers", (req, res) => {
-  client.query("SELECT * FROM workers", (err, result) => {
+  client.query("SELECT * FROM get_workers()", (err, result) => {
     if (err) {
       console.log(err);
     } else {

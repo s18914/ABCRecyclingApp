@@ -2,6 +2,8 @@ import React from 'react';
 import { useState } from "react";
 import Axios from "axios";
 import { useParams } from 'react-router';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 
 function WorkerAdd() {
   const [name, setName] = useState("");
@@ -9,6 +11,12 @@ function WorkerAdd() {
   const [idNumber, setIdNumber] = useState("");
 
   const {id} = useParams();
+  let isAddMode = ({id}.id === undefined ? true : false);
+  
+  const options = ['Magazynier', 'Kierowca'];
+  
+  const [value, setValue] = React.useState(options[0]);
+  const [inputValue, setInputValue] = React.useState('');
 
   const addWorker = (event) => {
     event.preventDefault();
@@ -40,6 +48,24 @@ function WorkerAdd() {
                 setIdNumber(event.target.value);
             }}>
             </input>
+            <label>Rola</label>
+            <div>
+            <br />
+            <Autocomplete
+                value={value}
+                onChange={(event, newValue) => {
+                  setValue(newValue);
+                }}
+                inputValue={inputValue}
+                onInputChange={(event, newInputValue) => {
+                    setInputValue(newInputValue);
+                }}
+                id="controllable-states-demo"
+                options={options}
+                sx={{ width: 300 }}
+                renderInput={(params) => <TextField {...params} label="Rola" />}
+            />
+            </div>
         </form>
       <div className='btn-panel'>
         <a href={'/workers'}>
