@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import DataTable from 'react-data-table-component'
 import { useState } from "react";
 import Axios from "axios";
-import { FaGlasses } from 'react-icons/fa'
+import ProductsOfDocument from './ProductsOfDocument';
 import { FaTimes } from 'react-icons/fa'
 import { FaPen } from 'react-icons/fa'
 import {AiOutlinePlusSquare} from 'react-icons/ai'
@@ -10,6 +10,7 @@ import {AiOutlinePlusSquare} from 'react-icons/ai'
 const Purchases = props => {
 
   const [purchaseList, setPurchaseList] = useState([]);
+  const [docId, setDocId] = useState(0);
   const columns =  [
     {
       name: 'Kontrahent',
@@ -99,6 +100,7 @@ const Purchases = props => {
           <AiOutlinePlusSquare style={{color: 'grey', cursor: 'pointer', transform: 'scale(5.2)'}} />
         </a>
       </div>
+      <ProductsOfDocument id={docId}/>
     </div>
   );
 }

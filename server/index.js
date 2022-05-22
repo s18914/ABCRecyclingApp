@@ -364,6 +364,17 @@ app.delete("/workerDelete/:id", (req, res) => {
 });
 
 //Product
+app.get("/documentProducts/:id", (req, res) => {
+  const id = req.params.id;
+  client.query("SELECT * from get_document_products($1)", [id], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows);
+    }
+  });
+});
+
 app.post("/productCreate", (req, res) => {
   const product_id = req.body.product_id;
   const name = req.body.name;

@@ -54,6 +54,8 @@ body .menu-bars {
   margin-left: 2rem;
   font-size: 2rem;
   background: none;
+  padding-top: 10px;
+  margin-left: 40px;
 }
 body .nav-menu.active {
   left: 0;
@@ -110,7 +112,7 @@ body span {
   margin-left: 16px;
 }
 body .main {
-  padding: 8% 8% 3% 250px;
+  padding: 3% 8% 3% 250px;
 }
 body .main .strong-table {
   font-size: large;
@@ -154,6 +156,17 @@ body .main form input, body .main form select {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+}
+body .main .list-of-products {
+  margin-top: 60px;
+  padding: 0;
+}
+body .main .list-of-products ol {
+  display: grid;
+  grid-template-columns: 80% 10% 10%;
+  padding: 5px;
+  margin: 2px 0;
+  background: linear-gradient(90deg, #8bdaff 50%, #ffffff 50%);
 }
 
 /*# sourceMappingURL=style.css.map */
