@@ -28,9 +28,14 @@ const Workers = props => {
     },
     {
       name: 'Numer dowodu',
-      width: '550px',
+      width: '200px',
       selector: row => row.idNumber,
     },
+    // {
+    //   name: 'Rola',
+    //   width: '200px',
+    //   selector: row => row.role,
+    // },
     {
       name: "",
       button: true,
