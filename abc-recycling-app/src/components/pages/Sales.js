@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import DataTable from 'react-data-table-component'
 import { useState } from "react";
 import Axios from "axios";
+import ProductsOfDocument from './ProductsOfDocument';
 import {IoArrowBack, IoArrowForward} from 'react-icons/io5' 
 import {FaTimes, FaPen} from 'react-icons/fa'
 import {AiOutlinePlusSquare, AiFillPlusSquare} from 'react-icons/ai'
@@ -10,6 +11,7 @@ import {GiReceiveMoney} from 'react-icons/gi'
 const Sales = props => {
   
   const [saleList, setSaleList] = useState([]);
+  const [docId, setDocId] = useState(0);
 
   const columns =  [
     {
@@ -163,12 +165,16 @@ const Sales = props => {
         title="Lista sprzedaży"
         columns={columns}
         data={saleList}
+        onRowClicked={(row, event) => {
+          setDocId(row.sales_id);
+        }}
       />
       <div className='btn-panel'>
         <a href={'/sales/add'}>
           <AiOutlinePlusSquare style={{color: 'grey', cursor: 'pointer', transform: 'scale(5.2)'}} />
         </a>
       </div>
+      <ProductsOfDocument id={docId}/>
     </div>
   );
 }

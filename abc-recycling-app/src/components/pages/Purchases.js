@@ -84,6 +84,7 @@ const Purchases = props => {
     Axios('http://localhost:3001/purchases').then(
       response => {
         setPurchaseList(response.data);
+        setDocId(response.data?.document_id);
       }
     )
   });
@@ -94,6 +95,9 @@ const Purchases = props => {
         title="Lista zakupów"
         columns={columns}
         data={purchaseList}
+        onRowClicked={(row, event) => {
+          setDocId(row.purchase_id);
+        }}
       />
       <div className='btn-panel'>
         <a href={'/purchases/add'}>
