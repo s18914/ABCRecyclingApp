@@ -99,9 +99,9 @@ const Purchases = props => {
           setDocId(row.purchase_id);
         }}
       />
-      <div className='btn-panel'>
+      <div className='btn-panel-small'>
         <a href={'/purchases/add'}>
-          <AiOutlinePlusSquare style={{color: 'grey', cursor: 'pointer', transform: 'scale(5.2)'}} />
+          <AiOutlinePlusSquare style={{color: 'grey', cursor: 'pointer', transform: 'scale(2.2)'}} />
         </a>
       </div>
       <ProductsOfDocument id={docId}/>

@@ -169,9 +169,9 @@ const Sales = props => {
           setDocId(row.sales_id);
         }}
       />
-      <div className='btn-panel'>
+      <div className='btn-panel-small'>
         <a href={'/sales/add'}>
-          <AiOutlinePlusSquare style={{color: 'grey', cursor: 'pointer', transform: 'scale(5.2)'}} />
+          <AiOutlinePlusSquare style={{color: 'grey', cursor: 'pointer', transform: 'scale(2.0)'}} />
         </a>
       </div>
       <ProductsOfDocument id={docId}/>
