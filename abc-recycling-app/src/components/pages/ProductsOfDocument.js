@@ -3,8 +3,6 @@ import { useState } from "react";
 import Axios from "axios";
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import {FaPen} from 'react-icons/fa'
 
 function ProductsOfDocument(props) {
@@ -30,7 +28,7 @@ function ProductsOfDocument(props) {
   const countSum = () => {
     let s = 0;
     productList.map((item) => {
-      s = s + parseFloat(item.weight);
+      s = s + parseFloat(item.price);
     })
     return s;
   }
@@ -55,7 +53,7 @@ function ProductsOfDocument(props) {
         let gradient = 'linear-gradient(90deg, #8bdaff '+ num1 + '%, #ffffff ' + num1 + '%)';
 
         return (
-          <ol key={item.weight}>
+          <ol key={item.type_id}>
             <div style={{background: gradient}}>{item.type_name}</div>
             <div>{item.weight}</div>
             <div>{item.price}</div>
@@ -63,25 +61,25 @@ function ProductsOfDocument(props) {
         );
       })}
       </ul>
-      <div className='btn-panel-small'>
-        <FaPen
-          style={{color: 'grey', cursor: 'pointer'}}
-          onClick={handleOpen}
-        />
-      </div>
+      {sum && 
+        <div className='btn-panel-small'>
+          <FaPen
+            style={{color: 'grey', cursor: 'pointer'}}
+            onClick={handleOpen}
+          />
+        </div>
+      } 
       <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="Edycja listy produktów"
-        aria-describedby="modal-modal-description"
       >
         <Box className='modal'>
           <h2>Modyfikuj produkty</h2>
-          <form className='formAddress' onSubmit={console.log('hej')}>
-
+          <form > 
             {productList.map((item) => {
               return (
-                <div className='formRow' id={item.type_Id}>
+                <div className='formRow' key={item.type_id}>
                   <div>{item.type_name}</div>
                   <div>Cena:  {item.price}</div>
                   <div>Waga:  {item.weight}</div>
