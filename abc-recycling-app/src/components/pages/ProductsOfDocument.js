@@ -38,6 +38,31 @@ function ProductsOfDocument(props) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  function updateProducts()  {
+    try {
+      console.log(productList)
+      productList.forEach(prod => {
+        const inputPriceId = 'priceOf' + prod.type_id;
+        const inputWeightId = 'weightOf' + prod.type_id;
+        let weight = document.getElementById(inputWeightId).value;
+        let price = document.getElementById(inputPriceId).value;
+        if (weight === '') weight = 0;
+        if (price === '') price = 0;
+
+        Axios.put('http://localhost:3001/productUpdate', {
+          document_id: props.id,
+          type_id: prod.type_id,
+          price: price,
+          weight: weight
+        }).then((response) => {
+          console.log("success", response.data);
+        });
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
   //
 
   return (
@@ -76,21 +101,25 @@ function ProductsOfDocument(props) {
       >
         <Box className='modal'>
           <h2>Modyfikuj produkty</h2>
-          <form > 
+          <form> 
             {productList.map((item) => {
+              let inputPriceId = 'priceOf' + item.type_id;
+              let inputWeightId = 'weightOf' + item.type_id;
               return (
                 <div className='formRow' key={item.type_id}>
                   <div>{item.type_name}</div>
                   <div>Cena:  {item.price}</div>
+                  <input id={inputPriceId}></input>
                   <div>Waga:  {item.weight}</div>
-                  <input></input>
+                  <input id={inputWeightId}></input>
                 </div>
               );
             })}
-            <button type="submit">
+            
+          </form>
+          <button onClick={updateProducts}>
               Zatwierdź
             </button>
-          </form>
         </Box>
       </Modal>
     </div>
