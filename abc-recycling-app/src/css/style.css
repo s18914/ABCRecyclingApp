@@ -127,19 +127,27 @@ body .modal {
   border: 2px solid grey;
   box-shadow: 15px;
   border-radius: 5px;
-  padding: 10px;
+  padding: 20px;
 }
 body .modal .formRow {
   display: grid;
-  grid-template-columns: 2fr 2fr 2fr 3fr;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr;
-  margin: 5px;
+  margin: 10px;
+}
+body .modal .formRow input {
+  width: 50px;
+}
+body .modal .formRow div {
+  padding: 10px;
 }
 body .modal button {
   margin: 15px;
-  height: 35px;
+  padding: 15px 20px;
   background-color: #205225;
   color: white;
+  border: 1px solid #1c4720;
+  border-radius: 5px;
 }
 body .main {
   padding: 3% 8% 3% 250px;

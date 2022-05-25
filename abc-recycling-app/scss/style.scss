@@ -144,20 +144,31 @@ body {
         border: 2px solid grey;
         box-shadow: 15px;
         border-radius: 5px;
-        padding: 10px;
+        padding: 20px;
 
         .formRow {
             display: grid;
-            grid-template-columns: 2fr 2fr 2fr 3fr;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
             grid-template-rows: 1fr;
-            margin: 5px;
+            margin: 10px;
+
+            input {
+                width: 50px;
+            }
+
+            div {
+                padding: 10px;
+            }
         }
+        
 
         button {
             margin: 15px;
-            height: 35px;
+            padding: 15px 20px;
             background-color: #205225;
             color: white;
+            border: 1px solid #1c4720;
+            border-radius: 5px;
         }
     }
 
