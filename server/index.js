@@ -388,58 +388,15 @@ app.get("/documentProducts/:id", (req, res) => {
   });
 });
 
-app.post("/productCreate", (req, res) => {
-  const product_id = req.body.product_id;
-  const name = req.body.name;
-  const type = req.body.type;
-  const price = req.body.price;
-  const weight = req.body.weight;
-
-  client.query(
-    "INSERT INTO products (name, type, price, weight) VALUES ($1,$2,$3,$4)",
-    [name, type, price, weight],
-    (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.send(result);
-      }
-    }
-  );
-});
-
-app.get("/products", (req, res) => {
-  client.query("SELECT * FROM products", (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(result.rows);
-      return;
-    }
-  });
-});
-    
-app.get("/product/:id", (req, res) => {
-  const id = req.params.id;
-  client.query("SELECT * FROM products WHERE product_id = $1", [id], (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(result.rows[0]);
-    }
-  });
-});
-
 app.put("/productUpdate", (req, res) => {
-  const product_id = req.body.product_id;
-  const name = req.body.name;
-  const type = req.body.type;
+  const document_id = req.body.document_id;
+  const type_id = req.body.type_id;
   const price = req.body.price;
   const weight = req.body.weight;
 
   client.query(
-    "Update products set name = $1, type = $2, price = $3, weight = $4 where product_id = $4",
-    [name, type, price, weight, product_id],
+    "call create_or_update_product($1, $2, $3, $4);",
+    [document_id, type_id, price, weight],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -448,19 +405,6 @@ app.put("/productUpdate", (req, res) => {
       }
     }
   );
-});
-
-app.delete("/productDelete/:id", (req, res) => {
-  const id = req.params.id;
-  client.query("DELETE FROM products WHERE product_id = $1", 
-  [id], 
-  (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send(result);
-    }
-  });
 });
 
 app.listen(3001, () => {
