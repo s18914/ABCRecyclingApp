@@ -74,13 +74,14 @@ const Sales = props => {
           return (
             <GiReceiveMoney
               style={{color: '#41B53D', cursor: 'pointer', transform: 'scale(1.8)'}}
+              onDoubleClick={() => setPayment(row.sales_id, 0)}
             />
           );
         } else {
           return (
             <GiReceiveMoney
               style={{color: 'grey', cursor: 'pointer', transform: 'scale(1.8)'}}
-              onClick={() => setPayment(row.sales_id)}
+              onClick={() => setPayment(row.sales_id, 1)}
             />
           );
         }
@@ -139,9 +140,10 @@ const Sales = props => {
     });
   };
 
-  const setPayment =  (id) => {
+  const setPayment =  (id, val) => {
     Axios.put('http://localhost:3001/SaleUpdatePayment', {
-      id: id
+      id: id,
+      val: val
     }).then((response) => {
       console.log("success", response.data);
     });
@@ -169,9 +171,9 @@ const Sales = props => {
           setDocId(row.sales_id);
         }}
       />
-      <div className='btn-panel'>
+      <div className='btn-panel-small'>
         <a href={'/sales/add'}>
-          <AiOutlinePlusSquare style={{color: 'grey', cursor: 'pointer', transform: 'scale(5.2)'}} />
+          <AiOutlinePlusSquare style={{color: 'grey', cursor: 'pointer', transform: 'scale(2.0)'}} />
         </a>
       </div>
       <ProductsOfDocument id={docId}/>

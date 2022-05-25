@@ -322,13 +322,26 @@ app.put("/saleUpdateStatus", (req, res) => {
 
 app.put("/SaleUpdatePayment", (req, res) => {
   const id = req.body.id;
-  client.query("update sales set is_paid = 'true' WHERE document_id = $1", [id], (err, result) => {
+  const val = req.body.val;
+
+  if(val) {
+    client.query("update sales set is_paid = 'true' WHERE document_id = $1", [id], (err, result) => {
     if (err) {
       console.log(err);
     } else {
       res.json(result.rows[0]);
     }
-  });
+    });
+  } else {
+    client.query("update sales set is_paid = 'false' WHERE document_id = $1", [id], (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(result.rows[0]);
+      }
+      });
+  }
+  
 });
 
 //Worker
