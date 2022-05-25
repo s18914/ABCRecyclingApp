@@ -405,6 +405,19 @@ app.delete("/workerDelete/:id", (req, res) => {
   });
 });
 
+//WorkerRole
+
+app.get("/roles", (req, res) => {
+  client.query("SELECT name FROM roles", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows);
+      return;
+    }
+  });
+});
+
 //Product
 app.get("/documentProducts/:id", (req, res) => {
   const id = req.params.id;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react'
 import { useState } from "react";
 import Axios from "axios";
 import { useParams } from 'react-router';
@@ -9,13 +9,15 @@ function WorkerAdd() {
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [idNumber, setIdNumber] = useState("");
+  const [rolesList, setRolesList] = useState([]);
+  let rolesToSting = rolesList.toString;
+
+  const option = ['Magazynier', 'Kierowca'];
 
   const {id} = useParams();
   let isAddMode = ({id}.id === undefined ? true : false);
-  
-  const options = ['Magazynier', 'Kierowca'];
-  
-  const [value, setValue] = React.useState(options[0]);
+
+  const [value, setValue] = React.useState(rolesList[0]);
   const [inputValue, setInputValue] = React.useState('');
 
   const addWorker = (event) => {
@@ -29,8 +31,16 @@ function WorkerAdd() {
     })
   };
 
+  useEffect(() => {
+    Axios('http://localhost:3001/roles').then(
+      response => {
+        setRolesList(response.data);
+      }
+    )
+  });
+
   return (
-    <div className='main'>
+    <div className='main' onSubmit={console.dir(rolesList)}>
         <h1>Dodaj pracownika</h1>
         <form>
             <label>Imię</label>
@@ -61,7 +71,7 @@ function WorkerAdd() {
                     setInputValue(newInputValue);
                 }}
                 id="controllable-states-demo"
-                options={options}
+                options={option}
                 sx={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} label="Rola" />}
             />

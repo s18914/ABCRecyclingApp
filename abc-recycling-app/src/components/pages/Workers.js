@@ -31,11 +31,11 @@ const Workers = props => {
       width: '200px',
       selector: row => row.idNumber,
     },
-    // {
-    //   name: 'Rola',
-    //   width: '200px',
-    //   selector: row => row.role,
-    // },
+    {
+      name: 'Rola',
+      width: '200px',
+      selector: row => row.roleName,
+    },
     {
       name: "",
       button: true,
