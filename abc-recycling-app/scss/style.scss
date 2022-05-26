@@ -230,7 +230,28 @@ body {
                 border: 1px solid #ccc;
                 border-radius: 4px;
                 box-sizing: border-box;
-              }
+            }
+
+            .main-label {
+                margin-top: 25px;
+            }
+        }
+
+        .formProducts {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+            grid-template-rows: 1fr;
+            margin: 5px;
+            width: 450px;
+            border-top: 1px solid grey;
+
+            input {
+                width: 50px;
+            }
+
+            div {
+                padding: 10px;
+            }
         }
 
         .list-of-products {

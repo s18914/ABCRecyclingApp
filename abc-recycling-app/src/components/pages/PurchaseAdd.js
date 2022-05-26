@@ -2,11 +2,47 @@ import { useState, useEffect} from "react";
 import Axios from "axios";
 import { FaCheckCircle} from 'react-icons/fa'
 import { useParams } from "react-router-dom";
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 
 function PurchaseAdd() {
   
   let { id } = useParams();
   let isAddMode = ({id}.id === undefined ? true : false);
+  const [customersList, setCustomersList] = useState([]);
+  const [transportsList, setTransportsList] = useState([]);
+  const [productList, setProductList] = useState([]);
+
+  useEffect(() => {
+    let id = 1000;
+    if(id !== undefined) {
+      Axios.get(`http://localhost:3001/documentProducts/${id}`).then(
+        response => {
+          setProductList(
+            JSON.parse(JSON.stringify(response.data))
+          );
+        }
+      )
+    }
+  }); 
+
+  const findCustomers = () => {
+    Axios('http://localhost:3001/CompaniesLookup').then(
+      response => {
+        setCustomersList(response.data);
+      }
+    )
+  };
+
+  const findTransports = () => {
+    Axios('http://localhost:3001/TransportsLookup').then(
+      response => {
+        setCustomersList(response.data);
+      }
+    )
+  };
+
+
 
   return (
     <div className='main'>
@@ -14,16 +50,44 @@ function PurchaseAdd() {
       {!isAddMode && <h1>Edytuj dokument zakupu</h1>}
       <form>
         <label>Wybierz klienta</label>
-        <input type="text" id="nip" name="nip" placeholder="Kontrahent" 
-            >
-        </input>
+        <div onClick={findCustomers}>
+          <Autocomplete
+            id="customer-lookup"
+            options={customersList}
+            getOptionLabel={(option) => option.label}
+            sx={{ width: 300 }}
+            renderInput={(params) => <TextField {...params} label="Kontrahent"/>}
+          />
+        </div>
+        <label className="main-label">Wybierz transport: </label>
+          <div onClick={findTransports}>
+            <Autocomplete
+              id="transport-lookup"
+              options={transportsList}
+              getOptionLabel={(option) => option.label}
+              sx={{ width: 300 }}
+              renderInput={(params) => <TextField {...params} label="Transport"/>}
+            />
+          </div>
         {isAddMode && 
-          <label>Dodaj towary:</label> 
+        <>
+          <label className="main-label">Dodaj towary:</label>
+          {productList.map((item) => {
+            let inputPriceId = 'priceOf' + item.type_id;
+            let inputWeightId = 'weightOf' + item.type_id;
+            return (
+              <div className='formProducts' key={item.type_id}>
+                <div>{item.type_name}</div>
+                <div>Masa:</div>
+                <input id={inputWeightId}></input>
+                <div>Cena:</div>
+                <input id={inputPriceId}></input>
+              </div>
+            );
+          })}
+        </>
         }
-        
-        <label>Dodaj transport: </label>
-        <input type="text" id="email" name="email" placeholder="E-mail.." >
-        </input>
+      
         <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
             {isAddMode && <FaCheckCircle style={{color: 'green', cursor: 'pointer'}}/>}
             {!isAddMode && <FaCheckCircle  style={{color: 'green', cursor: 'pointer'}}/>}

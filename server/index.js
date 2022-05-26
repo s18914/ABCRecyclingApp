@@ -96,6 +96,17 @@ app.delete("/transportDelete/:id", (req, res) => {
   });
 });
 
+app.get("/TransportsLookup", (req, res) => {
+  client.query("SELECT * from get_transports_4_lookup()", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows);
+      return;
+    }
+  });
+});
+
 //Car
 app.post("/carCreate", (req, res) => {
   const registrationNumber = req.body.registrationNumber;
@@ -279,6 +290,17 @@ app.put("/companyUpdate", (req, res) => {
       }
     }
   );
+});
+
+app.get("/CompaniesLookup", (req, res) => {
+  client.query("SELECT name as label, contractor_id as id FROM companies", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows);
+      return;
+    }
+  });
 });
 
 //Purchase

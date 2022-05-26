@@ -41,7 +41,6 @@ function ProductsOfDocument(props) {
 
   function updateProducts()  {
     try {
-      console.log(productList)
       productList.forEach(prod => {
         const inputPriceId = 'priceOf' + prod.type_id;
         const inputWeightId = 'weightOf' + prod.type_id;

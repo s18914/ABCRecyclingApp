@@ -195,6 +195,23 @@ body .main form input, body .main form select {
   border-radius: 4px;
   box-sizing: border-box;
 }
+body .main form .main-label {
+  margin-top: 25px;
+}
+body .main .formProducts {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  margin: 5px;
+  width: 450px;
+  border-top: 1px solid grey;
+}
+body .main .formProducts input {
+  width: 50px;
+}
+body .main .formProducts div {
+  padding: 10px;
+}
 body .main .list-of-products {
   margin-top: 60px;
   padding: 0;
