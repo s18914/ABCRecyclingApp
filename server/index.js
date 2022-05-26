@@ -178,6 +178,59 @@ app.delete("/carDelete/:id", (req, res) => {
   });
 });
 
+//Address
+// app.get("/addresses", (req, res) => {
+//   client.query("SELECT street, house_number, flat_number FROM addresses", (err, result) => {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       res.json(result.rows);
+//       return;
+//     }
+//   });
+// });
+
+app.post("/addressCreate", (req, res) => {
+  const street = req.body.street;
+  const houseNumber = req.body.houseNumber;
+  const flatNumber = req.body.flatNumber;
+
+  client.query(
+    "INSERT INTO cars (street, houseNumber, flatNumber) VALUES ($1,$2, $3)",
+    [street, houseNumber, flatNumber],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(result.rows);
+        return;
+      }
+    }
+  );
+});
+
+//ZIPCode
+app.get("/zipCodesForLookup", (req, res) => {
+  client.query("SELECT zip_code as label, zip_code_id as id FROM zip_codes", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows);
+      return;
+    }
+  });
+});
+
+app.get("/zipCodes", (req, res) => {
+  client.query("SELECT zip_code, province, city FROM zip_codes", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows);
+      return;
+    }
+  });
+});
 
 //Klient
 app.get("/customers", (req, res) => {

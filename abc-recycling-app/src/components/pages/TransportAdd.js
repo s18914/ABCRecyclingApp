@@ -23,9 +23,7 @@ function TransportAdd() {
 
   const {id} = useParams();
 
-  const [open, setOpen] = React.useState(false);
-
-  
+  const [open, setOpen] = React.useState(false);  
   const [value, setValue] = React.useState(null);
 
   const handleClickOpen = () => {
@@ -140,24 +138,14 @@ function TransportAdd() {
         </Box>
         </Modal>
         <label>Wybierz datę</label>
-        {/* <input type="text" id="date" name="date" placeholder="Data.."
-          onChange={(event) => {
+        <input type="date" id="date" name="date" 
+        //defaultValue={transport?.date}
+        onChange={(event) => {
             setDate(event.target.value);
-          }}>
-        </input> */}
-        <div className='dataPicker'>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <DesktopDatePicker 
-          label="Data transportu"
-          inputFormat="MM/dd/yyyy"
-          value={value}
-          onChange={handleChange}
-          renderInput={(params) => <TextField {...params} />}
-        />
-        </LocalizationProvider>
-        </div>
+        }}>
+        </input>
         <label>Wpisz telefon odbiorcy</label>
-        <input type="text" id="phone" name="phone" placeholder="Telefon.." onChange={(event) => {
+        <input type="text" id="phone" name="phone" onChange={(event) => {
             setPhone(event.target.value);
           }}>
         </input>
