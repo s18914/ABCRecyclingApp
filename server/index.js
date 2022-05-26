@@ -421,7 +421,7 @@ app.delete("/workerDelete/:id", (req, res) => {
 //WorkerRole
 
 app.get("/roles", (req, res) => {
-  client.query("SELECT name FROM roles", (err, result) => {
+  client.query("SELECT name as label, role_id as id FROM roles", (err, result) => {
     if (err) {
       console.log(err);
     } else {

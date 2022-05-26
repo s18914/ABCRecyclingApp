@@ -10,14 +10,10 @@ function WorkerAdd() {
   const [surname, setSurname] = useState("");
   const [idNumber, setIdNumber] = useState("");
   const [rolesList, setRolesList] = useState([]);
-  let rolesToSting = rolesList.toString;
-
-  const option = ['Magazynier', 'Kierowca'];
 
   const {id} = useParams();
   let isAddMode = ({id}.id === undefined ? true : false);
 
-  const [value, setValue] = React.useState(rolesList[0]);
   const [inputValue, setInputValue] = React.useState('');
 
   const addWorker = (event) => {
@@ -31,16 +27,17 @@ function WorkerAdd() {
     })
   };
 
-  useEffect(() => {
+  const findOptions = () => {
     Axios('http://localhost:3001/roles').then(
       response => {
         setRolesList(response.data);
+        console.log(response.data);
       }
     )
-  });
+  };
 
   return (
-    <div className='main' onSubmit={console.dir(rolesList)}>
+    <div className='main' >
         <h1>Dodaj pracownika</h1>
         <form>
             <label>Imię</label>
@@ -61,20 +58,29 @@ function WorkerAdd() {
             <label>Rola</label>
             <div>
             <br />
-            <Autocomplete
-                value={value}
-                onChange={(event, newValue) => {
-                  setValue(newValue);
-                }}
-                inputValue={inputValue}
-                onInputChange={(event, newInputValue) => {
-                    setInputValue(newInputValue);
-                }}
-                id="controllable-states-demo"
-                options={option}
+            <div onClick={findOptions}>
+              <Autocomplete
+                id="grouped-demo"
+                options={rolesList}
+                getOptionLabel={(option) => option.label}
                 sx={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} label="Rola" />}
-            />
+                // value={value}
+                // onChange={(event, newValue) => {
+                //   setValue(newValue);
+                // }}
+                // inputValue={inputValue}
+                // onInputChange={(event, newInputValue) => {
+                //     setInputValue(newInputValue);
+                // }}
+                // id="controllable-states-demo"
+                // options={option}
+                // sx={{ width: 300 }}
+                // renderInput={(params) => <TextField {...params} label="Rola" />}
+              />
+            </div>
+              
+            
             </div>
         </form>
       <div className='btn-panel'>

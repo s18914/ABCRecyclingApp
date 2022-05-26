@@ -108,10 +108,10 @@ function ProductsOfDocument(props) {
               return (
                 <div className='formRow' key={item.type_id}>
                   <div>{item.type_name}</div>
+                  <div>Masa:  {item.weight}</div>
+                  <input id={inputWeightId}></input>
                   <div>Cena:  {item.price}</div>
                   <input id={inputPriceId}></input>
-                  <div>Waga:  {item.weight}</div>
-                  <input id={inputWeightId}></input>
                 </div>
               );
             })}

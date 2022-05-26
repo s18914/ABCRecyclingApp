@@ -17,9 +17,10 @@ function PurchaseAdd() {
         <input type="text" id="nip" name="nip" placeholder="Kontrahent" 
             >
         </input>
-        <label>Dodaj towary:</label>
-        <input type="text" id="account_number" name="account_number" placeholder="Nr konta..">
-        </input>
+        {isAddMode && 
+          <label>Dodaj towary:</label> 
+        }
+        
         <label>Dodaj transport: </label>
         <input type="text" id="email" name="email" placeholder="E-mail.." >
         </input>
