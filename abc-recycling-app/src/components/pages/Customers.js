@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import DataTable from 'react-data-table-component'
+import {Link} from 'react-router-dom';
 import { useState } from "react";
 import Axios from "../../request";
 import { FaTimes, FaBuilding, FaUserAlt} from 'react-icons/fa'
