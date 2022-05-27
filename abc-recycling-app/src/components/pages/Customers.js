@@ -48,11 +48,11 @@ const Customers = props => {
       button: true,
       width: '60px',
       cell: row => (
-        <a href={`/customers/edit/${row.id}`}>
+        <Link to={`/customers/edit/${row.id}`}>
         <FaPen
           style={{color: 'grey', cursor: 'pointer', transform: 'scale(1.4)'}}
         />
-        </a>
+        </Link>
       )
     },
     {
@@ -116,9 +116,9 @@ const Customers = props => {
         data={customerList}
       />
       <div className='btn-panel'>
-        <a href={'/customers/add'}>
+        <Link to={'/customers/add'}>
           <AiOutlinePlusSquare style={{color: 'grey', cursor: 'pointer', transform: 'scale(5.2)'}} />
-        </a>
+        </Link>
       </div>
     </div>
   );

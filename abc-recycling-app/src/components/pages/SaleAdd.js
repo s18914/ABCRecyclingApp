@@ -1,5 +1,6 @@
 import { useState, useEffect} from "react";
 import Axios from "../../request";
+import {Link} from 'react-router-dom';
 import { FaCheckCircle} from 'react-icons/fa'
 import { useParams } from "react-router-dom";
 
@@ -23,10 +24,10 @@ function SaleAdd() {
         <label>Dodaj transport: </label>
         <input type="text" id="email" name="email" placeholder="E-mail.." >
         </input>
-        <a className='btn-panel' href="/sales" style={{transform: 'scale(4.0)'}}>
+        <Link className='btn-panel' to="/sales" style={{transform: 'scale(4.0)'}}>
             {isAddMode && <FaCheckCircle style={{color: 'green', cursor: 'pointer'}}/>}
             {!isAddMode && <FaCheckCircle  style={{color: 'green', cursor: 'pointer'}}/>}
-        </a>
+        </Link>
         </form>
     </div>
   )

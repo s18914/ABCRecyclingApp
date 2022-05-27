@@ -40,11 +40,11 @@ const Products = props => {
       button: true,
       width: '60px',
       cell: row => (
-        <a href={`/Products/details/${row.product_id}`}>
-        <FaGlasses
-          style={{color: '#3286DA', cursor: 'pointer', transform: 'scale(1.4)'}} 
-        />
-        </a>
+        <Link to={`/Products/details/${row.product_id}`}>
+          <FaGlasses
+            style={{color: '#3286DA', cursor: 'pointer', transform: 'scale(1.4)'}} 
+          />
+        </Link>
       )
     },
     {
@@ -52,11 +52,11 @@ const Products = props => {
       button: true,
       width: '60px',
       cell: row => (
-        <a href={`/Products/edit/${row.product_id}`}>
-        <FaPen
-          style={{color: 'grey', cursor: 'pointer', transform: 'scale(1.4)'}} 
-        />
-        </a>
+        <Link to={`/Products/edit/${row.product_id}`}>
+          <FaPen
+            style={{color: 'grey', cursor: 'pointer', transform: 'scale(1.4)'}} 
+          />
+        </Link>
       )
     },
     {

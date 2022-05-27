@@ -93,11 +93,11 @@ const Sales = props => {
       button: true,
       width: '50px',
       cell: row => (
-        <a href={'/sales/edit'}>
+        <Link to={'/sales/edit'}>
           <FaPen
             style={{color: 'grey', cursor: 'pointer', transform: 'scale(1.4)'}}
           />
-        </a>
+        </Link>
       )
     },
     {

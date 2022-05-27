@@ -47,11 +47,11 @@ const Purchases = props => {
       button: true,
       width: '60px',
       cell: row => (
-        <a href={'/purchase/edit'}>
+        <Link to={'/purchase/edit'}>
         <FaPen
           style={{color: 'grey', cursor: 'pointer', transform: 'scale(1.4)'}}
         />
-        </a>
+        </Link>
       )
     },
     {

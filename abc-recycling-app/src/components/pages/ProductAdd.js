@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from "react";
 import Axios from "../../request";
+import {Link} from 'react-router-dom';
 import { useParams } from 'react-router';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -70,16 +71,16 @@ function ProductAdd() {
             </input>
         </form>
       <div className='btn-panel'>
-        <a href={'/products'}>
+        <Link href={'/products'}>
           <button onClick={addProduct}>
             Zatwierdź
           </button>
-        </a> 
-        <a href={'/products'}>
+        </Link> 
+        <Link to={'/products'}>
           <button>
             Anuluj
           </button>
-        </a> 
+        </Link> 
       </div>
     </div>
   )

@@ -36,12 +36,12 @@ const Transports = props => {
       button: true,
       width: '60px',
       cell: row => (
-        <a href={`/transports/details/${row.transport_id}`}>
+        <Link to={`/transports/details/${row.transport_id}`}>
         <FaGlasses
           style={{color: '#3286DA', cursor: 'pointer', transform: 'scale(1.4)'}} 
           //onClick={() => onShow(task.id)}
         />
-        </a>
+        </Link>
       )
     },
     {
@@ -49,12 +49,12 @@ const Transports = props => {
       button: true,
       width: '60px',
       cell: row => (
-        <a href={`/transports/edit/${row.transport_id}`}>
+        <Link to={`/transports/edit/${row.transport_id}`}>
         <FaPen
           style={{color: 'grey', cursor: 'pointer', transform: 'scale(1.4)'}} 
           //onClick={onEdit(task.id)}
         />
-        </a>
+        </Link>
       )
     },
     {

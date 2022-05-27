@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useState } from "react";
 import Axios from "../../request";
+import {Link} from 'react-router-dom';
 import { useParams } from 'react-router';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -84,16 +85,16 @@ function WorkerAdd() {
             </div>
         </form>
       <div className='btn-panel'>
-        <a href={'/workers'}>
+        <Link to={'/workers'}>
           <button onClick={addWorker}>
             Zatwierdź
           </button>
-        </a> 
-        <a href={'/workers'}>
+        </Link> 
+        <Link to={'/workers'}>
           <button>
             Anuluj
           </button>
-        </a> 
+        </Link> 
       </div>
     </div>
   )

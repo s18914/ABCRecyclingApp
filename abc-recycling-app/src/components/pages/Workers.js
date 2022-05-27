@@ -42,11 +42,11 @@ const Workers = props => {
       button: true,
       width: '60px',
       cell: row => (
-        <a href={`/Workers/details/${row.worker_id}`}>
-        <FaGlasses
-          style={{color: '#3286DA', cursor: 'pointer', transform: 'scale(1.4)'}} 
-        />
-        </a>
+        <Link to={`/Workers/details/${row.worker_id}`}>
+          <FaGlasses
+            style={{color: '#3286DA', cursor: 'pointer', transform: 'scale(1.4)'}} 
+          />
+        </Link>
       )
     },
     {
@@ -54,11 +54,11 @@ const Workers = props => {
       button: true,
       width: '60px',
       cell: row => (
-        <a href={`/Workers/edit/${row.worker_id}`}>
-        <FaPen
-          style={{color: 'grey', cursor: 'pointer', transform: 'scale(1.4)'}} 
-        />
-        </a>
+        <Link to={`/Workers/edit/${row.worker_id}`}>
+          <FaPen
+            style={{color: 'grey', cursor: 'pointer', transform: 'scale(1.4)'}} 
+          />
+        </Link>
       )
     },
     {

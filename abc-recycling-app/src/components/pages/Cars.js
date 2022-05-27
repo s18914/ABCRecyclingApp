@@ -29,11 +29,11 @@ const Cars = props => {
       button: true,
       width: '60px',
       cell: row => (
-        <a href={`/Cars/edit/${row.car_id}`}>
+        <Link to={`/Cars/edit/${row.car_id}`}>
         <FaPen
           style={{color: 'grey', cursor: 'pointer', transform: 'scale(1.4)'}} 
         />
-        </a>
+        </Link>
       )
     },
     {
