@@ -1,5 +1,5 @@
 import { useState, useEffect} from "react";
-import Axios from "axios";
+import Axios from "../../request";
 import { FaCheckCircle} from 'react-icons/fa'
 import { useParams } from "react-router-dom";
 

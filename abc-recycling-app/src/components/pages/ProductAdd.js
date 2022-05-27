@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from "react";
-import Axios from "axios";
+import Axios from "../../request";
 import { useParams } from 'react-router';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -21,7 +21,7 @@ function ProductAdd() {
 
   const addProduct = (event) => {
     event.preventDefault();
-    Axios.post('http://localhost:3001/productCreate', {
+    Axios.post('/productCreate', {
       name: name, 
       type: type, 
       price: price,

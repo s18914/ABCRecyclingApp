@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from "react";
-import Axios from "axios";
+import Axios from "../../request";
 import { useParams } from 'react-router';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -40,7 +40,7 @@ function TransportAdd() {
 
   const addTransport = (event) => {
     event.preventDefault();
-    Axios.post('http://localhost:3001/transportCreate', {
+    Axios.post('/transportCreate', {
       date: date, 
       phone: phone, 
       address: address
@@ -62,7 +62,7 @@ function TransportAdd() {
 
   const addCar = (event) => {
     event.preventDefault();
-    Axios.post('http://localhost:3001/carCreate', {
+    Axios.post('/carCreate', {
       registrationNumber: registrationNumber, 
       overviewDate: overviewDate
     }).then((data) => {

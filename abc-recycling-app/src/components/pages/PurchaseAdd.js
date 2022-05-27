@@ -1,5 +1,5 @@
 import { useState, useEffect} from "react";
-import Axios from "axios";
+import Axios from "../../request";
 import { FaCheckCircle} from 'react-icons/fa'
 import { useParams } from "react-router-dom";
 import Autocomplete from '@mui/material/Autocomplete';
@@ -16,7 +16,7 @@ function PurchaseAdd() {
   useEffect(() => {
     let id = 1000;
     if(id !== undefined) {
-      Axios.get(`http://localhost:3001/documentProducts/${id}`).then(
+      Axios.get(`/documentProducts/${id}`).then(
         response => {
           setProductList(
             JSON.parse(JSON.stringify(response.data))
@@ -27,7 +27,7 @@ function PurchaseAdd() {
   }); 
 
   const findCustomers = () => {
-    Axios('http://localhost:3001/CompaniesLookup').then(
+    Axios('/CompaniesLookup').then(
       response => {
         setCustomersList(response.data);
       }
@@ -35,7 +35,7 @@ function PurchaseAdd() {
   };
 
   const findTransports = () => {
-    Axios('http://localhost:3001/TransportsLookup').then(
+    Axios('/TransportsLookup').then(
       response => {
         setCustomersList(response.data);
       }

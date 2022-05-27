@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import DataTable from 'react-data-table-component'
 import { useState } from "react";
-import Axios from "axios";
+import Axios from "../../request";
 import { FaTimes, FaBuilding, FaUserAlt} from 'react-icons/fa'
 import { FaPen } from 'react-icons/fa'
 import {AiOutlinePlusSquare} from 'react-icons/ai'
@@ -81,7 +81,7 @@ const Customers = props => {
   }
 
   const deleteCustomer =  (id) => {
-    Axios.delete(`http://localhost:3001/customerDelete/${id}`).then((response) => {
+    Axios.delete(`/customerDelete/${id}`).then((response) => {
       setCustomerList(
         customerList.filter((row) => {
           return row.id !== id;
@@ -91,7 +91,7 @@ const Customers = props => {
   };
 
   useEffect(() => {
-    Axios('http://localhost:3001/customers').then(
+    Axios('/customers').then(
       response => {
         setCustomerList(
           onlyCompanies ? response.data.filter(e => e.type === 'C') : response.data.filter(e => e.type === 'P') 

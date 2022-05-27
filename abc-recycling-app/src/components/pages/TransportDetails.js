@@ -1,5 +1,5 @@
 import React from 'react';
-import Axios from "axios";
+import Axios from "../../request";
 import { useState, useEffect } from "react";
 import { useParams } from 'react-router';
 
@@ -9,7 +9,7 @@ function TransportDetails() {
   const {id} = useParams();
 
   const getTransport = (id) => {
-    Axios.get(`http://localhost:3001/transport/${id}`).then((response) => {
+    Axios.get(`/transport/${id}`).then((response) => {
       setTransport(response.data);
       console.log(response.data);
     });

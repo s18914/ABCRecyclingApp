@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import DataTable from 'react-data-table-component'
 import { useState } from "react";
-import Axios from "axios";
+import Axios from "../../request";
 import { FaTimes } from 'react-icons/fa'
 import { FaPen } from 'react-icons/fa'
 import {AiOutlinePlusSquare} from 'react-icons/ai'
@@ -49,7 +49,7 @@ const Cars = props => {
   ];
   
   const deleteCar = (id) => {
-    Axios.delete(`http://localhost:3001/carDelete/${id}`).then((response) => {
+    Axios.delete(`/carDelete/${id}`).then((response) => {
       setCarsList(
         CarsList.filter((row) => {
           return row.car_id !== id;
@@ -59,7 +59,7 @@ const Cars = props => {
   };
 
   useEffect(() => {
-    Axios('http://localhost:3001/Cars').then(
+    Axios('/Cars').then(
       response => {
         setCarsList(response.data);
       }

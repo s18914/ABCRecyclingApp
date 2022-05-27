@@ -1,5 +1,5 @@
 import { useState, useEffect} from "react";
-import Axios from "axios";
+import Axios from "../../request";
 import { FaCheckCircle, FaBuilding, FaUserAlt } from 'react-icons/fa'
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -20,7 +20,7 @@ function CustomerAdd() {
 
   const getCustomer = (id) => {
     if(!isAddMode) {
-      Axios.get(`http://localhost:3001/customer/${id}`).then((response) => {
+      Axios.get(`/customer/${id}`).then((response) => {
         setCustomer(response.data);
         setName(response.data?.name);
         setSurname(response.data?.surname);
@@ -39,7 +39,7 @@ function CustomerAdd() {
   
   const addCustomer = (event) => {
     event.preventDefault();
-    Axios.post('http://localhost:3001/customerCreate', {
+    Axios.post('/customerCreate', {
       name: name, 
       surname: surname, 
       id_number: id_number
@@ -51,7 +51,7 @@ function CustomerAdd() {
 
   const addCompany = (event) => {
     event.preventDefault();
-    Axios.post('http://localhost:3001/companyCreate', {
+    Axios.post('/companyCreate', {
       name: name,
       nip: nip, 
       account_number: account_number, 
@@ -64,7 +64,7 @@ function CustomerAdd() {
 
   const updateCustomer = (e) => {
     e.preventDefault();
-    Axios.put('http://localhost:3001/customerUpdate', {
+    Axios.put('/customerUpdate', {
       name: name, 
       surname: surname,
       id_number: id_number,
@@ -77,7 +77,7 @@ function CustomerAdd() {
 
   const updateCompany = (e) => {
     e.preventDefault();
-    Axios.put('http://localhost:3001/companyUpdate', {
+    Axios.put('/companyUpdate', {
       name: name, 
       nip: nip, 
       account_number: account_number, 

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import DataTable from 'react-data-table-component'
 import { useState } from "react";
-import Axios from "axios";
+import Axios from "../../request";
 import ProductsOfDocument from './ProductsOfDocument';
 import { FaTimes } from 'react-icons/fa'
 import { FaPen } from 'react-icons/fa'
@@ -67,7 +67,7 @@ const Purchases = props => {
   ];
   
   const deletePurchase =  (id) => {
-    Axios.delete(`http://localhost:3001/PurchaseDelete/${id}`).then((response) => {
+    Axios.delete(`/PurchaseDelete/${id}`).then((response) => {
       setPurchaseList(
         purchaseList.filter((row) => {
           return row.purchase_id !== id;
@@ -81,7 +81,7 @@ const Purchases = props => {
   };
 
   useEffect(() => {
-    Axios('http://localhost:3001/purchases').then(
+    Axios('/purchases').then(
       response => {
         setPurchaseList(response.data);
         setDocId(response.data?.document_id);
