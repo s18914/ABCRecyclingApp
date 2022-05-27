@@ -23,7 +23,7 @@ function ProductsOfDocument(props) {
     }
     
     setSum(countSum())
-  }); 
+  }, [props.id]); 
 
   const countSum = () => {
     let s = 0;

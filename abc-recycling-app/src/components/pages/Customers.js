@@ -98,7 +98,7 @@ const Customers = props => {
         );
       }
     )
-  });
+  }, [onlyCompanies]);
 
   return (
     <div className='main'>

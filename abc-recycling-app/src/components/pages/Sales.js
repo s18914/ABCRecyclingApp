@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import DataTable from 'react-data-table-component'
 import { useState } from "react";
 import Axios from "../../request";
+import {Link} from 'react-router-dom';
 import ProductsOfDocument from './ProductsOfDocument';
 import {IoArrowBack, IoArrowForward} from 'react-icons/io5' 
 import {FaTimes, FaPen} from 'react-icons/fa'
@@ -159,7 +160,7 @@ const Sales = props => {
         setSaleList(response.data);
       }
     )
-  });
+  }, [docId]);
 
   return (
     <div className='main'>
@@ -172,9 +173,9 @@ const Sales = props => {
         }}
       />
       <div className='btn-panel-small'>
-        <a href={'/sales/add'}>
+        <Link to={'/sales/add'}>
           <AiOutlinePlusSquare style={{color: 'grey', cursor: 'pointer', transform: 'scale(2.0)'}} />
-        </a>
+        </Link>
       </div>
       <ProductsOfDocument id={docId}/>
     </div>

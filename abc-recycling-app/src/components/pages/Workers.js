@@ -2,7 +2,8 @@ import React, { useEffect } from 'react'
 import DataTable from 'react-data-table-component'
 import { useState } from "react";
 import Axios from "../../request";
-import { FaBalanceScale, FaGlasses } from 'react-icons/fa'
+import { FaGlasses } from 'react-icons/fa'
+import {Link} from 'react-router-dom';
 import { FaTimes } from 'react-icons/fa'
 import { FaPen } from 'react-icons/fa'
 import {AiOutlinePlusSquare} from 'react-icons/ai'
@@ -89,7 +90,7 @@ const Workers = props => {
         setWorkersList(response.data);
       }
     )
-  });
+  }, []);
 
   return (
     <div className='main'>
@@ -99,9 +100,9 @@ const Workers = props => {
         data={workersList}
       />
       <div className='btn-panel'>
-        <a href={'/workers/add'}>
+        <Link to={'/workers/add'}>
           <AiOutlinePlusSquare style={{color: 'grey', cursor: 'pointer', transform: 'scale(5.2)'}} />
-        </a>
+        </Link>
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import DataTable from 'react-data-table-component'
 import { useState } from "react";
 import Axios from "../../request";
+import {Link} from 'react-router-dom';
 import ProductsOfDocument from './ProductsOfDocument';
 import { FaTimes } from 'react-icons/fa'
 import { FaPen } from 'react-icons/fa'
@@ -87,7 +88,7 @@ const Purchases = props => {
         setDocId(response.data?.document_id);
       }
     )
-  });
+  }, [docId]);
 
   return (
     <div className='main'>
@@ -100,9 +101,9 @@ const Purchases = props => {
         }}
       />
       <div className='btn-panel-small'>
-        <a href={'/purchases/add'}>
+        <Link to={'/purchases/add'}>
           <AiOutlinePlusSquare style={{color: 'grey', cursor: 'pointer', transform: 'scale(2.2)'}} />
-        </a>
+        </Link>
       </div>
       <ProductsOfDocument id={docId}/>
     </div>

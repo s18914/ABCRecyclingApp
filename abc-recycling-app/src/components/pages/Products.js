@@ -2,7 +2,8 @@ import React, { useEffect } from 'react'
 import DataTable from 'react-data-table-component'
 import { useState } from "react";
 import Axios from "../../request";
-import { FaBalanceScale, FaGlasses } from 'react-icons/fa'
+import {Link} from 'react-router-dom';
+import { FaGlasses } from 'react-icons/fa'
 import { FaTimes } from 'react-icons/fa'
 import { FaPen } from 'react-icons/fa'
 import {AiOutlinePlusSquare} from 'react-icons/ai'
@@ -87,7 +88,7 @@ const Products = props => {
         setProductsList(response.data);
       }
     )
-  });
+  }, []);
 
   return (
     <div className='main'>
@@ -97,9 +98,9 @@ const Products = props => {
         data={productsList}
       />
       <div className='btn-panel'>
-        <a href={'/product/add'}>
+        <Link to={'/product/add'}>
           <AiOutlinePlusSquare style={{color: 'grey', cursor: 'pointer', transform: 'scale(5.2)'}} />
-        </a>
+        </Link>
       </div>
     </div>
   );
