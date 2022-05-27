@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import DataTable from 'react-data-table-component'
 import { useState } from "react";
-import Axios from "axios";
+import Axios from "../../request";
 import ProductsOfDocument from './ProductsOfDocument';
 import {IoArrowBack, IoArrowForward} from 'react-icons/io5' 
 import {FaTimes, FaPen} from 'react-icons/fa'
@@ -113,7 +113,7 @@ const Sales = props => {
   ];
   
   const deleteSale =  (id) => {
-    Axios.delete(`http://localhost:3001/SaleDelete/${id}`).then((response) => {
+    Axios.delete(`/SaleDelete/${id}`).then((response) => {
       setSaleList(
         saleList.filter((row) => {
           return row.sale_id !== id;
@@ -123,7 +123,7 @@ const Sales = props => {
   };
 
   const nextStatus =  (id, status) => {
-    Axios.put('http://localhost:3001/SaleUpdateStatus', {
+    Axios.put('/SaleUpdateStatus', {
       id: id,
       status_id: ++status
     }).then((response) => {
@@ -132,7 +132,7 @@ const Sales = props => {
   };
 
   const prevStatus =  (id, status) => {
-    Axios.put('http://localhost:3001/SaleUpdateStatus', {
+    Axios.put('/SaleUpdateStatus', {
       id: id,
       status_id: --status
     }).then((response) => {
@@ -141,7 +141,7 @@ const Sales = props => {
   };
 
   const setPayment =  (id, val) => {
-    Axios.put('http://localhost:3001/SaleUpdatePayment', {
+    Axios.put('/SaleUpdatePayment', {
       id: id,
       val: val
     }).then((response) => {
@@ -154,7 +154,7 @@ const Sales = props => {
   };
 
   useEffect(() => {
-    Axios('http://localhost:3001/sales').then(
+    Axios('/sales').then(
       response => {
         setSaleList(response.data);
       }

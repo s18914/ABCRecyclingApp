@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useState } from "react";
-import Axios from "axios";
+import Axios from "../../request";
 import { useParams } from 'react-router';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -18,7 +18,7 @@ function WorkerAdd() {
 
   const addWorker = (event) => {
     event.preventDefault();
-    Axios.post('http://localhost:3001/workerCreate', {
+    Axios.post('/workerCreate', {
       name: name, 
       surname: surname, 
       idNumber: idNumber
@@ -28,7 +28,7 @@ function WorkerAdd() {
   };
 
   const findOptions = () => {
-    Axios('http://localhost:3001/roles').then(
+    Axios('/roles').then(
       response => {
         setRolesList(response.data);
         console.log(response.data);

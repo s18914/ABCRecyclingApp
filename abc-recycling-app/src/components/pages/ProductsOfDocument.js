@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useState } from "react";
-import Axios from "axios";
+import Axios from "../../request";
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import {FaPen} from 'react-icons/fa'
@@ -13,7 +13,7 @@ function ProductsOfDocument(props) {
   useEffect(() => {
     let id = props.id;
     if(id !== undefined) {
-      Axios.get(`http://localhost:3001/documentProducts/${id}`).then(
+      Axios.get(`/documentProducts/${id}`).then(
         response => {
           setProductList(
             JSON.parse(JSON.stringify(response.data))
@@ -49,7 +49,7 @@ function ProductsOfDocument(props) {
         if (weight === '') weight = 0;
         if (price === '') price = 0;
 
-        Axios.put('http://localhost:3001/productUpdate', {
+        Axios.put('/productUpdate', {
           document_id: props.id,
           type_id: prod.type_id,
           price: price,

@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const pg = require("pg");
 const cors = require("cors");
+require('dotenv').config();
 
 app.use(cors());
 app.use(express.json());
@@ -10,13 +11,12 @@ app.use(express.json());
 const { Client } = require('pg')
 
 const client = new Client({
-  user: '35952342_4321',
-  host: 'serwer2293331.home.pl',
-  database: '35952342_4321',
-  password: 'Adminadmin123}',
+  user: process.env.DATABASE_USER,
+  host: process.env.DATABASE_HOST,
+  database: process.env.DATABASE,
+  password: process.env.DATABASE_PASSWORD,
   port: 5432,
 });
-
 client.connect(function(err) {
   if (err) throw err;
   console.log("Connected!");

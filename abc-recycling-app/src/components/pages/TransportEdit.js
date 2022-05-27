@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from "react";
-import Axios from "axios";
+import Axios from "../../request";
 import { useParams } from 'react-router';
 
 function TransportEdit() {
@@ -19,7 +19,7 @@ function TransportEdit() {
   const {id} = useParams();
 
   const getTransport = (id) => {
-    Axios.get(`http://localhost:3001/transport/${id}`).then((response) => {
+    Axios.get(`/transport/${id}`).then((response) => {
       setTransport(response.data);
       console.log(response.data);
     });
@@ -31,7 +31,7 @@ function TransportEdit() {
   }, []);
 
   const updateTransportPhone = (id) => {
-    Axios.put(`http://localhost:3001/transportEditPhone`, {
+    Axios.put(`/transportEditPhone`, {
       phone: newPhone,
       id: id
     }).then((response) => {
@@ -42,7 +42,7 @@ function TransportEdit() {
   };
 
   const updateTransportAddress = (id) => {
-    Axios.put(`http://localhost:3001/transportEditAddress`, {
+    Axios.put(`/transportEditAddress`, {
       address: newAddress,
       id: id
     }).then((response) => {
@@ -53,7 +53,7 @@ function TransportEdit() {
   };
 
   const updateTransportDate = (id) => {
-    Axios.put(`http://localhost:3001/transportEditDate`, {
+    Axios.put(`/transportEditDate`, {
       date: newDate,
       id: id
     }).then((response) => {

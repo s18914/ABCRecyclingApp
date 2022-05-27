@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from "react";
-import Axios from "axios";
+import Axios from "../../request";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaCheckCircle } from 'react-icons/fa'
 
@@ -15,7 +15,7 @@ function CarAdd() {
 
   const getCar = (id) => {
     if(!isAddMode) {
-      Axios.get(`http://localhost:3001/car/${id}`).then((response) => {
+      Axios.get(`/car/${id}`).then((response) => {
         setCar(response.data);
         setRegistrationNumber(response.data?.registrationNumber);
         setOverviewDate(response.data?.overviewDate);
@@ -29,7 +29,7 @@ function CarAdd() {
 
   const addCar = (event) => {
     event.preventDefault();
-    Axios.post('http://localhost:3001/carCreate', {
+    Axios.post('/carCreate', {
       registrationNumber: registrationNumber, 
       overviewDate: overviewDate
     }).then((data) => {
@@ -39,7 +39,7 @@ function CarAdd() {
 
   const updateCar = (e) => {
     e.preventDefault();
-    Axios.put('http://localhost:3001/carUpdate', {
+    Axios.put('/carUpdate', {
       registrationNumber: registrationNumber, 
       overviewDate: overviewDate,
       id: {id}.id

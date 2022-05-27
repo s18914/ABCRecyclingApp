@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import DataTable from 'react-data-table-component'
 import { useState } from "react";
-import Axios from "axios";
+import Axios from "../../request";
 import { FaBalanceScale, FaGlasses } from 'react-icons/fa'
 import { FaTimes } from 'react-icons/fa'
 import { FaPen } from 'react-icons/fa'
@@ -72,7 +72,7 @@ const Products = props => {
   ];
   
   const deleteProduct =  (id) => {
-    Axios.delete(`http://localhost:3001/productDelete/${id}`).then((response) => {
+    Axios.delete(`/productDelete/${id}`).then((response) => {
       setProductsList(
         productsList.filter((row) => {
           return row.product_id !== id;
@@ -82,7 +82,7 @@ const Products = props => {
   };
 
   useEffect(() => {
-    Axios('http://localhost:3001/Products').then(
+    Axios('/Products').then(
       response => {
         setProductsList(response.data);
       }

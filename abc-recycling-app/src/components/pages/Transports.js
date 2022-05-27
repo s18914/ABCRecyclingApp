@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import DataTable from 'react-data-table-component'
 import { useState } from "react";
-import Axios from "axios";
-import { FaBalanceScale, FaGlasses } from 'react-icons/fa'
+import Axios from "../../request";
+import { FaGlasses } from 'react-icons/fa'
 import { FaTimes } from 'react-icons/fa'
 import { FaPen } from 'react-icons/fa'
 import {AiOutlinePlusSquare} from 'react-icons/ai'
@@ -70,7 +70,7 @@ const Transports = props => {
   ];
   
   const deleteTransport =  (id) => {
-    Axios.delete(`http://localhost:3001/transportDelete/${id}`).then((response) => {
+    Axios.delete(`/transportDelete/${id}`).then((response) => {
       setTransportList(
         transportList.filter((row) => {
           console.log(id + " to moje id")
@@ -81,12 +81,12 @@ const Transports = props => {
   };
 
   useEffect(() => {
-    Axios('http://localhost:3001/transports').then(
+    Axios('/transports').then(
       response => {
         setTransportList(response.data);
       }
     )
-  });
+  }, []);
 
   return (
     <div className='main'>
