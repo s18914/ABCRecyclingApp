@@ -3,39 +3,29 @@ import { useState } from "react";
 import Axios from "../../request";
 import { useParams } from 'react-router';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import DesktopDatePicker from "@material-ui/lab/DesktopDatePicker";
-import LocalizationProvider from "@material-ui/lab/LocalizationProvider";
-import AdapterDateFns from "@material-ui/lab/AdapterDateFns";
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import { Lookup } from 'react-rainbow-components';
+import { Link } from 'react-router-dom';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 
 
 function TransportAdd() {
   const [date, setDate] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-
   const [registrationNumber, setRegistrationNumber] = useState("");
   const [overviewDate, setOverviewDate] = useState("");
-  const [carList, setCarList] = useState([]);
+  const [carsList, setCarList] = useState([]);
+  const [workersList, setWorkersList] = useState([]);
 
   const {id} = useParams();
 
   const [open, setOpen] = React.useState(false);  
   const [value, setValue] = React.useState(null);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
   const handleClose = () => {
     setOpen(false);
-  };
-
-  const handleChange = (newValue) => {
-    setValue(newValue);
   };
 
   const addTransport = (event) => {
@@ -49,17 +39,6 @@ function TransportAdd() {
     })
   };
 
-  const options = [
-    {
-        label: 'Paris',
-        description: 'This is an awesome city',
-    },
-    {
-        label: 'New York',
-        description: 'This is an awesome city',
-    }
-  ]
-
   const addCar = (event) => {
     event.preventDefault();
     Axios.post('/carCreate', {
@@ -68,6 +47,24 @@ function TransportAdd() {
     }).then((data) => {
       console.log("success", data.data);
     })
+  };
+
+  const findCars = () => {
+    Axios('/CarsLookup').then(
+      response => {
+        setCarList(response.data);
+        console.log(response.data);
+      }
+    )
+  };
+
+  const findDrivers = () => {
+    Axios('/WorkersLookup').then(
+      response => {
+        setWorkersList(response.data);
+        console.log(response.data);
+      }
+    )
   };
 
   const handleOpen = () => setOpen(true);
@@ -150,47 +147,39 @@ function TransportAdd() {
           }}>
         </input>
         <label>Wybierz ciężarówkę</label>
-        <Lookup
-          id="lookup-1"
-          //label="Wybierz samochód"
-          //placeholder="Find"
-          options={options}
-          //value={option}
-          //onChange={option => setState({ option })}
-          //onSearch={search}
-          //style={containerStyles}
-          //className="rainbow-m-vertical_x-large rainbow-p-horizontal_medium rainbow-m_auto"
-        />;
-        <div>
-        {/* <Button onClick={handleOpen}>Dodaj nowy adres</Button>
-          <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-          <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
-          </Box>
-          </Modal> */}
-    </div>
+        <br />
+        <div onClick={findCars}>
+          <Autocomplete
+            id="grouped-demo"
+            options={carsList}
+            getOptionLabel={(option) => option.label}
+            sx={{ width: 300 }}
+            renderInput={(params) => <TextField {...params} label="Ciężarówka" />}
+          />
+        </div>
+        <label>Wybierz kierowcę</label>
+        <br />
+        <div onClick={findDrivers}>
+          <Autocomplete
+            id="grouped-demo"
+            options={workersList}
+            getOptionLabel={(option) => option.label}
+            sx={{ width: 300 }}
+            renderInput={(params) => <TextField {...params} label="Kierowca" />}
+          />
+        </div>
       </form>
       <div className='btn-panel'>
-        <a href={'/transports'}>
+        <Link to={'/transports'}>
           <button onClick={addTransport}>
             Zatwierdź
           </button>
-        </a> 
-        <a href={'/transports'}>
+        </Link> 
+        <Link to={'/transports'}>
           <button>
             Anuluj
           </button>
-        </a> 
+        </Link>
       </div>
     </div>
   )

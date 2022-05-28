@@ -17,6 +17,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.26.1",
     "date-fns": "^2.28.0",
+    "dotenv": "^16.0.1",
     "express": "^4.17.3",
     "modal": "^1.2.0",
     "mui-date-picker": "^0.1.10",

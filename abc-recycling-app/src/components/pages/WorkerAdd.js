@@ -66,18 +66,6 @@ function WorkerAdd() {
                 getOptionLabel={(option) => option.label}
                 sx={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} label="Rola" />}
-                // value={value}
-                // onChange={(event, newValue) => {
-                //   setValue(newValue);
-                // }}
-                // inputValue={inputValue}
-                // onInputChange={(event, newInputValue) => {
-                //     setInputValue(newInputValue);
-                // }}
-                // id="controllable-states-demo"
-                // options={option}
-                // sx={{ width: 300 }}
-                // renderInput={(params) => <TextField {...params} label="Rola" />}
               />
             </div>
               

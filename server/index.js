@@ -137,7 +137,7 @@ app.get("/car/:id", (req, res) => {
 });
 
 app.get("/cars", (req, res) => {
-  client.query("SELECT * FROM cars", (err, result) => {
+  client.query("SELECT car_id, registration_number, CAST(overview_date, 'YYYY-MM-DD') overview_date FROM cars", (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -174,6 +174,17 @@ app.delete("/carDelete/:id", (req, res) => {
       console.log(err);
     } else {
       res.send(result);
+    }
+  });
+});
+
+app.get("/CarsLookup", (req, res) => {
+  client.query("SELECT * from get_cars_4_lookup()", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows);
+      return;
     }
   });
 });
@@ -489,6 +500,17 @@ app.delete("/workerDelete/:id", (req, res) => {
       console.log(err);
     } else {
       res.send(result);
+    }
+  });
+});
+
+app.get("/WorkersLookup", (req, res) => {
+  client.query("SELECT * from get_workers_4_lookup()", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows);
+      return;
     }
   });
 });
