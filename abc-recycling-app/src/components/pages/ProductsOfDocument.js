@@ -12,6 +12,7 @@ function ProductsOfDocument(props) {
 
   useEffect(() => {
     let id = props.id;
+    console.log("odśwież pod")
     if(id !== undefined) {
       Axios.get(`/documentProducts/${id}`).then(
         response => {
@@ -21,17 +22,17 @@ function ProductsOfDocument(props) {
         }
       )
     }
+
+    const countSum = () => {
+      let s = 0;
+      productList.map((item) => {
+        s = s + parseFloat(item.price);
+      })
+      return s;
+    }
     
     setSum(countSum())
   }, [props.id]); 
-
-  const countSum = () => {
-    let s = 0;
-    productList.map((item) => {
-      s = s + parseFloat(item.price);
-    })
-    return s;
-  }
 
   //modal
   const handleOpen = () => setOpen(true);
@@ -46,8 +47,8 @@ function ProductsOfDocument(props) {
         const inputWeightId = 'weightOf' + prod.type_id;
         let weight = document.getElementById(inputWeightId).value;
         let price = document.getElementById(inputPriceId).value;
-        if (weight === '') weight = 0;
-        if (price === '') price = 0;
+        if (weight === '' || weight === null) weight = 0;
+        if (price === '' || price === null) price = 0;
 
         Axios.put('/productUpdate', {
           document_id: props.id,
@@ -108,9 +109,9 @@ function ProductsOfDocument(props) {
                 <div className='formRow' key={item.type_id}>
                   <div>{item.type_name}</div>
                   <div>Masa:  {item.weight}</div>
-                  <input id={inputWeightId}></input>
+                  <input id={inputWeightId} defaultValue = {item?.weight}></input>
                   <div>Cena:  {item.price}</div>
-                  <input id={inputPriceId}></input>
+                  <input id={inputPriceId} defaultValue = {item?.price}></input>
                 </div>
               );
             })}

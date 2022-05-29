@@ -155,9 +155,11 @@ const Sales = props => {
   };
 
   useEffect(() => {
+    console.log("odśwież sale")
     Axios('/sales').then(
       response => {
         setSaleList(response.data);
+        setDocId(response.data?.document_id);
       }
     )
   }, [docId]);
