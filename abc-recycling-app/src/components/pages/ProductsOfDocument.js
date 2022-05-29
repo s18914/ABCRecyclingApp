@@ -5,13 +5,14 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import {FaPen} from 'react-icons/fa'
 
-function ProductsOfDocument(props) {
+function ProductsOfDocument({stateChanger, ...props}) {
   const [productList, setProductList] = useState([]);
   const [sum, setSum] = useState(0);
   const [open, setOpen] = React.useState(false);
+  const [id, setId] = React.useState(undefined);
 
   useEffect(() => {
-    let id = props.id;
+    if(props.id !== undefined && props !== undefined) setId(props.id)
     if(id !== undefined) {
       Axios.get(`/documentProducts/${id}`).then(
         response => {
@@ -22,40 +23,42 @@ function ProductsOfDocument(props) {
       )
     }
     
+    const countSum = () => {
+      let s = 0;
+      productList.map((item) => {
+        s = s + parseFloat(item.price);
+      })
+      return s;
+    }
+    
     setSum(countSum())
-  }, [props.id]); 
-
-  const countSum = () => {
-    let s = 0;
-    productList.map((item) => {
-      s = s + parseFloat(item.price);
-    })
-    return s;
-  }
+  }, [props]);
 
   //modal
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
-    setOpen(false);
+    setOpen(false)
   };
 
-  function updateProducts()  {
+  function updateProducts() {
     try {
       productList.forEach(prod => {
+        const id = prod.document_id;
         const inputPriceId = 'priceOf' + prod.type_id;
         const inputWeightId = 'weightOf' + prod.type_id;
         let weight = document.getElementById(inputWeightId).value;
         let price = document.getElementById(inputPriceId).value;
-        if (weight === '') weight = 0;
-        if (price === '') price = 0;
+        if (weight === '' || weight === null) weight = 0;
+        if (price === '' || price === null) price = 0;
 
         Axios.put('/productUpdate', {
-          document_id: props.id,
+          document_id: id,
           type_id: prod.type_id,
           price: price,
           weight: weight
         }).then((response) => {
           console.log("success", response.data);
+          handleClose();
         });
       });
     } catch (error) {
@@ -108,13 +111,12 @@ function ProductsOfDocument(props) {
                 <div className='formRow' key={item.type_id}>
                   <div>{item.type_name}</div>
                   <div>Masa:  {item.weight}</div>
-                  <input id={inputWeightId}></input>
+                  <input id={inputWeightId} defaultValue = {item?.weight}></input>
                   <div>Cena:  {item.price}</div>
-                  <input id={inputPriceId}></input>
+                  <input id={inputPriceId} defaultValue = {item?.price}></input>
                 </div>
               );
             })}
-            
           </form>
           <button onClick={updateProducts}>
               Zatwierdź

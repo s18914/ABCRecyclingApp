@@ -93,7 +93,7 @@ const Sales = props => {
       button: true,
       width: '50px',
       cell: row => (
-        <Link to={'/sales/edit'}>
+        <Link to={`/sales/edit/${row.id}`}>
           <FaPen
             style={{color: 'grey', cursor: 'pointer', transform: 'scale(1.4)'}}
           />
@@ -158,6 +158,7 @@ const Sales = props => {
     Axios('/sales').then(
       response => {
         setSaleList(response.data);
+        setDocId(response.data?.document_id);
       }
     )
   }, [docId]);
