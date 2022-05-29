@@ -32,6 +32,7 @@ const App = () => {
           <Route path='/transportDelete/:id'exact element={<Transports/>} />
           <Route path='/sales' exact element={<Sales/>} />
           <Route path='/sales/add' exact element={<SaleAdd/>} />
+          <Route path='/sales/edit/:id' exact element={<SaleAdd/>} />
           <Route path='/customers' exact element={<Customers/>} />
           <Route path='/customers/add' exact element={<CustomerAdd/>} />
           <Route path='/customers/edit/:id' exact element={<CustomerAdd/>} />

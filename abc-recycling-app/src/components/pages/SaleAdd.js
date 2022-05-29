@@ -2,12 +2,40 @@ import { useState, useEffect} from "react";
 import Axios from "../../request";
 import {Link} from 'react-router-dom';
 import { FaCheckCircle} from 'react-icons/fa'
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate  } from "react-router-dom";
 
 function SaleAdd() {
   
   let { id } = useParams();
   let isAddMode = ({id}.id === undefined ? true : false);
+  const navigate = useNavigate();
+  const [docId, setDocId] = useState();
+  const [customersList, setCustomersList] = useState([]);
+  const [contractorId, setContractorId] = useState(0);
+  const [transportId, setTransportId] = useState(0);
+
+  useEffect(() => {
+    if(isAddMode && docId === undefined) {
+      addSale();
+    }
+    else getSale({id}.id);
+  }, [isAddMode]);
+
+  const addSale = () => {
+    Axios.get('/saleInit').then((response) => {
+      setDocId(response.data[0].init_document);
+    })
+  };
+
+  const getSale = (id) => {
+    if(!isAddMode) {
+      Axios.get(`/sale/${id}`).then((response) => {
+        setDocId(response.data?.sale_id)
+        setContractorId(response.data?.contractor_id);
+        setTransportId(response.data?.transport_id);
+      });
+    }
+  };
 
   return (
     <div className='main'>
