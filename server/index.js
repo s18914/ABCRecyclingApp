@@ -68,10 +68,12 @@ app.put("/transportUpdate", (req, res) => {
   const date = req.body.date;
   const phone = req.body.phone;
   const address = req.body.address;
+  const car = req.body.car;
+  const worker = req.body.worker;
 
   client.query(
-    "Update transports set date = $1, phone = $2, address = $3 where transport_id = $4",
-    [id, date, phone, address],
+    "Update transports set date = $1, phone = $2, address_id = $3, car_id = $4, worker_id = $5 where transport_id = $6",
+    [id, date, phone, address, car, worker],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -137,7 +139,7 @@ app.get("/car/:id", (req, res) => {
 });
 
 app.get("/cars", (req, res) => {
-  client.query("SELECT car_id, registration_number, CAST(overview_date, 'YYYY-MM-DD') overview_date FROM cars", (err, result) => {
+  client.query("SELECT car_id, registration_number, to_char(overview_date, 'YYYY-MM-DD') overview_date FROM cars", (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -436,10 +438,11 @@ app.post("/workerCreate", (req, res) => {
   const name = req.body.name;
   const surname = req.body.surname;
   const id_number = req.body.id_number;
+  const role_id = req.body.role_id;
 
   client.query(
-    "INSERT INTO workers (worker_name, surname, id_number, role_name) VALUES ($1,$2,$3)",
-    [name, surname, id_number],
+    "INSERT INTO workers (worker_name, surname, id_number, role_id) VALUES ($1,$2,$3)",
+    [name, surname, id_number, role_id],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -463,7 +466,9 @@ app.get("/workers", (req, res) => {
     
 app.get("/worker/:id", (req, res) => {
   const id = req.params.id;
-  client.query("SELECT * FROM workers WHERE worker_id = $1", [id], (err, result) => {
+  client.query("SELECT * FROM workers WHERE worker_id = $1", 
+  [id],
+  (err, result) => {
     if (err) {
       console.log(err);
     } else {

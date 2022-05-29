@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 import { useState } from "react";
 import Axios from "../../request";
-import {Link} from 'react-router-dom';
 import { useParams } from 'react-router';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import { FaCheckCircle } from 'react-icons/fa'
 
 function WorkerAdd() {
+  const [worker, setWorker] = useState();
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [idNumber, setIdNumber] = useState("");
@@ -15,7 +16,20 @@ function WorkerAdd() {
   const {id} = useParams();
   let isAddMode = ({id}.id === undefined ? true : false);
 
-  const [inputValue, setInputValue] = React.useState('');
+  // const getWorker = (id) => {
+  //   if(!isAddMode) {
+  //     Axios.get(`/worker/${id}`).then((response) => {
+  //       setWorker(response.data);
+  //       setName(response.data?.name);
+  //       setSurname(response.data?.surname);
+  //       setIdNumber(response.data?.idNumber);
+  //     });
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   getWorker({id}.id);
+  // }, []);
 
   const addWorker = (event) => {
     event.preventDefault();
@@ -39,20 +53,24 @@ function WorkerAdd() {
 
   return (
     <div className='main' >
-        <h1>Dodaj pracownika</h1>
+      {isAddMode &&<h1>Dodaj nowego pracownika</h1>}
+      {!isAddMode && <h1>Edytuj pracownika</h1>}
         <form>
             <label>Imię</label>
-            <input type="text" id="name" name="name" onChange={(event) => {
+            <input type="text" id="name" name="name" defaultValue={worker?.name} 
+            onChange={(event) => {
                 setName(event.target.value);
             }}>
             </input>
             <label>Nazwisko</label>
-            <input type="text" id="surname" name="surname" onChange={(event) => {
+            <input type="text" id="surname" name="surname" defaultValue={worker?.surname} 
+            onChange={(event) => {
                 setSurname(event.target.value);
             }}>
             </input>
             <label>Numer dowodu</label>
-            <input type="text" id="idNumber" name="idNumber" onChange={(event) => {
+            <input type="text" id="idNumber" name="idNumber" defaultValue={worker?.idNumber} 
+            onChange={(event) => {
                 setIdNumber(event.target.value);
             }}>
             </input>
@@ -68,22 +86,12 @@ function WorkerAdd() {
                 renderInput={(params) => <TextField {...params} label="Rola" />}
               />
             </div>
-              
-            
             </div>
+          <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
+            {isAddMode && <FaCheckCircle onClick={addWorker} style={{color: 'green', cursor: 'pointer'}}/>}
+            {!isAddMode && <FaCheckCircle style={{color: 'green', cursor: 'pointer'}} />}
+          </div>
         </form>
-      <div className='btn-panel'>
-        <Link to={'/workers'}>
-          <button onClick={addWorker}>
-            Zatwierdź
-          </button>
-        </Link> 
-        <Link to={'/workers'}>
-          <button>
-            Anuluj
-          </button>
-        </Link> 
-      </div>
     </div>
   )
 }

@@ -8,7 +8,8 @@ import { FaPen } from 'react-icons/fa'
 import {AiOutlinePlusSquare} from 'react-icons/ai'
 
 const Cars = props => {
-  const [CarsList, setCarsList] = useState([]);
+
+  const [carsList, setCarsList] = useState([]);
   const columns =  [
     {
       name: 'Id',
@@ -21,7 +22,6 @@ const Cars = props => {
     },
     {
       name: 'Data wazności przeglądu',
-      //selector: row => moment(row.overview_date).format("DD/MM/YYYY"),
       selector: row => row.overview_date,
     },
     {
@@ -29,7 +29,7 @@ const Cars = props => {
       button: true,
       width: '60px',
       cell: row => (
-        <Link to={`/Cars/edit/${row.car_id}`}>
+        <Link to={`/cars/edit/${row.car_id}`}>
         <FaPen
           style={{color: 'grey', cursor: 'pointer', transform: 'scale(1.4)'}} 
         />
@@ -46,13 +46,13 @@ const Cars = props => {
             onClick={() => deleteCar(row.car_id)}
         />
       )
-    },
+    }
   ];
   
   const deleteCar = (id) => {
     Axios.delete(`/carDelete/${id}`).then((response) => {
       setCarsList(
-        CarsList.filter((row) => {
+        carsList.filter((row) => {
           return row.car_id !== id;
         })
       );
@@ -60,7 +60,7 @@ const Cars = props => {
   };
 
   useEffect(() => {
-    Axios('/Cars').then(
+    Axios('/cars').then(
       response => {
         setCarsList(response.data);
       }
@@ -72,10 +72,10 @@ const Cars = props => {
       <DataTable
         title="Lista samochodów"
         columns={columns}
-        data={CarsList}
+        data={carsList}
       />
       <div className='btn-panel'>
-        <Link href={'/cars/add'}>
+        <Link to={'/cars/add'}>
           <AiOutlinePlusSquare style={{color: 'grey', cursor: 'pointer', transform: 'scale(5.2)'}} />
         </Link>
       </div>

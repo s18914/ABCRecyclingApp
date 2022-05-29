@@ -5,12 +5,12 @@ import { useParams } from 'react-router';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import { Link } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-
+import { FaCheckCircle } from 'react-icons/fa'
 
 function TransportAdd() {
+  const [transport, setTransport] = useState();
   const [date, setDate] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
@@ -20,6 +20,7 @@ function TransportAdd() {
   const [workersList, setWorkersList] = useState([]);
 
   const {id} = useParams();
+  let isAddMode = ({id}.id === undefined ? true : false);
 
   const [open, setOpen] = React.useState(false);  
   const [value, setValue] = React.useState(null);
@@ -27,6 +28,10 @@ function TransportAdd() {
   const handleClose = () => {
     setOpen(false);
   };
+  
+  const handleOpen = () => {
+    setOpen(true);
+  }
 
   const addTransport = (event) => {
     event.preventDefault();
@@ -67,28 +72,16 @@ function TransportAdd() {
     )
   };
 
-  const handleOpen = () => setOpen(true);
-
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-  };
-
   return (
     <div className='main'>
-      <h1>Dodaj nowy transport</h1>
+      {isAddMode &&<h1>Dodaj nowy transport</h1>}
+      {!isAddMode && <h1>Edytuj transport</h1>}
       <form>
         <label>Wybierz adres</label>
-        <input type="text" id="address" name="address" placeholder="Adres.." onChange={(event) => {
-            setAddress(event.target.value);
-          }}>
+        <input type="text" id="address" name="address" placeholder="Adres.." defaultValue={transport?.address}
+        onChange={(event) => {
+          setAddress(event.target.value);
+        }}>
         </input>
         <Button onClick={handleOpen}>Dodaj nowy adres</Button>
         <Modal
@@ -97,7 +90,7 @@ function TransportAdd() {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-        <Box sx={style}>
+        <Box class='modal'>
           <form className='formAddress' onSubmit={console.log('hej')}>
           <div className="form-group">
             <label className="labelAddress" htmlFor="street">Ulica</label>
@@ -127,24 +120,21 @@ function TransportAdd() {
           <button className="form-control btn btn-primary" type="submit">
             Dodaj
           </button>
-          <button className="form-control btn btn-primary" type="cancel">
-            Anuluj
-          </button>
           </div>
           </form>
         </Box>
         </Modal>
         <label>Wybierz datę</label>
-        <input type="date" id="date" name="date" 
-        //defaultValue={transport?.date}
+        <input type="date" id="date" name="date" defaultValue={transport?.date}
         onChange={(event) => {
-            setDate(event.target.value);
+          setDate(event.target.value);
         }}>
         </input>
         <label>Wpisz telefon odbiorcy</label>
-        <input type="text" id="phone" name="phone" onChange={(event) => {
-            setPhone(event.target.value);
-          }}>
+        <input type="text" id="phone" name="phone" defaultValue={transport?.phone}
+        onChange={(event) => {
+          setPhone(event.target.value);
+        }}>
         </input>
         <label>Wybierz ciężarówkę</label>
         <br />
@@ -168,19 +158,11 @@ function TransportAdd() {
             renderInput={(params) => <TextField {...params} label="Kierowca" />}
           />
         </div>
+        <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
+          {isAddMode && <FaCheckCircle onClick={addTransport} style={{color: 'green', cursor: 'pointer'}}/>}
+          {!isAddMode && <FaCheckCircle style={{color: 'green', cursor: 'pointer'}} />}
+        </div>
       </form>
-      <div className='btn-panel'>
-        <Link to={'/transports'}>
-          <button onClick={addTransport}>
-            Zatwierdź
-          </button>
-        </Link> 
-        <Link to={'/transports'}>
-          <button>
-            Anuluj
-          </button>
-        </Link>
-      </div>
     </div>
   )
 }
