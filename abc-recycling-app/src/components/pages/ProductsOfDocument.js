@@ -5,14 +5,14 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import {FaPen} from 'react-icons/fa'
 
-function ProductsOfDocument(props) {
+function ProductsOfDocument({stateChanger, ...props}) {
   const [productList, setProductList] = useState([]);
   const [sum, setSum] = useState(0);
   const [open, setOpen] = React.useState(false);
+  const [id, setId] = React.useState(undefined);
 
   useEffect(() => {
-    let id = props.id;
-    console.log("odśwież pod")
+    if(props.id !== undefined && props !== undefined) setId(props.id)
     if(id !== undefined) {
       Axios.get(`/documentProducts/${id}`).then(
         response => {
@@ -22,7 +22,7 @@ function ProductsOfDocument(props) {
         }
       )
     }
-
+    
     const countSum = () => {
       let s = 0;
       productList.map((item) => {
@@ -32,17 +32,18 @@ function ProductsOfDocument(props) {
     }
     
     setSum(countSum())
-  }, [props.id]); 
+  }, [props]);
 
   //modal
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
-    setOpen(false);
+    setOpen(false)
   };
 
-  function updateProducts()  {
+  function updateProducts() {
     try {
       productList.forEach(prod => {
+        const id = prod.document_id;
         const inputPriceId = 'priceOf' + prod.type_id;
         const inputWeightId = 'weightOf' + prod.type_id;
         let weight = document.getElementById(inputWeightId).value;
@@ -51,12 +52,13 @@ function ProductsOfDocument(props) {
         if (price === '' || price === null) price = 0;
 
         Axios.put('/productUpdate', {
-          document_id: props.id,
+          document_id: id,
           type_id: prod.type_id,
           price: price,
           weight: weight
         }).then((response) => {
           console.log("success", response.data);
+          handleClose();
         });
       });
     } catch (error) {
@@ -115,7 +117,6 @@ function ProductsOfDocument(props) {
                 </div>
               );
             })}
-            
           </form>
           <button onClick={updateProducts}>
               Zatwierdź
