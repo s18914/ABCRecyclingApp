@@ -369,7 +369,38 @@ app.get("/purchases", (req, res) => {
 });
 
 
-//Sales
+//Document
+app.get("/documentInit", (req, res) => {
+  client.query("select init_document(null)", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows);
+      return;
+    }
+  });
+});
+
+app.put("/documentUpdate", (req, res) => {
+  const document_id = req.body.document_id;
+  const contractor_Id = req.body.contractor_Id;
+  let transport_Id = req.body.transport_Id;
+  if(transport_Id === undefined) transport_Id = null;
+
+  client.query(
+    "Update purchases set contractor_Id = $1, transport_Id = $2 where document_id = $3",
+    [contractor_Id, transport_Id, document_id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+//Sale
 app.get("/sales", (req, res) => {
   client.query("SELECT * from get_sales()", (err, result) => {
     if (err) {

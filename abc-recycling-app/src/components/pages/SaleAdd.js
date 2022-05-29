@@ -10,35 +10,29 @@ function SaleAdd() {
   let isAddMode = ({id}.id === undefined ? true : false);
   const navigate = useNavigate();
   const [docId, setDocId] = useState();
+  const [customersList, setCustomersList] = useState([]);
   const [contractorId, setContractorId] = useState(0);
-  const [contractor, setContractor] = useState("");
   const [transportId, setTransportId] = useState(0);
-  const [transport, setTransport] = useState("");
 
   useEffect(() => {
-    if(isAddMode) addSale();
+    if(isAddMode && docId === undefined) {
+      addSale();
+    }
     else getSale({id}.id);
-  }, []);
+  }, [isAddMode]);
 
   const addSale = () => {
-    Axios.post('/saleCreate', {
-      contractor_id: 24,
-      price: 0
-    }).then((response) => {
-      console.log("success", response.data);
-      setDocId(response.data?.contratorId);
-      console.log("nowy dokument: " + response.data?.contratorId);
-      navigate("/customers");
+    Axios.get('/saleInit').then((response) => {
+      setDocId(response.data[0].init_document);
     })
   };
 
   const getSale = (id) => {
     if(!isAddMode) {
       Axios.get(`/sale/${id}`).then((response) => {
+        setDocId(response.data?.sale_id)
         setContractorId(response.data?.contractor_id);
-        setContractor(response.data?.name);
         setTransportId(response.data?.transport_id);
-        setTransport(response.data?.transport);
       });
     }
   };
