@@ -30,24 +30,12 @@ const Workers = props => {
     {
       name: 'Numer dowodu',
       width: '200px',
-      selector: row => row.idNumber,
+      selector: row => row.id_number,
     },
     {
       name: 'Rola',
       width: '200px',
-      selector: row => row.roleName,
-    },
-    {
-      name: "",
-      button: true,
-      width: '60px',
-      cell: row => (
-        <Link to={`/Workers/details/${row.worker_id}`}>
-          <FaGlasses
-            style={{color: '#3286DA', cursor: 'pointer', transform: 'scale(1.4)'}} 
-          />
-        </Link>
-      )
+      selector: row => row.role_id,
     },
     {
       name: "",

@@ -129,7 +129,9 @@ app.post("/carCreate", (req, res) => {
 
 app.get("/car/:id", (req, res) => {
   const id = req.params.id;
-  client.query("SELECT * FROM cars WHERE car_id = $1", [id], (err, result) => {
+  client.query("SELECT * FROM cars WHERE car_id = $1", 
+  [id], 
+  (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -500,15 +502,14 @@ app.put("/SaleUpdatePayment", (req, res) => {
 
 //Worker
 app.post("/workerCreate", (req, res) => {
-  const worker_id = req.body.worker_id;
   const name = req.body.name;
   const surname = req.body.surname;
-  const id_number = req.body.id_number;
-  const role_id = req.body.role_id;
+  const idNumber = req.body.idNumber;
+  const roleId = req.body.roleId;
 
   client.query(
-    "INSERT INTO workers (worker_name, surname, id_number, role_id) VALUES ($1,$2,$3)",
-    [name, surname, id_number, role_id],
+    "INSERT INTO workers (name, surname, id_number, role_id) VALUES ($1,$2,$3,$4)",
+    [name, surname, idNumber, roleId],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -520,7 +521,7 @@ app.post("/workerCreate", (req, res) => {
 });
 
 app.get("/workers", (req, res) => {
-  client.query("SELECT * FROM get_workers()", (err, result) => {
+  client.query("SELECT * FROM workers", (err, result) => {
     if (err) {
       console.log(err);
     } else {
