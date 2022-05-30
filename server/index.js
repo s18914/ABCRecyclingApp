@@ -313,8 +313,8 @@ app.post("/companyCreate", (req, res) => {
   const email = req.body.email;
  
   client.query(
-    "INSERT INTO companies (nip, account_number, email) VALUES ($1,$2,$3)",
-    [nip, account_number, email],
+    "INSERT INTO companies (name, nip, account_number, email) VALUES ($1,$2,$3, $4)",
+    [name, nip, account_number, email],
     (err, result) => {
       if (err) {
         console.log(err);

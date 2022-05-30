@@ -96,6 +96,7 @@ const Purchases = props => {
         title="Lista zakupów"
         columns={columns}
         data={purchaseList}
+        noDataComponent='brak rekordów'
         onRowClicked={(row, event) => {
           setDocId(row.purchase_id);
         }}

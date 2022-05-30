@@ -95,6 +95,7 @@ const Transports = props => {
         title="Lista transportów"
         columns={columns}
         data={transportList}
+        noDataComponent='brak rekordów'
       />
       <div className='btn-panel'>
         <Link to={'/transports/add'}>

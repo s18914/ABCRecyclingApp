@@ -98,6 +98,7 @@ const Workers = props => {
         title="Lista pracowników"
         columns={columns}
         data={workersList}
+        noDataComponent='brak rekordów'
       />
       <div className='btn-panel'>
         <Link to={'/workers/add'}>

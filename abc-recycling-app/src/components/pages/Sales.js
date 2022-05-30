@@ -169,6 +169,7 @@ const Sales = props => {
         title="Lista sprzedaży"
         columns={columns}
         data={saleList}
+        noDataComponent='brak rekordów'
         onRowClicked={(row, event) => {
           setDocId(row.sales_id);
         }}

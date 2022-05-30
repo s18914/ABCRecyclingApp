@@ -73,6 +73,7 @@ const Cars = props => {
         title="Lista samochodów"
         columns={columns}
         data={CarsList}
+        noDataComponent='brak rekordów'
       />
       <div className='btn-panel'>
         <Link href={'/cars/add'}>
