@@ -32,7 +32,7 @@ const Purchases = props => {
           return (
             <div
               style={{backgroundColor: '#41B53D', color: 'white', cursor: 'pointer', width: '150px', textAlign: 'center', fontWeight: '600', borderRadius: '3px', padding: '0'}}
-              onClick={() => addAddress(row.sales_id)}
+              onClick={() => addAddress(row.purchase_id)}
             >+</div>
           );
         } else {
@@ -47,7 +47,7 @@ const Purchases = props => {
       button: true,
       width: '60px',
       cell: row => (
-        <Link to={'/purchase/edit'}>
+        <Link to={`/purchases/edit/${row.purchase_id}`}>
         <FaPen
           style={{color: 'grey', cursor: 'pointer', transform: 'scale(1.4)'}}
         />
@@ -68,7 +68,7 @@ const Purchases = props => {
   ];
   
   const deletePurchase =  (id) => {
-    Axios.delete(`/PurchaseDelete/${id}`).then((response) => {
+    Axios.delete(`/documentDelete/${id}`).then((response) => {
       setPurchaseList(
         purchaseList.filter((row) => {
           return row.purchase_id !== id;
@@ -96,6 +96,7 @@ const Purchases = props => {
         title="Lista zakupów"
         columns={columns}
         data={purchaseList}
+        noDataComponent='brak rekordów'
         onRowClicked={(row, event) => {
           setDocId(row.purchase_id);
         }}

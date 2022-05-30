@@ -207,7 +207,7 @@ body .main .formProducts {
   border-top: 1px solid grey;
 }
 body .main .formProducts input {
-  width: 50px;
+  width: 100px;
 }
 body .main .formProducts div {
   padding: 10px;

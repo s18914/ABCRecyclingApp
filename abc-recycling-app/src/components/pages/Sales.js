@@ -93,7 +93,7 @@ const Sales = props => {
       button: true,
       width: '50px',
       cell: row => (
-        <Link to={`/sales/edit/${row.id}`}>
+        <Link to={`/sales/edit/${row.sales_id}`}>
           <FaPen
             style={{color: 'grey', cursor: 'pointer', transform: 'scale(1.4)'}}
           />
@@ -107,17 +107,17 @@ const Sales = props => {
       cell: row => (
         <FaTimes
             style={{color: '#D83232', cursor: 'pointer', transform: 'scale(1.5)'}}
-            onClick={() => deleteSale(row.sale_id)}
+            onClick={() => deleteSale(row.sales_id)}
         />
       )
     },
   ];
   
   const deleteSale =  (id) => {
-    Axios.delete(`/SaleDelete/${id}`).then((response) => {
+    Axios.delete(`/documentDelete/${id}`).then((response) => {
       setSaleList(
         saleList.filter((row) => {
-          return row.sale_id !== id;
+          return row.sales_id !== id;
         })
       );
     });
@@ -169,6 +169,7 @@ const Sales = props => {
         title="Lista sprzedaży"
         columns={columns}
         data={saleList}
+        noDataComponent='brak rekordów'
         onRowClicked={(row, event) => {
           setDocId(row.sales_id);
         }}

@@ -115,6 +115,7 @@ const Customers = props => {
         title="Lista klientów"
         columns={columns}
         data={customerList}
+        noDataComponent='brak rekordów'
       />
       <div className='btn-panel'>
         <Link to={'/customers/add'}>

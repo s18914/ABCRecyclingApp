@@ -96,6 +96,7 @@ const Products = props => {
         title="Stany magazynowe"
         columns={columns}
         data={productsList}
+        noDataComponent='brak rekordów'
       />
       <div className='btn-panel'>
         <Link to={'/product/add'}>
