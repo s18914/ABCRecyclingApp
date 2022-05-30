@@ -15,7 +15,7 @@ function PurchaseAdd() {
   const [transportsList, setTransportsList] = useState([]);
   const [productList, setProductList] = useState([]);
   const [contractorId, setContractorId] = useState(0);
-  const [transportId, setTransportId] = useState(0);
+  const [transportId, setTransportId] = useState(null);
 
   useEffect(() => {
     if(isAddMode && docId === undefined) {
@@ -24,7 +24,7 @@ function PurchaseAdd() {
     else getDocument({id}.id);
 
     if(isAddMode) {
-      Axios.get(`/documentProducts/${docId}`).then(
+      Axios.get('/productTypes').then(
         response => {
           setProductList(
             JSON.parse(JSON.stringify(response.data))
@@ -32,18 +32,18 @@ function PurchaseAdd() {
         }
       )
     }
-  }, [docId]); 
+  }, [docId]);
 
   const addDocument = () => {
-    Axios.get('/documentInit').then((response) => {
-      setDocId(response.data[0].init_document);
+    Axios.get('/purchaseInit').then((response) => {
+      setDocId(response.data[0].init_purchase);
     })
   };
 
   const getDocument = (id) => {
     if(!isAddMode) {
       Axios.get(`/document/${id}`).then((response) => {
-        setDocId(response.data?.sale_id)
+        setDocId(response.data?.document_id);
         setContractorId(response.data?.contractor_id);
         setTransportId(response.data?.transport_id);
       });
@@ -52,12 +52,11 @@ function PurchaseAdd() {
 
   const updateDocument = (e) => {
     e.preventDefault();
-
     if(isAddMode) updateProducts();
 
     Axios.put('/documentUpdate', {
       document_id: docId,
-      contractor_Id: contractorId, 
+      contractor_Id: contractorId,
       transport_Id: transportId,
     }).then((response) => {
       console.log("success", response.data);

@@ -369,9 +369,20 @@ app.get("/purchases", (req, res) => {
 });
 
 
-//Document
-app.get("/documentInit", (req, res) => {
-  client.query("select init_document(null)", (err, result) => {
+//Documents
+app.get("/saleInit", (req, res) => {
+  client.query("select init_sale(0)", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows);
+      return;
+    }
+  });
+});
+
+app.get("/purchaseInit", (req, res) => {
+  client.query("select init_purchase(0)", (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -398,6 +409,30 @@ app.put("/documentUpdate", (req, res) => {
       }
     }
   );
+});
+
+app.get("/document/:id", (req, res) => {
+  const id = req.params.id;
+  client.query("SELECT d.* FROM documents d where d.document_id = $1", [id], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows[0]);
+    }
+  });
+});
+
+app.delete("/documentDelete/:id", (req, res) => {
+  const id = req.params.id;
+  client.query("DELETE FROM documents WHERE document_id = $1", 
+  [id], 
+  (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
 });
 
 //Sale
@@ -541,6 +576,17 @@ app.get("/roles", (req, res) => {
 app.get("/documentProducts/:id", (req, res) => {
   const id = req.params.id;
   client.query("SELECT * from get_document_products($1)", [id], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows);
+    }
+  });
+});
+
+//ProductsType
+app.get("/productTypes", (req, res) => {
+  client.query("SELECT type_id, name, 0 as weight, 0 as price from product_type", (err, result) => {
     if (err) {
       console.log(err);
     } else {
