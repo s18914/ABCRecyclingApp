@@ -34,6 +34,7 @@ function CarAdd() {
       overviewDate: overviewDate
     }).then((data) => {
       console.log("success", data.data);
+      navigate("/cars");
     })
   };
 
@@ -67,8 +68,12 @@ function CarAdd() {
             }}>
             </input>
             <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
-              {isAddMode && <FaCheckCircle onClick={addCar} style={{color: 'green', cursor: 'pointer'}}/>}
-              {!isAddMode && <FaCheckCircle onClick={updateCar} style={{color: 'green', cursor: 'pointer'}} />}
+              {isAddMode && 
+                <FaCheckCircle onClick={addCar} style={{color: 'green', cursor: 'pointer'}}/>
+              }
+              {!isAddMode &&
+                <FaCheckCircle onClick={updateCar} style={{color: 'green', cursor: 'pointer'}} />
+              }
             </div>
         </form>
     </div>
