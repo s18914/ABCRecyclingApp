@@ -1,20 +1,23 @@
 import React, { useEffect } from 'react'
 import { useState } from "react";
 import Axios from "../../request";
-import { useParams } from 'react-router';
+import { useParams, useNavigate } from 'react-router';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { FaCheckCircle } from 'react-icons/fa'
+
 
 function WorkerAdd() {
   const [worker, setWorker] = useState();
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
-  const [idNumber, setIdNumber] = useState("");
+  const [idNumber, setIdNumber] = useState(0);
+  const [roleId, setRoleId] = useState(0);
   const [rolesList, setRolesList] = useState([]);
 
   const {id} = useParams();
   let isAddMode = ({id}.id === undefined ? true : false);
+  const navigate = useNavigate();
 
   // const getWorker = (id) => {
   //   if(!isAddMode) {
@@ -36,9 +39,12 @@ function WorkerAdd() {
     Axios.post('/workerCreate', {
       name: name, 
       surname: surname, 
-      idNumber: idNumber
+      idNumber: idNumber,
+      roleId: roleId
     }).then((data) => {
       console.log("success", data.data);
+      navigate("/workers");
+      console.log(idNumber)
     })
   };
 
@@ -46,7 +52,6 @@ function WorkerAdd() {
     Axios('/roles').then(
       response => {
         setRolesList(response.data);
-        console.log(response.data);
       }
     )
   };
@@ -69,7 +74,7 @@ function WorkerAdd() {
             }}>
             </input>
             <label>Numer dowodu</label>
-            <input type="text" id="idNumber" name="idNumber" defaultValue={worker?.idNumber} 
+            <input type="text" id="id" name="id" defaultValue={worker?.idNumber} 
             onChange={(event) => {
                 setIdNumber(event.target.value);
             }}>
@@ -79,9 +84,15 @@ function WorkerAdd() {
             <br />
             <div onClick={findOptions}>
               <Autocomplete
-                id="grouped-demo"
+                id="rolesLookup"
+                defaultValue={worker?.roleId} 
                 options={rolesList}
+                onChange={(value) => {
+                  setRoleId(value.id);
+                  //console.log(value.id);
+                }}
                 getOptionLabel={(option) => option.label}
+                isOptionEqualToValue={(option, value) => option.id === value.id}
                 sx={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} label="Rola" />}
               />
