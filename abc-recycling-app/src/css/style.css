@@ -143,8 +143,8 @@ body .modal .formRow div {
   padding: 10px;
 }
 body .modal button {
-  margin: 15px;
-  padding: 15px 20px;
+  /* margin: 15px; */
+  /* padding: 15px 20px; */
   background-color: #205225;
   color: white;
   border: 1px solid #1c4720;
@@ -230,6 +230,25 @@ body .main .list-of-products ol {
 }
 body .main .list-of-products ol div {
   margin-left: 5px;
+}
+body .icon {
+  color: green;
+  cursor: pointer;
+  height: 30px;
+  width: 30px;
+  margin: 10px;
+  vertical-align: middle;
+}
+body .modal input {
+  margin: 10px;
+  padding: 5px;
+}
+body .modal div {
+  padding: 0px !important;
+}
+body .modal div .autocomplete {
+  margin: 5px;
+  padding: 5px;
 }
 
 /*# sourceMappingURL=style.css.map */
