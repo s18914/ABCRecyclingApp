@@ -24,7 +24,7 @@ export const SidebarData = [
   },
   {
     title: 'Magazyn',
-    path: '/products',
+    path: '/stock',
     icon: <FiIcons.FiPackage />,
     cName: 'nav-text'
   },
@@ -38,12 +38,6 @@ export const SidebarData = [
     title: 'Kupno',
     path: '/purchases',
     icon: <FaIcons.FaShoppingBasket />,
-    cName: 'nav-text'
-  },
-  {
-    title: 'Dokumenty',
-    path: '/invoices',
-    icon: <FaIcons.FaFileAlt />,
     cName: 'nav-text'
   },
   {
