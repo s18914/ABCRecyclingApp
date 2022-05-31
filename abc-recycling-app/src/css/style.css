@@ -250,5 +250,8 @@ body .modal div .autocomplete {
   margin: 5px;
   padding: 5px;
 }
-
+body .modal div .lookup {
+  display: inline-block;
+  margin: 10px;
+}
 /*# sourceMappingURL=style.css.map */

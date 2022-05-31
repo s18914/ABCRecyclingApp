@@ -80,7 +80,7 @@ function TransportAdd() {
   const findZipCodes = () => {
     Axios('/ZipCodesLookup').then(
       response => {
-        setWorkersList(response.data);
+        setZipCodesList(response.data);
         console.log(response.data);
       }
     )
@@ -115,6 +115,7 @@ function TransportAdd() {
           aria-describedby="modal-modal-description"
         >
         <Box className='modal'>
+          <h2>Nowy adres</h2>
           <form>
           <div>
             <label htmlFor="street">Ulica:</label>
@@ -126,22 +127,22 @@ function TransportAdd() {
           </div> 
           <div>
             <label htmlFor="houseNumber">Numer Domu:</label>
-            <input type="integer" id="houseNumber" name="houseNumber" 
+            <input type="number" id="houseNumber" name="houseNumber" 
             onChange={(event) => {
               setHouseNumber(event.target.value);
             }}>
             </input>
           </div>
           <div>
-            <label htmlFor="flat_number">Numer Lokalu:</label>
-            <input type="integer" id="houseNumber" name="houseNumber" 
+            <label htmlFor="flatNumber">Numer Lokalu:</label>
+            <input type="number" id="houseNumber" name="houseNumber" 
             onChange={(event) => {
               setFlatNumber(event.target.value);
             }}>
             </input>
           </div>
           <div>
-            <label htmlFor="zipCode">Kod pocztowy:</label>
+            <label htmlFor="zipCode" style={{display: 'inline-block'}}>Kod pocztowy:</label>
           <div style={{verticalAlign: 'middle', marginTop: '10px'}} onClick={findZipCodes}>
             <Autocomplete
               id="zipCodesLookup"
@@ -149,6 +150,7 @@ function TransportAdd() {
               onChange={(newValue) => {
                 setZipCodeId(newValue.id);
               }}
+              sx={{ width: 200, padding: 0 }}
               getOptionLabel={(option) => option.label}
               renderInput={(params) => <TextField {...params} label="Kod pocztowy" />}
             />
