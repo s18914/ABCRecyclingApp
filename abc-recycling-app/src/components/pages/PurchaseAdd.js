@@ -52,7 +52,6 @@ function PurchaseAdd() {
 
   const updateDocument = (e) => {
     e.preventDefault();
-    if(isAddMode) updateProducts();
 
     Axios.put('/documentUpdate', {
       document_id: docId,
@@ -62,6 +61,8 @@ function PurchaseAdd() {
       console.log("success", response.data);
       navigate("/purchases");
     });
+
+    if(isAddMode) updateProducts();
   };
 
   const findCustomers = () => {
@@ -140,7 +141,7 @@ function PurchaseAdd() {
             let inputWeightId = 'weightOf' + item.type_id;
             return (
               <div className='formProducts' key={item.type_id}>
-                <div>{item.type_name}</div>
+                <div>{item.name}</div>
                 <div>Masa:</div>
                 <input id={inputWeightId}></input>
                 <div>Cena:</div>

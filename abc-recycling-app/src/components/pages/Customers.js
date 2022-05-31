@@ -13,6 +13,10 @@ const Customers = props => {
   const personBtn = document.getElementById('personBtn');
   const [customerList, setCustomerList] = useState([]);
   const [onlyCompanies, setMode] = useState(true);
+  const paginationComponentOptions = {
+    rowsPerPageText: 'Rekordów na stronie',
+    rangeSeparatorText: 'z',
+  };
   const columns =  [
     {
       name: 'Klient',
@@ -72,13 +76,17 @@ const Customers = props => {
   const showCompanies = () => {
     setMode(true);
     personBtn.style.color = 'grey';
+    personBtn.style.border = 'none';
     companyBtn.style.color = 'green';
+    companyBtn.style.border = '2px solid green';
   }
 
   const showPersons = () => {
     setMode(false);
     personBtn.style.color = 'green';
+    personBtn.style.border = '2px solid green';
     companyBtn.style.color = 'grey';
+    companyBtn.style.border = 'none';
   }
 
   const deleteCustomer =  (id) => {
@@ -105,10 +113,10 @@ const Customers = props => {
     <div className='main'>
       <div className='btn-panel'>
       <div onClick={() => showCompanies()}>
-          <FaBuilding id='companyBtn' style={{color: 'green', cursor: 'pointer', transform: 'scale(2.2)', margin: '0 50px'}} />
+          <FaBuilding id='companyBtn' style={{color: 'green', border: '2px solid green', cursor: 'pointer', transform: 'scale(2.2)', margin: '0 50px', padding: '2px'}} />
         </div>
         <div onClick={() => showPersons()}>
-          <FaUserAlt id='personBtn' style={{color: 'grey', cursor: 'pointer', transform: 'scale(2.2)', margin: '0 50px'}} />
+          <FaUserAlt id='personBtn' style={{color: 'grey', cursor: 'pointer', transform: 'scale(2.2)', margin: '0 50px', padding: '2px'}} />
         </div>
       </div>
       <DataTable
@@ -116,10 +124,12 @@ const Customers = props => {
         columns={columns}
         data={customerList}
         noDataComponent='brak rekordów'
+        pagination
+        paginationComponentOptions={paginationComponentOptions}
       />
-      <div className='btn-panel'>
+      <div className='btn-panel-small'>
         <Link to={'/customers/add'}>
-          <AiOutlinePlusSquare style={{color: 'grey', cursor: 'pointer', transform: 'scale(5.2)'}} />
+          <AiOutlinePlusSquare style={{color: 'grey', cursor: 'pointer', transform: 'scale(2.2)'}} />
         </Link>
       </div>
     </div>

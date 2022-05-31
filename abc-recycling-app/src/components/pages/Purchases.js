@@ -12,6 +12,10 @@ const Purchases = props => {
 
   const [purchaseList, setPurchaseList] = useState([]);
   const [docId, setDocId] = useState(0);
+  const paginationComponentOptions = {
+    rowsPerPageText: 'Rekordów na stronie',
+    rangeSeparatorText: 'z',
+  };
   const columns =  [
     {
       name: 'Kontrahent',
@@ -100,6 +104,8 @@ const Purchases = props => {
         onRowClicked={(row, event) => {
           setDocId(row.purchase_id);
         }}
+        pagination
+        paginationComponentOptions={paginationComponentOptions}
       />
       <div className='btn-panel-small'>
         <Link to={'/purchases/add'}>

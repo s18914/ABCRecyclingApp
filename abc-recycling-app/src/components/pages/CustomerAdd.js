@@ -131,7 +131,7 @@ function CustomerAdd() {
               >
             </input>
             <label>Wpisz numer NIP</label>
-            <input type="text" id="nip" name="nip" placeholder="NIP.." defaultValue={customer?.nip}
+            <input type="text" id="nip" name="nip" placeholder="NIP [10 cyfr]" defaultValue={customer?.nip}
               onChange={e => setNip(e.target.value)}
               >
             </input>
@@ -168,7 +168,7 @@ function CustomerAdd() {
               }}>
             </input>
             <label>Wpisz numer dowodu</label>
-            <input type="text" id="id_number" name="id_number" placeholder="Numer dowodu.." defaultValue={customer?.id_number} onChange={(event) => {
+            <input type="text" id="id_number" name="id_number" placeholder="Numer dowodu..[9 znaków]" defaultValue={customer?.id_number} onChange={(event) => {
                 setIdNumber(event.target.value);
               }}>
             </input>

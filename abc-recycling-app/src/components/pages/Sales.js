@@ -13,7 +13,10 @@ const Sales = props => {
   
   const [saleList, setSaleList] = useState([]);
   const [docId, setDocId] = useState(0);
-
+  const paginationComponentOptions = {
+    rowsPerPageText: 'Rekordów na stronie',
+    rangeSeparatorText: 'z',
+  };
   const columns =  [
     {
       name: 'Kontrahent',
@@ -75,14 +78,20 @@ const Sales = props => {
           return (
             <GiReceiveMoney
               style={{color: '#41B53D', cursor: 'pointer', transform: 'scale(1.8)'}}
-              onDoubleClick={() => setPayment(row.sales_id, 0)}
+              onDoubleClick={() => {
+                setPayment(row.sales_id, 0);
+                setDocId(0);
+              }}
             />
           );
         } else {
           return (
             <GiReceiveMoney
               style={{color: 'grey', cursor: 'pointer', transform: 'scale(1.8)'}}
-              onClick={() => setPayment(row.sales_id, 1)}
+              onClick={() => {
+                setPayment(row.sales_id, 1);
+                setDocId(0);
+              }}
             />
           );
         }
@@ -173,13 +182,15 @@ const Sales = props => {
         onRowClicked={(row, event) => {
           setDocId(row.sales_id);
         }}
+        pagination
+        paginationComponentOptions={paginationComponentOptions}
       />
       <div className='btn-panel-small'>
         <Link to={'/sales/add'}>
           <AiOutlinePlusSquare style={{color: 'grey', cursor: 'pointer', transform: 'scale(2.0)'}} />
         </Link>
       </div>
-      <ProductsOfDocument id={docId}/>
+      <ProductsOfDocument id={docId} refresh={setDocId}/>
     </div>
   );
 }

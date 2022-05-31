@@ -5,7 +5,7 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import {FaPen} from 'react-icons/fa'
 
-function ProductsOfDocument({stateChanger, ...props}) {
+function ProductsOfDocument({refresh, ...props}) {
   const [productList, setProductList] = useState([]);
   const [sum, setSum] = useState(0);
   const [open, setOpen] = React.useState(false);
@@ -61,6 +61,8 @@ function ProductsOfDocument({stateChanger, ...props}) {
           handleClose();
         });
       });
+
+      refresh(id);
     } catch (error) {
       console.error(error);
     }
@@ -72,16 +74,18 @@ function ProductsOfDocument({stateChanger, ...props}) {
       <ul className='list-of-products'>
       <ol> 
         <div>Produkt</div> 
+        <div/>
         <div>Masa</div> 
         <div>Cena</div>
       </ol>
       {productList.map((item) => {
         let num1 = Math.round((item.price/sum*100) );
-        let gradient = 'linear-gradient(90deg, #8bdaff '+ num1 + '%, #ffffff ' + num1 + '%)';
+        let gradient = 'linear-gradient(90deg, rgb(190 222 237) '+ num1 + '%, #ffffff ' + num1 + '%)';
 
         return (
           <ol key={item.type_id}>
-            <div style={{background: gradient}}>{item.type_name}</div>
+            <div>{item.type_name}</div>
+            <div style={{background: gradient}} />
             <div>{item.weight}</div>
             <div>{item.price}</div>
           </ol>

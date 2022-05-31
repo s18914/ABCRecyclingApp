@@ -37,7 +37,7 @@ function SaleAdd() {
 
   const addDocument = () => {
     Axios.get('/saleInit').then((response) => {
-      setDocId(response.data[0].init_purchase);
+      setDocId(response.data[0].init_sale);
     })
   };
 
@@ -141,7 +141,7 @@ function SaleAdd() {
             let inputWeightId = 'weightOf' + item.type_id;
             return (
               <div className='formProducts' key={item.type_id}>
-                <div>{item.type_name}</div>
+                <div>{item.name}</div>
                 <div>Masa:</div>
                 <input id={inputWeightId}></input>
                 <div>Cena:</div>
