@@ -78,14 +78,20 @@ const Sales = props => {
           return (
             <GiReceiveMoney
               style={{color: '#41B53D', cursor: 'pointer', transform: 'scale(1.8)'}}
-              onDoubleClick={() => setPayment(row.sales_id, 0)}
+              onDoubleClick={() => {
+                setPayment(row.sales_id, 0);
+                setDocId(0);
+              }}
             />
           );
         } else {
           return (
             <GiReceiveMoney
               style={{color: 'grey', cursor: 'pointer', transform: 'scale(1.8)'}}
-              onClick={() => setPayment(row.sales_id, 1)}
+              onClick={() => {
+                setPayment(row.sales_id, 1);
+                setDocId(0);
+              }}
             />
           );
         }
@@ -184,7 +190,7 @@ const Sales = props => {
           <AiOutlinePlusSquare style={{color: 'grey', cursor: 'pointer', transform: 'scale(2.0)'}} />
         </Link>
       </div>
-      <ProductsOfDocument id={docId}/>
+      <ProductsOfDocument id={docId} refresh={setDocId}/>
     </div>
   );
 }

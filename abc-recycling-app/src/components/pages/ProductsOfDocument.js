@@ -5,7 +5,7 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import {FaPen} from 'react-icons/fa'
 
-function ProductsOfDocument({stateChanger, ...props}) {
+function ProductsOfDocument({refresh, ...props}) {
   const [productList, setProductList] = useState([]);
   const [sum, setSum] = useState(0);
   const [open, setOpen] = React.useState(false);
@@ -61,6 +61,8 @@ function ProductsOfDocument({stateChanger, ...props}) {
           handleClose();
         });
       });
+
+      refresh(id);
     } catch (error) {
       console.error(error);
     }
