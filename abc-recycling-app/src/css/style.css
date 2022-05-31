@@ -17,6 +17,7 @@ body .btn-panel {
   display: flex;
   justify-content: center;
   margin-top: 100px;
+  margin-bottom: 10px;
 }
 body .btn-panel .btn {
   display: inline-block;
@@ -223,7 +224,7 @@ body .main .list-of-products ol:first-child {
 }
 body .main .list-of-products ol {
   display: grid;
-  grid-template-columns: 80% 10% 10%;
+  grid-template-columns: 10% 70% 10% 10%;
   padding: 5px 0;
   margin: 2px 5px;
 }
