@@ -636,6 +636,16 @@ app.get("/productTypes", (req, res) => {
   });
 });
 
+app.get("/getStock", (req, res) => {
+  client.query("SELECT * from get_stock()", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows);
+    }
+  });
+});
+
 app.put("/productUpdate", (req, res) => {
   const document_id = req.body.document_id;
   const type_id = req.body.type_id;
