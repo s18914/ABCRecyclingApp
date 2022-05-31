@@ -34,7 +34,7 @@ function CarAdd() {
       overviewDate: overviewDate
     }).then((data) => {
       console.log("success", data.data);
-      navigate("/cars");
+      navigate("/transports/add");
     })
   };
 

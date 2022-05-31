@@ -109,6 +109,19 @@ app.get("/TransportsLookup", (req, res) => {
   });
 });
 
+//ZipCode
+
+app.get("/ZipCodesLookup", (req, res) => {
+  client.query("SELECT * from get_zip_codes_4_lookup()", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows);
+      return;
+    }
+  });
+});
+
 //Car
 app.post("/carCreate", (req, res) => {
   const registrationNumber = req.body.registrationNumber;
@@ -542,7 +555,7 @@ app.delete("/workerDelete/:id", (req, res) => {
 });
 
 app.get("/WorkersLookup", (req, res) => {
-  client.query("SELECT * from get_workers_4_lookup()", (err, result) => {
+  client.query("SELECT * from get_drivers_4_lookup()", (err, result) => {
     if (err) {
       console.log(err);
     } else {
