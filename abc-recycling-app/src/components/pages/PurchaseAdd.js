@@ -53,7 +53,7 @@ function PurchaseAdd() {
   const updateDocument = (e) => {
     e.preventDefault();
 
-    Axios.put('/documentUpdate', {
+    Axios.put('/purchaseDocumentUpdate', {
       document_id: docId,
       contractor_Id: contractorId,
       transport_Id: transportId,

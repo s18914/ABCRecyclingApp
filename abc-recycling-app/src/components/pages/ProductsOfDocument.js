@@ -11,6 +11,14 @@ function ProductsOfDocument({refresh, ...props}) {
   const [open, setOpen] = React.useState(false);
   const [id, setId] = React.useState(undefined);
 
+  const countSum = () => {
+    let s = 0;
+    productList.map((item) => {
+      s = s + parseFloat(item.price);
+    })
+    return s;
+  }
+
   useEffect(() => {
     if(props.id !== undefined && props !== undefined) setId(props.id)
     if(id !== undefined) {
@@ -22,17 +30,9 @@ function ProductsOfDocument({refresh, ...props}) {
         }
       )
     }
-    
-    const countSum = () => {
-      let s = 0;
-      productList.map((item) => {
-        s = s + parseFloat(item.price);
-      })
-      return s;
-    }
-    
+
     setSum(countSum())
-  }, [props]);
+  }, [props.id]);
 
   //modal
   const handleOpen = () => setOpen(true);
@@ -79,13 +79,10 @@ function ProductsOfDocument({refresh, ...props}) {
         <div>Cena</div>
       </ol>
       {productList.map((item) => {
-        let num1 = Math.round((item.price/sum*100) );
-        let gradient = 'linear-gradient(90deg, rgb(190 222 237) '+ num1 + '%, #ffffff ' + num1 + '%)';
-
         return (
           <ol key={item.type_id}>
             <div>{item.type_name}</div>
-            <div style={{background: gradient}} />
+            <div style={{background: "linear-gradient(90deg, rgb(190 222 237) "+ Math.round((item.price/sum*100)) + "%, #ffffff " + Math.round((item.price/sum*100)) + "%)"}} />
             <div>{item.weight}</div>
             <div>{item.price}</div>
           </ol>

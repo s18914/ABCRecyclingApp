@@ -305,6 +305,17 @@ app.delete("/customerDelete/:id", (req, res) => {
   });
 });
 
+app.get("/CustomersLookup", (req, res) => {
+  client.query("SELECT id_number || ' ' || name  as label, contractor_id as id FROM customers", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows);
+      return;
+    }
+  });
+});
+
 //company
 app.post("/companyCreate", (req, res) => {
   const name = req.body.name;
@@ -392,7 +403,26 @@ app.get("/purchaseInit", (req, res) => {
   });
 });
 
-app.put("/documentUpdate", (req, res) => {
+app.put("/saleDocumentUpdate", (req, res) => {
+  const document_id = req.body.document_id;
+  const contractor_Id = req.body.contractor_Id;
+  let transport_Id = req.body.transport_Id;
+  if(transport_Id === undefined) transport_Id = null;
+
+  client.query(
+    "Update sales set contractor_Id = $1, transport_Id = $2 where document_id = $3",
+    [contractor_Id, transport_Id, document_id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.put("/purchaseDocumentUpdate", (req, res) => {
   const document_id = req.body.document_id;
   const contractor_Id = req.body.contractor_Id;
   let transport_Id = req.body.transport_Id;

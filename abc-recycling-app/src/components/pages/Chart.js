@@ -3,7 +3,6 @@ import Axios from "../../request";
 
 import {
   FlexibleXYPlot,
-  XYPlot,
   VerticalGridLines,
   HorizontalGridLines,
   XAxis,
@@ -13,7 +12,7 @@ import {
   ChartLabel
 } from "react-vis";
 
-export default function Chart(props) {
+function Chart() {
   const [stockList, setStockList] = useState([]);
 
   useEffect(() => {
@@ -26,13 +25,13 @@ export default function Chart(props) {
     )
 
     let r = 150;
-    let g = 211;
+    let g = 210;
     let b = 227;
     {stockList.map((type) => {
-      let color = `rgb(${r} ${g} ${b})`;
-      r -= 10;
-      g -= 15;
-      b -= 25;
+      let color = `rgb(${r}, ${g}, ${b})`; 
+      if(r> 15) r -= 10;
+      if(g> 15) g -= 15;
+      if(b> 15) b -= 25;
       if(type.y !== undefined) type.label = type.y;
       type["color"] = color;
       type.y = parseFloat(type.y);
@@ -87,3 +86,4 @@ export default function Chart(props) {
       </FlexibleXYPlot>
   );
 }
+export default Chart;

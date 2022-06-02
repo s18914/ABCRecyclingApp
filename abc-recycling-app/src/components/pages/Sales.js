@@ -167,7 +167,7 @@ const Sales = props => {
     Axios('/sales').then(
       response => {
         setSaleList(response.data);
-        setDocId(response.data?.document_id);
+        setDocId(response.data?.sales_id);
       }
     )
   }, [docId]);

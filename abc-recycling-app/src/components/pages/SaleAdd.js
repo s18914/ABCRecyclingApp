@@ -17,6 +17,7 @@ function SaleAdd() {
   const [productList, setProductList] = useState([]);
   const [contractorId, setContractorId] = useState(0);
   const [transportId, setTransportId] = useState(0);
+  const [isCompany, setIsCompany] = useState();
 
   useEffect(() => {
     if(isAddMode && docId === undefined) {
@@ -54,19 +55,27 @@ function SaleAdd() {
   const updateDocument = (e) => {
     e.preventDefault();
     if(isAddMode) updateProducts();
-
-    Axios.put('/documentUpdate', {
+     console.log(contractorId)
+    Axios.put('/saleDocumentUpdate', {
       document_id: docId,
       contractor_Id: contractorId,
       transport_Id: transportId,
     }).then((response) => {
       console.log("success", response.data);
-      navigate("/purchases");
+      navigate("/sales");
     });
   };
 
-  const findCustomers = () => {
+  const findCompanies = () => {
     Axios('/CompaniesLookup').then(
+      response => {
+        setCustomersList(response.data);
+      }
+    )
+  };
+
+  const findCustomers = () => {
+    Axios('/CustomersLookup').then(
       response => {
         setCustomersList(response.data);
       }
@@ -110,18 +119,37 @@ function SaleAdd() {
     <div className='main'>
       {isAddMode &&<h1>Dodaj nowy dokument sprzedaży</h1>}
       {!isAddMode && <h1>Edytuj dokument sprzedaży</h1>}
+      <div style={{padding: '20px 0'}}>
+        <input type="radio" value="Company" name="contractor" onClick={() => {setIsCompany(true)}}/> Firma
+        <input type="radio" value="Customer" name="contractor"  onClick={() => {setIsCompany(false)}} style={{marginLeft: '20px'}} /> Osoba prywatna
+      </div>
       <form>
-        <label>Wybierz klienta</label>
-        <div onClick={findCustomers}>
-          <Autocomplete
-            id="customer-lookup"
-            options={customersList}
-            onChange={(event, value) => setContractorId(value.id)}
-            getOptionLabel={(option) => option.label}
-            sx={{ width: 300 }}
-            renderInput={(params) => <TextField {...params} label="Kontrahent"/>}
-          />
-        </div>
+      <label>Wybierz klienta</label>
+      {isCompany && 
+          <div onClick={findCompanies}>
+            <Autocomplete
+              id="customer-lookup"
+              options={customersList}
+              onChange={(event, value) => setContractorId(value.id)}
+              getOptionLabel={(option) => option.label}
+              checked={isCompany}
+              sx={{ width: 300 }}
+              renderInput={(params) => <TextField {...params} label="Kontrahent"/>}
+            />
+          </div>
+        }
+        {!isCompany && 
+          <div onClick={findCustomers}>
+            <Autocomplete
+              id="customer-lookup"
+              options={customersList}
+              onChange={(event, value) => setContractorId(value.id)}
+              getOptionLabel={(option) => option.label}
+              sx={{ width: 300 }}
+              renderInput={(params) => <TextField {...params} label="Osoby"/>}
+            />
+          </div>
+        }
         <label className="main-label">Wybierz transport: </label>
           <div onClick={findTransports}>
             <Autocomplete
