@@ -13,11 +13,8 @@ import {
   ChartLabel
 } from "react-vis";
 
-export default function Example(props) {
+export default function Chart(props) {
   const [stockList, setStockList] = useState([]);
-  let r = 150;
-  let g = 211;
-  let b = 227;
 
   useEffect(() => {
     Axios.get(`/getStock`).then(
@@ -28,25 +25,21 @@ export default function Example(props) {
       }
     )
 
-    // {stockList.map((type) => {
-      
-    //   let color = `rgb(${r} ${g} ${b})`;
-    //   r -= 10;
-    //   g -= 15;
-    //   b -= 25;
-
-    //   return (
-    //     
-    //   );
-    // })}
+    let r = 150;
+    let g = 211;
+    let b = 227;
+    {stockList.map((type) => {
+      let color = `rgb(${r} ${g} ${b})`;
+      r -= 10;
+      g -= 15;
+      b -= 25;
+      if(type.y !== undefined) type.label = type.y;
+      type["color"] = color;
+      type.y = parseFloat(type.y);
+      console.log(type)
+    })}
+    console.log(stockList)
   }, []);
-
-  const initialGraphData = [
-    { x: "Papier", y: 150000, label: "150,000", color: "#96d3e3" },
-    { x: "Aluminium", y: 250000, label: "250,000", color: "#6bafc2" },
-    { x: "Złoto", y: 500000, label: "500,000", color: "#017fb1" },
-    { x: "Miedź", y: 750000, label: "750,000", color: "#01678e" }
-  ];
 
   
 
@@ -54,9 +47,9 @@ export default function Example(props) {
     <FlexibleXYPlot
         animation
         xType="ordinal"
-        height={400}
+        height={700}
         xDistance={100}
-        yDomain={[0, 1050000]}
+        yDomain={[-1, 3000]}
       >
         <VerticalGridLines />
         <HorizontalGridLines />
@@ -66,6 +59,7 @@ export default function Example(props) {
             text: { stroke: "none", fill: "black", fontWeight: 600 }
           }}
         />
+        <YAxis tickFormat={(v) => (<tspan className="unselectable"> {v} </tspan>)} />
         <ChartLabel
           text=""
           className="alt-y-label"
@@ -80,15 +74,15 @@ export default function Example(props) {
         />
         <VerticalBarSeries
           animation
-          data={initialGraphData}
+          data={stockList}
           colorType="literal"
         />
         <LabelSeries
           animation
           allowOffsetToBeReversed
           labelAnchorX="middle"
-          labelAnchorY="text-after-edge"
-          data={initialGraphData}
+          labelAnchorY="text-after-edge" 
+          data={stockList}
         />
       </FlexibleXYPlot>
   );
