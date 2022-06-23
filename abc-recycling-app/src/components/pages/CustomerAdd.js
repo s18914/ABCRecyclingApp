@@ -124,7 +124,7 @@ function CustomerAdd() {
         <>
           {isAddMode &&<h1>Dodaj nową firmę</h1>}
           {!isAddMode && <h1>Edytuj firmę</h1>}
-          <form>
+          <form className='simpleForm'>
             <label>Wpisz nazwę</label>
             <input type="text" id="name" name="name" placeholder="Nazwa.." defaultValue={customer?.name}
               onChange={e => setName(e.target.value)}
@@ -156,7 +156,7 @@ function CustomerAdd() {
         <>
           {isAddMode &&<h1>Dodaj nowego klienta</h1>}
           {!isAddMode && <h1>Edytuj klienta</h1>}
-          <form>
+          <form className='simpleForm'>
             <label>Wpisz imię</label>
             <input type="text" id="name" name="name" placeholder="Imię.." defaultValue={customer?.name}
               onChange={e => setName(e.target.value)}

@@ -112,11 +112,13 @@ const Customers = props => {
   return (
     <div className='main'>
       <div className='btn-panel'>
-      <div onClick={() => showCompanies()}>
+        <div onClick={() => showCompanies()}>
           <FaBuilding id='companyBtn' style={{color: 'green', border: '2px solid green', cursor: 'pointer', transform: 'scale(2.2)', margin: '0 50px', padding: '2px'}} />
+        <div style={{textAlign: 'center', padding: '5px'}}>Firmy</div>
         </div>
         <div onClick={() => showPersons()}>
           <FaUserAlt id='personBtn' style={{color: 'grey', cursor: 'pointer', transform: 'scale(2.2)', margin: '0 50px', padding: '2px'}} />
+          <div style={{textAlign: 'center', padding: '5px'}}>Osoby</div>
         </div>
       </div>
       <DataTable

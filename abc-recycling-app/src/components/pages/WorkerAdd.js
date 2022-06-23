@@ -60,7 +60,7 @@ function WorkerAdd() {
     <div className='main' >
       {isAddMode &&<h1>Dodaj nowego pracownika</h1>}
       {!isAddMode && <h1>Edytuj pracownika</h1>}
-        <form>
+        <form className='simpleForm'>
             <label>Imię</label>
             <input type="text" id="name" name="name" defaultValue={worker?.name} 
             onChange={(event) => {

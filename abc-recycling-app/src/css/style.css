@@ -187,7 +187,7 @@ body .main form {
   display: flex;
   flex-direction: column;
 }
-body .main form input, body .main form select {
+body .main form .simpleForm input, body .main form .simpleForm select {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -198,6 +198,15 @@ body .main form input, body .main form select {
 }
 body .main form .main-label {
   margin-top: 25px;
+}
+body .main form.simpleForm input, body .main form.simpleForm select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
 body .main .formProducts {
   display: grid;
