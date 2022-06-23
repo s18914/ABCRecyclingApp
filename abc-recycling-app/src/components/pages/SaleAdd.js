@@ -17,7 +17,7 @@ function SaleAdd() {
   const [productList, setProductList] = useState([]);
   const [contractorId, setContractorId] = useState(0);
   const [transportId, setTransportId] = useState(0);
-  const [isCompany, setIsCompany] = useState();
+  const [isCompany, setIsCompany] = useState(true);
 
   useEffect(() => {
     if(isAddMode && docId === undefined) {
@@ -120,12 +120,13 @@ function SaleAdd() {
       {isAddMode &&<h1>Dodaj nowy dokument sprzedaży</h1>}
       {!isAddMode && <h1>Edytuj dokument sprzedaży</h1>}
       <div style={{padding: '20px 0'}}>
-        <input type="radio" value="Company" name="contractor" onClick={() => {setIsCompany(true)}}/> Firma
+        <input type="radio" defaultChecked value="Company" name="contractor" onClick={() => {setIsCompany(true)}}/> Firma
         <input type="radio" value="Customer" name="contractor"  onClick={() => {setIsCompany(false)}} style={{marginLeft: '20px'}} /> Osoba prywatna
+        <input type="radio" value="Company" name="contractor" onClick={() => {setIsCompany(null)}} style={{marginLeft: '20px'}}/> Nowa osoba
       </div>
       <form>
       <label>Wybierz klienta</label>
-      {isCompany && 
+      {isCompany === true && 
           <div onClick={findCompanies}>
             <Autocomplete
               id="customer-lookup"
@@ -134,11 +135,11 @@ function SaleAdd() {
               getOptionLabel={(option) => option.label}
               checked={isCompany}
               sx={{ width: 300 }}
-              renderInput={(params) => <TextField {...params} label="Kontrahent"/>}
+              renderInput={(params) => <TextField {...params} label="Wybierz firmę"/>}
             />
           </div>
         }
-        {!isCompany && 
+        {isCompany === false && 
           <div onClick={findCustomers}>
             <Autocomplete
               id="customer-lookup"
@@ -146,9 +147,12 @@ function SaleAdd() {
               onChange={(event, value) => setContractorId(value.id)}
               getOptionLabel={(option) => option.label}
               sx={{ width: 300 }}
-              renderInput={(params) => <TextField {...params} label="Osoby"/>}
+              renderInput={(params) => <TextField {...params} label="Wybierz osobę"/>}
             />
           </div>
+        }
+        {isCompany === null && 
+          <input id="numerDow" placeholder="Wprowadź numer dowodu nowego klienta" style={{width: '40%'}}></input>
         }
         <label className="main-label">Wybierz transport: </label>
           <div onClick={findTransports}>
@@ -168,7 +172,7 @@ function SaleAdd() {
             let inputPriceId = 'priceOf' + item.type_id;
             let inputWeightId = 'weightOf' + item.type_id;
             return (
-              <div className='formProducts' key={item.type_id}>
+              <div className='formProducts simpleForm' key={item.type_id}>
                 <div>{item.name}</div>
                 <div>Masa:</div>
                 <input id={inputWeightId}></input>

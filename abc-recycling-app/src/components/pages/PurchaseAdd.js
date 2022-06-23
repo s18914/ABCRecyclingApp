@@ -140,7 +140,7 @@ function PurchaseAdd() {
             let inputPriceId = 'priceOf' + item.type_id;
             let inputWeightId = 'weightOf' + item.type_id;
             return (
-              <div className='formProducts' key={item.type_id}>
+              <div className='formProducts simpleForm' key={item.type_id}>
                 <div>{item.name}</div>
                 <div>Masa:</div>
                 <input id={inputWeightId}></input>

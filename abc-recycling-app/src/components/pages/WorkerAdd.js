@@ -40,7 +40,7 @@ function WorkerAdd() {
   return (
     <div className='main' >
         <h1>Dodaj pracownika</h1>
-        <form>
+        <form className='simpleForm'>
             <label>Imię</label>
             <input type="text" id="name" name="name" onChange={(event) => {
                 setName(event.target.value);
