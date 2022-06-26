@@ -47,6 +47,11 @@ const Purchases = props => {
       },
     },
     {
+      name: 'Data',
+      width: '100px',
+      selector: row => row.date,
+    },
+    {
       name: "",
       button: true,
       width: '60px',

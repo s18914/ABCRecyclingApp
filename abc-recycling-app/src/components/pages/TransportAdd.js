@@ -1,8 +1,9 @@
 import React from 'react';
 import { useState } from "react";
 import Axios from "../../request";
-import { useParams } from 'react-router';
+import { useParams, useNavigate } from "react-router-dom";
 import Button from '@mui/material/Button';
+import { ImCancelCircle} from 'react-icons/im'
 import TextField from '@mui/material/TextField';
 import DesktopDatePicker from "@material-ui/lab/DesktopDatePicker";
 import LocalizationProvider from "@material-ui/lab/LocalizationProvider";
@@ -22,6 +23,7 @@ function TransportAdd() {
   const [carList, setCarList] = useState([]);
 
   const {id} = useParams();
+  const navigate = useNavigate();
 
   const [open, setOpen] = React.useState(false);  
   const [value, setValue] = React.useState(null);
@@ -182,6 +184,7 @@ function TransportAdd() {
       </form>
       <div className='btn-panel'>
         <a href={'/transports'}>
+          <ImCancelCircle style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} onClick={() => {navigate("/transports")}}/>
           <button onClick={addTransport}>
             Zatwierdź
           </button>

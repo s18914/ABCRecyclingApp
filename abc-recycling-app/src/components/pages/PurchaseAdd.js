@@ -4,6 +4,7 @@ import { FaCheckCircle} from 'react-icons/fa'
 import { useParams, useNavigate} from "react-router-dom";
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import { ImCancelCircle} from 'react-icons/im'
 
 function PurchaseAdd() {
   
@@ -186,6 +187,7 @@ function PurchaseAdd() {
         </>
         }
         <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
+          <ImCancelCircle style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} onClick={() => {navigate("/purchases")}}/>
           <FaCheckCircle onClick={updateDocument} style={{color: 'green', cursor: 'pointer'}}/>
         </div>
         </form>

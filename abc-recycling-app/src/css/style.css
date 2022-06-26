@@ -40,7 +40,7 @@ body .header {
   background-color: #153418;
   height: 80px;
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
 }
 body .header h1 {

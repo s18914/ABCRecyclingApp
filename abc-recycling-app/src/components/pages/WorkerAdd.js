@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
 import { useState } from "react";
 import Axios from "../../request";
+import { ImCancelCircle} from 'react-icons/im'
 import {Link} from 'react-router-dom';
-import { useParams } from 'react-router';
+import { useParams, useNavigate } from "react-router-dom";
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
@@ -13,6 +14,7 @@ function WorkerAdd() {
   const [rolesList, setRolesList] = useState([]);
 
   const {id} = useParams();
+  const navigate = useNavigate();
   let isAddMode = ({id}.id === undefined ? true : false);
 
   const [inputValue, setInputValue] = React.useState('');
@@ -86,6 +88,7 @@ function WorkerAdd() {
         </form>
       <div className='btn-panel'>
         <Link to={'/workers'}>
+          <ImCancelCircle style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} onClick={() => {navigate("/workers")}}/>
           <button onClick={addWorker}>
             Zatwierdź
           </button>

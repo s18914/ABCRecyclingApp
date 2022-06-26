@@ -48,6 +48,11 @@ const Sales = props => {
       },
     },
     {
+      name: 'Data',
+      width: '100px',
+      selector: row => row.date,
+    },
+    {
       name: 'Status wysyłki',
       width: '140px',
       selector: row => row.status
