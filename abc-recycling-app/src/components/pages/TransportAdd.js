@@ -6,13 +6,13 @@ import { ImCancelCircle} from 'react-icons/im'
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { FaCheckCircle, FaPlus, FaListUl} from 'react-icons/fa'
 import {Link} from 'react-router-dom';
 
 function TransportAdd() {
   const [transport, setTransport] = useState();
+  let isAddMode = ({id}.id === undefined ? true : false);
 
   //transport
   const [date, setDate] = useState("");
