@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Axios from "../../request";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaCheckCircle } from 'react-icons/fa'
+import { ImCancelCircle} from 'react-icons/im'
 
 function CarAdd() {
   const [car, setCar] = useState();
@@ -68,12 +69,18 @@ function CarAdd() {
             }}>
             </input>
             <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
+<<<<<<< HEAD
               {isAddMode && 
                 <FaCheckCircle onClick={addCar} style={{color: 'green', cursor: 'pointer'}}/>
               }
               {!isAddMode &&
                 <FaCheckCircle onClick={updateCar} style={{color: 'green', cursor: 'pointer'}} />
               }
+=======
+              <ImCancelCircle style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} onClick={() => {navigate("/cars")}}/>
+              {isAddMode && <FaCheckCircle onClick={addCar} style={{color: 'green', cursor: 'pointer'}}/>}
+              {!isAddMode && <FaCheckCircle onClick={updateCar} style={{color: 'green', cursor: 'pointer'}} />}
+>>>>>>> Eci_documents
             </div>
         </form>
     </div>

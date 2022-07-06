@@ -1,6 +1,7 @@
 import { useState, useEffect} from "react";
 import Axios from "../../request";
 import { FaCheckCircle, FaBuilding, FaUserAlt } from 'react-icons/fa'
+import { ImCancelCircle} from 'react-icons/im'
 import { useParams, useNavigate } from "react-router-dom";
 
 function CustomerAdd() {
@@ -146,6 +147,7 @@ function CustomerAdd() {
               }}>
             </input>
             <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
+              <ImCancelCircle style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} onClick={() => {navigate("/customers")}}/>
               {isAddMode && <FaCheckCircle onClick={addCompany} style={{color: 'green', cursor: 'pointer'}}/>}
               {!isAddMode && <FaCheckCircle onClick={updateCompany} style={{color: 'green', cursor: 'pointer'}} />}
             </div>
@@ -173,6 +175,7 @@ function CustomerAdd() {
               }}>
             </input>
             <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
+              <ImCancelCircle style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} onClick={() => {navigate("/customers")}}/>
               {isAddMode && <FaCheckCircle onClick={addCustomer} style={{color: 'green', cursor: 'pointer'}}/>}
               {!isAddMode && <FaCheckCircle onClick={updateCustomer} style={{color: 'green', cursor: 'pointer'}}/>}
             </div>

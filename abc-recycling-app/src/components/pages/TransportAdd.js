@@ -1,7 +1,9 @@
 import React from 'react';
 import { useState } from "react";
 import Axios from "../../request";
-import { useParams, useNavigate } from 'react-router';
+import { useParams, useNavigate } from "react-router-dom";
+import { ImCancelCircle} from 'react-icons/im'
+import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
@@ -34,7 +36,7 @@ function TransportAdd() {
   const [addressId, setAddressId] = useState(0);
 
   const {id} = useParams();
-  let isAddMode = ({id}.id === undefined ? true : false);
+  const navigate = useNavigate();
 
   const [open, setOpen] = React.useState(false);  
 
@@ -218,6 +220,19 @@ function TransportAdd() {
           {!isAddMode && <FaCheckCircle style={{color: 'green', cursor: 'pointer'}} />}
         </div>
       </form>
+      <div className='btn-panel'>
+        <a href={'/transports'}>
+          <ImCancelCircle style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} onClick={() => {navigate("/transports")}}/>
+          <button onClick={addTransport}>
+            Zatwierdź
+          </button>
+        </a> 
+        <a href={'/transports'}>
+          <button>
+            Anuluj
+          </button>
+        </a> 
+      </div>
     </div>
   )
 }

@@ -4,6 +4,7 @@ import { FaCheckCircle} from 'react-icons/fa'
 import { useParams, useNavigate} from "react-router-dom";
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import { ImCancelCircle} from 'react-icons/im'
 
 function PurchaseAdd() {
   
@@ -15,6 +16,7 @@ function PurchaseAdd() {
   const [transportsList, setTransportsList] = useState([]);
   const [productList, setProductList] = useState([]);
   const [contractorId, setContractorId] = useState(0);
+  const [id_number, setIdNumber] = useState("");
   const [transportId, setTransportId] = useState(null);
   const [isCompany, setIsCompany] = useState(true);
 
@@ -23,7 +25,6 @@ function PurchaseAdd() {
       addDocument();
     }
     else getDocument({id}.id);
-
     if(isAddMode) {
       Axios.get('/productTypes').then(
         response => {
@@ -54,14 +55,25 @@ function PurchaseAdd() {
   const updateDocument = (e) => {
     e.preventDefault();
 
-    Axios.put('/purchaseDocumentUpdate', {
-      document_id: docId,
-      contractor_Id: contractorId,
-      transport_Id: transportId,
-    }).then((response) => {
-      console.log("success", response.data);
-      navigate("/purchases");
-    });
+    if(isCompany === null){
+      Axios.put('/purchaseDocumentUpdateAndAddPerson', {
+        document_id: docId,
+        id_number: id_number,
+        transport_Id: transportId,
+      }).then((response) => {
+        console.log("success", response.data);
+        navigate("/purchases");
+      });
+    } else {
+      Axios.put('/purchaseDocumentUpdate', {
+        document_id: docId,
+        contractor_Id: contractorId,
+        transport_Id: transportId,
+      }).then((response) => {
+        console.log("success", response.data);
+        navigate("/purchases");
+      }); 
+    }
 
     if(isAddMode) updateProducts();
   };
@@ -153,7 +165,9 @@ function PurchaseAdd() {
         }
         {isCompany === null && 
           <div className='simpleForm'>
-            <input id="numerDow" placeholder="Wprowadź numer dowodu nowego klienta" style={{width: '40%'}}></input>
+            <input id="id_number" placeholder="Wprowadź numer dowodu nowego klienta" style={{width: '40%'}} onChange={(event) => {
+                setIdNumber(event.target.value);
+              }}></input>
           </div>
         }
         <label className="main-label">Wybierz transport: </label>
@@ -186,6 +200,7 @@ function PurchaseAdd() {
         </>
         }
         <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
+          <ImCancelCircle style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} onClick={() => {navigate("/purchases")}}/>
           <FaCheckCircle onClick={updateDocument} style={{color: 'green', cursor: 'pointer'}}/>
         </div>
         </form>

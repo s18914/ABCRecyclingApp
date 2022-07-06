@@ -2,6 +2,9 @@ import React, { useEffect } from 'react'
 import { useState } from "react";
 import Axios from "../../request";
 import { useParams, useNavigate } from 'react-router';
+import { ImCancelCircle} from 'react-icons/im'
+import {Link} from 'react-router-dom';
+import { useParams, useNavigate } from "react-router-dom";
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { FaCheckCircle } from 'react-icons/fa'
@@ -16,8 +19,8 @@ function WorkerAdd() {
   const [rolesList, setRolesList] = useState([]);
 
   const {id} = useParams();
-  let isAddMode = ({id}.id === undefined ? true : false);
   const navigate = useNavigate();
+  let isAddMode = ({id}.id === undefined ? true : false);
 
   // const getWorker = (id) => {
   //   if(!isAddMode) {
@@ -103,6 +106,19 @@ function WorkerAdd() {
             {!isAddMode && <FaCheckCircle style={{color: 'green', cursor: 'pointer'}} />}
           </div>
         </form>
+      <div className='btn-panel'>
+        <Link to={'/workers'}>
+          <ImCancelCircle style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} onClick={() => {navigate("/workers")}}/>
+          <button onClick={addWorker}>
+            Zatwierdź
+          </button>
+        </Link> 
+        <Link to={'/workers'}>
+          <button>
+            Anuluj
+          </button>
+        </Link> 
+      </div>
     </div>
   )
 }

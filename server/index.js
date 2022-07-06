@@ -469,6 +469,25 @@ app.put("/purchaseDocumentUpdate", (req, res) => {
   );
 });
 
+app.put("/purchaseDocumentUpdateAndAddPerson", (req, res) => {
+  const document_id = req.body.document_id;
+  const id_number = req.body.id_number;
+  const transport_Id = req.body.transport_Id;
+  if(transport_Id === undefined) transport_Id = null;
+
+  client.query(
+    "call update_purchase_with_new_client($1, $2, $3)",
+    [id_number, transport_Id, document_id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
 app.get("/document/:id", (req, res) => {
   const id = req.params.id;
   client.query("SELECT d.* FROM documents d where d.document_id = $1", [id], (err, result) => {

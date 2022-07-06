@@ -1,10 +1,10 @@
 import { useState, useEffect} from "react";
 import Axios from "../../request";
-import {Link} from 'react-router-dom';
 import { FaCheckCircle} from 'react-icons/fa'
 import { useParams, useNavigate  } from "react-router-dom";
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import { ImCancelCircle} from 'react-icons/im'
 
 function SaleAdd() {
   
@@ -17,7 +17,6 @@ function SaleAdd() {
   const [productList, setProductList] = useState([]);
   const [contractorId, setContractorId] = useState(0);
   const [transportId, setTransportId] = useState(0);
-  const [isCompany, setIsCompany] = useState(true);
 
   useEffect(() => {
     if(isAddMode && docId === undefined) {
@@ -74,14 +73,6 @@ function SaleAdd() {
     )
   };
 
-  const findCustomers = () => {
-    Axios('/CustomersLookup').then(
-      response => {
-        setCustomersList(response.data);
-      }
-    )
-  };
-
   const findTransports = () => {
     Axios('/TransportsLookup').then(
       response => {
@@ -127,7 +118,6 @@ function SaleAdd() {
             options={customersList}
             onChange={(event, value) => setContractorId(value.id)}
             getOptionLabel={(option) => option.label}
-            checked={isCompany}
             sx={{ width: 300 }}
             renderInput={(params) => <TextField {...params} label="Wybierz firmę"/>}
           />
@@ -162,6 +152,7 @@ function SaleAdd() {
           </>
         }
         <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
+          <ImCancelCircle style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} onClick={() => {navigate("/sales")}}/>
           <FaCheckCircle onClick={updateDocument} style={{color: 'green', cursor: 'pointer'}}/>
         </div>
       </form>
