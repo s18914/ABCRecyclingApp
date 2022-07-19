@@ -89,7 +89,7 @@ function TransportAdd() {
   return (
     <div className='main'>
       <h1>Dodaj nowy transport</h1>
-      <form>
+      <form className='simpleForm'>
         <label>Wybierz adres</label>
         <input type="text" id="address" name="address" placeholder="Adres.." onChange={(event) => {
             setAddress(event.target.value);

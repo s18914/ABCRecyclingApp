@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import DataTable from 'react-data-table-component'
 import {Link} from 'react-router-dom';
 import { useState } from "react";
@@ -6,6 +6,7 @@ import Axios from "../../request";
 import { FaTimes, FaBuilding, FaUserAlt} from 'react-icons/fa'
 import { FaPen } from 'react-icons/fa'
 import {AiOutlinePlusSquare} from 'react-icons/ai'
+import FilterComponent from "../FilterComponent";
 
 const Customers = props => {
   
@@ -13,6 +14,8 @@ const Customers = props => {
   const personBtn = document.getElementById('personBtn');
   const [customerList, setCustomerList] = useState([]);
   const [onlyCompanies, setMode] = useState(true);
+  const [filterText, setFilterText] = React.useState("");
+  const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
   const paginationComponentOptions = {
     rowsPerPageText: 'Rekordów na stronie',
     rangeSeparatorText: 'z',
@@ -72,6 +75,13 @@ const Customers = props => {
       )
     },
   ];
+
+  const filteredItems = customerList.filter(
+    item =>
+      JSON.stringify(item)
+        .toLowerCase()
+        .indexOf(filterText.toLowerCase()) !== -1
+  );
   
   const showCompanies = () => {
     setMode(true);
@@ -98,6 +108,23 @@ const Customers = props => {
       );
     });
   };
+
+  const subHeaderComponent = useMemo(() => {
+    const handleClear = () => {
+      if (filterText) {
+        setResetPaginationToggle(!resetPaginationToggle);
+        setFilterText("");
+      }
+    };
+
+    return (
+      <FilterComponent
+        onFilter={e => setFilterText(e.target.value)}
+        onClear={handleClear}
+        filterText={filterText}
+      />
+    );
+  }, [filterText, resetPaginationToggle]);
 
   useEffect(() => {
     Axios('/customers').then(
@@ -128,6 +155,10 @@ const Customers = props => {
         noDataComponent='brak rekordów'
         pagination
         paginationComponentOptions={paginationComponentOptions}
+        
+        striped
+        subHeader
+        subHeaderComponent={subHeaderComponent}
       />
       <div className='btn-panel-small'>
         <Link to={'/customers/add'}>
