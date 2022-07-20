@@ -34,7 +34,7 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
     <Input
       id="search"
       type="text"
-      placeholder="Filter table data..."
+      placeholder="Szukaj rekordu..."
       value={filterText}
       onChange={onFilter}
     />

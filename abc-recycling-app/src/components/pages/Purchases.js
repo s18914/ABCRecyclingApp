@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import DataTable from 'react-data-table-component'
 import { useState } from "react";
 import Axios from "../../request";
@@ -7,6 +7,7 @@ import ProductsOfDocument from './ProductsOfDocument';
 import { FaTimes } from 'react-icons/fa'
 import { FaPen } from 'react-icons/fa'
 import {AiOutlinePlusSquare} from 'react-icons/ai'
+import FilterComponent from "../FilterComponent";
 
 const Purchases = props => {
 
@@ -16,6 +17,8 @@ const Purchases = props => {
     rowsPerPageText: 'Rekordów na stronie',
     rangeSeparatorText: 'z',
   };
+  const [filterText, setFilterText] = React.useState("");
+  const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
   const columns =  [
     {
       name: 'Kontrahent',
@@ -90,6 +93,30 @@ const Purchases = props => {
     return 1;
   };
 
+  const filteredItems = purchaseList.filter(
+    item =>
+      JSON.stringify(Object.values(item))
+        .toLowerCase()
+        .indexOf(filterText.toLowerCase()) !== -1
+  );
+
+  const subHeaderComponent = useMemo(() => {
+    const handleClear = () => {
+      if (filterText) {
+        setResetPaginationToggle(!resetPaginationToggle);
+        setFilterText("");
+      }
+    };
+
+    return (
+      <FilterComponent
+        onFilter={e => setFilterText(e.target.value)}
+        onClear={handleClear}
+        filterText={filterText}
+      />
+    );
+  }, [filterText, resetPaginationToggle]);
+
   useEffect(() => {
     Axios('/purchases').then(
       response => {
@@ -104,13 +131,16 @@ const Purchases = props => {
       <DataTable
         title="Lista zakupów"
         columns={columns}
-        data={purchaseList}
+        data={filteredItems}
         noDataComponent='brak rekordów'
         onRowClicked={(row, event) => {
           setDocId(row.purchase_id);
         }}
         pagination
         paginationComponentOptions={paginationComponentOptions}
+        striped
+        subHeader
+        subHeaderComponent={subHeaderComponent}
       />
       <div className='btn-panel-small'>
         <Link to={'/purchases/add'}>

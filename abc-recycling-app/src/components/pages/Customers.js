@@ -78,7 +78,7 @@ const Customers = props => {
 
   const filteredItems = customerList.filter(
     item =>
-      JSON.stringify(item)
+      JSON.stringify(Object.values(item))
         .toLowerCase()
         .indexOf(filterText.toLowerCase()) !== -1
   );
@@ -151,11 +151,10 @@ const Customers = props => {
       <DataTable
         title="Lista klientów"
         columns={columns}
-        data={customerList}
+        data={filteredItems}
         noDataComponent='brak rekordów'
         pagination
         paginationComponentOptions={paginationComponentOptions}
-        
         striped
         subHeader
         subHeaderComponent={subHeaderComponent}
