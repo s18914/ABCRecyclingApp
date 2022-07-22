@@ -6,7 +6,7 @@ import {Link} from 'react-router-dom';
 import ProductsOfDocument from './ProductsOfDocument';
 import {IoArrowBack, IoArrowForward} from 'react-icons/io5' 
 import {FaTimes, FaPen} from 'react-icons/fa'
-import {AiOutlinePlusSquare, AiFillPlusSquare} from 'react-icons/ai'
+import {AiOutlinePlusSquare} from 'react-icons/ai'
 import {GiReceiveMoney} from 'react-icons/gi'
 import FilterComponent from "../FilterComponent";
 
