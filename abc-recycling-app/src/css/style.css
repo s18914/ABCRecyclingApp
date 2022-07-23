@@ -143,8 +143,8 @@ body .modal .formRow div {
   padding: 10px;
 }
 body .modal button {
-  /* margin: 15px; */
-  /* padding: 15px 20px; */
+  margin: 15px;
+  padding: 15px 20px;
   background-color: #205225;
   color: white;
   border: 1px solid #1c4720;
@@ -187,17 +187,13 @@ body .main form {
   display: flex;
   flex-direction: column;
 }
-body .main form .simpleForm input, body .main form .simpleForm select {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
 body .main form .main-label {
   margin-top: 25px;
+}
+body .main form .required {
+  color: red;
+  font-size: small;
+  margin: 0 0 10px 0;
 }
 body .main form.simpleForm input, body .main form.simpleForm select {
   width: 100%;
@@ -207,6 +203,16 @@ body .main form.simpleForm input, body .main form.simpleForm select {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+}
+body .main form.simpleForm .btn-submit {
+  width: auto;
+  height: auto;
+  background-color: rgb(154, 207, 154);
+  font-size: 10px;
+  padding: 5px;
+  color: white;
+  border: 1px solid #479c65;
+  margin: 0;
 }
 body .main .formProducts {
   display: grid;
@@ -240,27 +246,5 @@ body .main .list-of-products ol {
 body .main .list-of-products ol div {
   margin-left: 5px;
 }
-body .icon {
-  color: green;
-  cursor: pointer;
-  height: 30px;
-  width: 30px;
-  margin: 10px;
-  vertical-align: middle;
-}
-body .modal input {
-  margin: 10px;
-  padding: 5px;
-}
-body .modal div {
-  padding: 0px !important;
-}
-body .modal div .autocomplete {
-  margin: 5px;
-  padding: 5px;
-}
-body .modal div .lookup {
-  display: inline-block;
-  margin: 10px;
-}
+
 /*# sourceMappingURL=style.css.map */
