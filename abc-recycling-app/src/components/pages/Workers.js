@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import DataTable from 'react-data-table-component'
 import { useState } from "react";
 import Axios from "../../request";
@@ -7,10 +7,18 @@ import {Link} from 'react-router-dom';
 import { FaTimes } from 'react-icons/fa'
 import { FaPen } from 'react-icons/fa'
 import {AiOutlinePlusSquare} from 'react-icons/ai'
+import FilterComponent from "../FilterComponent";
+
 
 const Workers = props => {
 
-  const [workersList, setWorkersList] = useState([]);
+  const [workersList, setWorkersList] = useState([]);  
+  const [filterText, setFilterText] = React.useState("");
+  const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
+  const paginationComponentOptions = {
+    rowsPerPageText: 'Rekordów na stronie',
+    rangeSeparatorText: 'z',
+  };
   const columns =  [
     {
       name: 'Id',
@@ -80,13 +88,43 @@ const Workers = props => {
     )
   }, []);
 
+  const filteredItems = workersList.filter(
+    item =>
+      JSON.stringify(Object.values(item))
+        .toLowerCase()
+        .indexOf(filterText.toLowerCase()) !== -1
+  );
+
+  const subHeaderComponent = useMemo(() => {
+    const handleClear = () => {
+      if (filterText) {
+        setResetPaginationToggle(!resetPaginationToggle);
+        setFilterText("");
+      }
+    };
+
+    return (
+      <FilterComponent
+        onFilter={e => setFilterText(e.target.value)}
+        onClear={handleClear}
+        filterText={filterText}
+      />
+    );
+  }, [filterText, resetPaginationToggle]);
+  
+
   return (
     <div className='main'>
       <DataTable
         title="Lista pracowników"
         columns={columns}
-        data={workersList}
+        data={filteredItems}
         noDataComponent='brak rekordów'
+        pagination
+        paginationComponentOptions={paginationComponentOptions}
+        striped
+        subHeader
+        subHeaderComponent={subHeaderComponent}
       />
       <div className='btn-panel'>
         <Link to={'/workers/add'}>
