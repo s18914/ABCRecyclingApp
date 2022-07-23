@@ -4,19 +4,6 @@ import { FaCheckCircle, FaBuilding, FaUserAlt } from 'react-icons/fa'
 import { ImCancelCircle} from 'react-icons/im'
 import { useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-
-//Walidacja
-const schema = yup.object().shape({
-  name: yup.string().required("To pole jest obowiążkowe"),
-  nip: yup.number().min(10).max(10).required("Numer NIP jest obowiążkowy"),
-  account_number:  yup.number().min(4).max(15).required("Numer konta jest obowiążkowy"),
-  email: yup.string().email().required("Email jest obowiążkowy"),
-  surname: yup.number().positive().integer(),
-  id_number: yup.string().min(4).max(15).required("Numer dowodu jest obowiążkowy"),
-});
-
 
 
 function CustomerAdd() {
@@ -33,6 +20,75 @@ function CustomerAdd() {
   const [account_number, setAccountNumber] = useState("");
   const [email, setEmail] = useState("");
   const [isCompany, setMode] = useState(true);
+
+  //walidacja
+  const [formValues, setFormValues] = useState({ name: "", surname: "", id_number: "", nip: "", account_number: "", email: "" });
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const submit = () => {
+    console.log(formValues);
+    if(isCompany){
+      if(isAddMode) addCompany();
+      updateCompany();
+    } else {
+      if(isAddMode) addCustomer();
+      updateCustomer();
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setFormErrors(validate(formValues));
+    setIsSubmitting(true);
+  };
+
+  const validate = (values) => {
+    let errors = {};
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+
+    if (!values.name) {
+      errors.name = "To pole nie może być puste";
+    } 
+
+    if(isCompany){
+      if (!values.nip) {
+        errors.nip = "To pole nie może być puste";
+      } 
+
+      if (!values.account_number) {
+        errors.account_number = "To pole nie może być puste";
+      } 
+
+      if (!values.email) {
+        errors.email = "To pole nie może być puste";
+      } else if (!regex.test(values.email)) {
+        errors.email = "Invalid email format";
+      }
+    } else {
+      if (!values.surname) {
+        errors.surname = "To pole nie może być puste";
+      } 
+      if (!values.id_number) {
+        errors.id_number = "To pole nie może być puste";
+      }
+    }
+    //company
+    
+
+    //person
+    // if (!values.id_number) {
+    //   errors.id_number = "To pole nie może być puste";
+    // } 
+
+    return errors;
+  };
+
 
   const getCustomer = (id) => {
     if(!isAddMode) {
@@ -51,7 +107,12 @@ function CustomerAdd() {
 
   useEffect(() => {
     getCustomer({id}.id);
-  }, []);
+    console.log(formErrors);
+    console.log( Object.keys(formErrors).length + "  ii")
+    if (Object.keys(formErrors).length === 0 && isSubmitting) {
+      submit();
+    }
+  }, [formErrors]);
   
   const addCustomer = (event) => {
     event.preventDefault();
@@ -66,16 +127,17 @@ function CustomerAdd() {
   };
 
   const addCompany = (event) => {
-    event.preventDefault();
-    Axios.post('/companyCreate', {
-      name: name,
-      nip: nip, 
-      account_number: account_number, 
-      email: email
-    }).then((response) => {
-      console.log("success", response.data);
-      navigate("/customers");
-    })
+
+      Axios.post('/companyCreate', {
+        name: name,
+        nip: nip, 
+        account_number: account_number, 
+        email: email
+      }).then((response) => {
+        console.log("success", response.data);
+        navigate("/customers");
+      })
+    
   };
 
   const updateCustomer = (e) => {
@@ -92,7 +154,6 @@ function CustomerAdd() {
   };
 
   const updateCompany = (e) => {
-    e.preventDefault();
     Axios.put('/companyUpdate', {
       name: name, 
       nip: nip, 
@@ -105,14 +166,7 @@ function CustomerAdd() {
     });
   };
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
-    resolver: yupResolver(schema),
-  });
-
-  const submitForm = (data) => {
-    console.log(data);
-  };
-
+  
   return (
     <div className='main'>
       {isAddMode && 
@@ -148,37 +202,37 @@ function CustomerAdd() {
         <>
           {isAddMode &&<h1>Dodaj nową firmę</h1>}
           {!isAddMode && <h1>Edytuj firmę</h1>}
-          <form className='simpleForm' onSubmit={handleSubmit(submitForm)}>
-            <label>Wpisz nazwę<span class="required">*</span></label>
-            
+          <form className='simpleForm' onSubmit={handleSubmit} noValidate>
+            <label>Wpisz nazwę<span className="required">*</span></label>
             <input type="text" id="name" name="name" placeholder="Nazwa.." defaultValue={customer?.name}
-              onChange={e => setName(e.target.value)}
+              onChange={(e) => {setName(e.target.value); handleChange(e);}}
               >
             </input>
-            <p class="required"> {errors.name?.message} </p>
-            <label>Wpisz numer NIP<span class="required">*</span></label>
+            <p className="required"> {formErrors.name} </p>
+            <label>Wpisz numer NIP<span className="required">*</span></label>
             <input type="text" id="nip" name="nip" placeholder="NIP [10 cyfr]" defaultValue={customer?.nip}
-              onChange={e => setNip(e.target.value)}
+              onChange={(e) => {setNip(e.target.value); handleChange(e);}}
               >
             </input>
-            <p class="required"> {errors.nip?.message} </p>
-            <label>Wpisz numer konta<span class="required">*</span></label>
-            <input type="text" id="account_number" name="account_number" placeholder="Nr konta.." defaultValue={customer?.account_number} onChange={(event) => {
-                setAccountNumber(event.target.value);
+            <p className="required"> {formErrors.nip} </p>
+            <label>Wpisz numer konta<span className="required">*</span></label>
+            <input type="text" id="account_number" name="account_number" placeholder="Nr konta.." defaultValue={customer?.account_number} onChange={(e) => {
+                setAccountNumber(e.target.value);
+                handleChange(e);
               }}>
             </input>
-            <p class="required"> {errors.account_number?.message} </p>
-            <label>Wpisz adres e-mail<span class="required">*</span></label>
-            <input type="text" id="email" name="email" placeholder="E-mail.." defaultValue={customer?.email} onChange={(event) => {
-                setEmail(event.target.value);
+            <p className="required"> {formErrors.account_number} </p>
+            <label>Wpisz adres e-mail<span className="required">*</span></label>
+            <input type="text" id="email" name="email" placeholder="E-mail.." defaultValue={customer?.email} onChange={(e) => {
+                setEmail(e.target.value);
+                handleChange(e);
               }}>
             </input>
-            <p class="required"> {errors.email?.message} </p>
+            <p className="required"> {formErrors.email} </p>
             <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
               <ImCancelCircle style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} onClick={() => {navigate("/customers")}}/>
-              {isAddMode && <FaCheckCircle onClick={addCompany} style={{color: 'green', cursor: 'pointer'}}/>}
-              {!isAddMode && <FaCheckCircle onClick={updateCompany} style={{color: 'green', cursor: 'pointer'}} />}
-              <input type="submit" value="OK" id="submit" className='btn-submit' />
+              <FaCheckCircle onClick={handleSubmit} style={{color: 'green', cursor: 'pointer'}}/>
+              
             </div>
           </form>
         </>
