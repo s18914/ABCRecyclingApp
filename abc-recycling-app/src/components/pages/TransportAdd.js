@@ -11,9 +11,6 @@ import { FaCheckCircle, FaPlus, FaListUl} from 'react-icons/fa'
 import {Link} from 'react-router-dom';
 
 function TransportAdd() {
-  const [transport, setTransport] = useState();
-  let isAddMode = ({id}.id === undefined ? true : false);
-
   //transport
   const [date, setDate] = useState("");
   const [phone, setPhone] = useState("");
@@ -34,10 +31,10 @@ function TransportAdd() {
   const [carId, setCarId] = useState(0);
   const [workerId, setWorkerId] = useState(0);
   const [addressId, setAddressId] = useState(0);
-
   const {id} = useParams();
   const navigate = useNavigate();
-
+  const [transport, setTransport] = useState();
+  let isAddMode = ({id}.id === undefined ? true : false);
   const [open, setOpen] = React.useState(false);  
 
   const handleClose = () => {
@@ -204,7 +201,7 @@ function TransportAdd() {
         <label>Wybierz kierowcę</label>
         <div style={{display: 'inline-block', verticalAlign: 'middle', marginTop: '10px'}} onClick={findDrivers}>
           <Autocomplete
-            id="workerLookup"
+            id="WorkersLookup"
             options={workersList}
             onChange={(newValue) => {
               setWorkerId(newValue.id);

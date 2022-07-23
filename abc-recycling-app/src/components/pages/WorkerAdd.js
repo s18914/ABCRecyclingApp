@@ -21,20 +21,21 @@ function WorkerAdd() {
   const navigate = useNavigate();
   let isAddMode = ({id}.id === undefined ? true : false);
 
-  // const getWorker = (id) => {
-  //   if(!isAddMode) {
-  //     Axios.get(`/worker/${id}`).then((response) => {
-  //       setWorker(response.data);
-  //       setName(response.data?.name);
-  //       setSurname(response.data?.surname);
-  //       setIdNumber(response.data?.idNumber);
-  //     });
-  //   }
-  // };
+  const getWorker = (id) => {
+    if(!isAddMode) {
+      Axios.get(`/worker/${id}`).then((response) => {
+        setWorker(response.data);
+        setName(response.data?.name);
+        setSurname(response.data?.surname);
+        setIdNumber(response.data?.idNumber);
+        setRoleId(response.data?.roleId);
+      });
+    }
+  };
 
-  // useEffect(() => {
-  //   getWorker({id}.id);
-  // }, []);
+  useEffect(() => {
+    getWorker({id}.id);
+  }, []);
 
   const addWorker = (event) => {
     event.preventDefault();
@@ -46,7 +47,6 @@ function WorkerAdd() {
     }).then((data) => {
       console.log("success", data.data);
       navigate("/workers");
-      console.log(idNumber)
     })
   };
 
@@ -87,11 +87,10 @@ function WorkerAdd() {
             <div onClick={findOptions}>
               <Autocomplete
                 id="rolesLookup"
-                defaultValue={worker?.roleId} 
                 options={rolesList}
                 onChange={(value) => {
                   setRoleId(value.id);
-                  //console.log(value.id);
+                  console.log(value.id);
                 }}
                 getOptionLabel={(option) => option.label}
                 isOptionEqualToValue={(option, value) => option.id === value.id}

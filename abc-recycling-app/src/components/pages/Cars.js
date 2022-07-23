@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import DataTable from 'react-data-table-component'
 import { useState } from "react";
 import Axios from "../../request";
@@ -6,10 +6,18 @@ import {Link} from 'react-router-dom';
 import { FaTimes } from 'react-icons/fa'
 import { FaPen } from 'react-icons/fa'
 import {AiOutlinePlusSquare} from 'react-icons/ai'
+import FilterComponent from "../FilterComponent";
+
 
 const Cars = props => {
 
   const [carsList, setCarsList] = useState([]);
+  const [filterText, setFilterText] = React.useState("");
+  const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
+  const paginationComponentOptions = {
+    rowsPerPageText: 'Rekordów na stronie',
+    rangeSeparatorText: 'z',
+  };
   const columns =  [
     {
       name: 'Id',
@@ -48,6 +56,30 @@ const Cars = props => {
       )
     }
   ];
+
+  const filteredItems = carsList.filter(
+    item =>
+      JSON.stringify(Object.values(item))
+        .toLowerCase()
+        .indexOf(filterText.toLowerCase()) !== -1
+  );
+
+  const subHeaderComponent = useMemo(() => {
+    const handleClear = () => {
+      if (filterText) {
+        setResetPaginationToggle(!resetPaginationToggle);
+        setFilterText("");
+      }
+    };
+
+    return (
+      <FilterComponent
+        onFilter={e => setFilterText(e.target.value)}
+        onClear={handleClear}
+        filterText={filterText}
+      />
+    );
+  }, [filterText, resetPaginationToggle]);
   
   const deleteCar = (id) => {
     Axios.delete(`/carDelete/${id}`).then((response) => {
@@ -72,8 +104,13 @@ const Cars = props => {
       <DataTable
         title="Lista samochodów"
         columns={columns}
-        data={carsList}
+        data={filteredItems}
         noDataComponent='brak rekordów'
+        pagination
+        paginationComponentOptions={paginationComponentOptions}
+        striped
+        subHeader
+        subHeaderComponent={subHeaderComponent}
       />
       <div className='btn-panel'>
         <Link to={'/cars/add'}>

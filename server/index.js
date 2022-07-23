@@ -26,11 +26,13 @@ client.connect(function(err) {
 app.post("/transportCreate", (req, res) => {
   const date = req.body.date;
   const phone = req.body.phone;
-  const address = req.body.address;
+  const addressId = req.body.addressId;
+  const carId = req.body.carId;
+  const workerId = req.body.workerId;
 
   client.query(
-    "INSERT INTO transports (date, phone, address) VALUES ($1,$2,$3)",
-    [date, phone, address],
+    "INSERT INTO transports (date, phone, address_id, car_id, worker_id) VALUES ($1,$2,$3,$4,$5)",
+    [date, phone, addressId, carId, workerId],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -67,13 +69,13 @@ app.put("/transportUpdate", (req, res) => {
   const id = req.body.id;
   const date = req.body.date;
   const phone = req.body.phone;
-  const address = req.body.address;
-  const car = req.body.car;
-  const worker = req.body.worker;
+  const addressId = req.body.addressId;
+  const carId = req.body.carId;
+  const workerId = req.body.workerId;
 
   client.query(
     "Update transports set date = $1, phone = $2, address_id = $3, car_id = $4, worker_id = $5 where transport_id = $6",
-    [id, date, phone, address, car, worker],
+    [id, date, phone, addressId, carId, workerId],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -207,16 +209,16 @@ app.get("/CarsLookup", (req, res) => {
 });
 
 //Address
-// app.get("/addresses", (req, res) => {
-//   client.query("SELECT street, house_number, flat_number FROM addresses", (err, result) => {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       res.json(result.rows);
-//       return;
-//     }
-//   });
-// });
+app.get("/addresses", (req, res) => {
+  client.query("SELECT * from get_addresses()", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows);
+      return;
+    }
+  });
+});
 
 app.post("/addressCreate", (req, res) => {
   const street = req.body.street;
@@ -224,7 +226,7 @@ app.post("/addressCreate", (req, res) => {
   const flatNumber = req.body.flatNumber;
 
   client.query(
-    "INSERT INTO cars (street, houseNumber, flatNumber) VALUES ($1,$2, $3)",
+    "INSERT INTO addresses (street, houseNumber, flatNumber) VALUES ($1,$2, $3)",
     [street, houseNumber, flatNumber],
     (err, result) => {
       if (err) {
