@@ -88,9 +88,8 @@ function WorkerAdd() {
               <Autocomplete
                 id="rolesLookup"
                 options={rolesList}
-                onChange={(value) => {
+                onChange={(event, value) => {
                   setRoleId(value.id);
-                  console.log(value.id);
                 }}
                 getOptionLabel={(option) => option.label}
                 isOptionEqualToValue={(option, value) => option.id === value.id}

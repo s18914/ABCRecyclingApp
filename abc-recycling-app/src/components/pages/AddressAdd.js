@@ -12,7 +12,7 @@ function AddressAdd() {
   const [street, setSreet] = useState("");
   const [houseNumber, setHouseNumber] = useState(0);
   const [flatNumber, setFlatNumber] = useState(0);
-  const [zipCodeId, setZipCodeId] = useState(0);
+  const [zipCodeId, setZipCodeId] = useState("");
   const [zipCodesList, setZipCodesList] = useState([]);
 
   const {id} = useParams();
@@ -64,7 +64,6 @@ function AddressAdd() {
     Axios('/ZipCodesLookup').then(
       response => {
         setZipCodesList(response.data);
-        console.log(response.data);
       }
     )
   };
@@ -97,9 +96,8 @@ function AddressAdd() {
             <div onClick={findZipCodes}>
               <Autocomplete
                 id="ZipCodesLookup"
-                defaultValue={address?.zipCodeId} 
                 options={zipCodesList}
-                onChange={(value) => {
+                onChange={(event, value) => {
                   setZipCodeId(value.id);
                 }}
                 getOptionLabel={(option) => option.label}

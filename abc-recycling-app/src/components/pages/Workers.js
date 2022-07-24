@@ -43,7 +43,7 @@ const Workers = props => {
     {
       name: 'Rola',
       width: '200px',
-      selector: row => row.role_id,
+      selector: row => row.role_name,
     },
     {
       name: "",

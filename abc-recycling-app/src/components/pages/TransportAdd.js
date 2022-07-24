@@ -15,17 +15,10 @@ function TransportAdd() {
   const [date, setDate] = useState("");
   const [phone, setPhone] = useState("");
 
-  //adres
-  const [street, setStreet] = useState("");
-  const [houseNumber, setHouseNumber] = useState(0);
-  const [flatNumber, setFlatNumber] = useState(0);
-  const [zipCodeId, setZipCodeId] = useState(0);
-
   //listy samochodu, pracownika, adresu
   const [carsList, setCarList] = useState([]);
   const [workersList, setWorkersList] = useState([]);
   const [addressList, setAddressList] = useState([]);
-  const [zipCodesList, setZipCodesList] = useState([]);
 
   //id do lookupa samochodu, pracownika, adresu
   const [carId, setCarId] = useState(0);
@@ -36,14 +29,6 @@ function TransportAdd() {
   const [transport, setTransport] = useState();
   let isAddMode = ({id}.id === undefined ? true : false);
   const [open, setOpen] = React.useState(false);  
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-  
-  const handleOpen = () => {
-    setOpen(true);
-  }
 
   const addTransport = (event) => {
     event.preventDefault();
@@ -76,10 +61,10 @@ function TransportAdd() {
     )
   };
 
-  const findZipCodes = () => {
-    Axios('/ZipCodesLookup').then(
+  const findAddresses = () => {
+    Axios('/addressLookup').then(
       response => {
-        setZipCodesList(response.data);
+        setAddressList(response.data);
         console.log(response.data);
       }
     )
@@ -90,77 +75,29 @@ function TransportAdd() {
       {isAddMode &&<h1>Dodaj nowy transport</h1>}
       {!isAddMode && <h1>Edytuj transport</h1>}
       <form className='simpleForm'>
+
         <label>Wybierz adres</label>
         <div>
-          <div style={{display: 'inline-block', verticalAlign: 'middle', marginTop: '10px'}} onClick={console.log('adresy')}>
+          <div style={{display: 'inline-block', verticalAlign: 'middle', marginTop: '10px'}} onClick={findAddresses}>
             <Autocomplete
               id="addressLookup"
-              options={zipCodesList}
-              onChange={(newValue) => {
+              options={addressList}
+              onChange={(event, newValue) => {
                 setAddressId(newValue.id);
               }}
-              sx={{ width: 500 }}
               getOptionLabel={(option) => option.label}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              sx={{ width: 300 }}
               renderInput={(params) => <TextField {...params} label="Adres" />}
             />
           </div>
-          <FaPlus title='Dodaj nowy adres' className='icon' onClick={handleOpen}> </FaPlus>
+          <Link to='/address/add'>
+          <FaPlus title='Dodaj nowy adres' className='icon'> </FaPlus>
+          </Link>
+          <Link to='/addresses'>
+          <FaListUl title='Zobacz listę adresów' className='icon'> </FaListUl>
+          </Link>
         </div>
-
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-        <Box className='modal'>
-          <h2>Nowy adres</h2>
-          <form>
-          <div>
-            <label htmlFor="street">Ulica:</label>
-            <input type="text" id="street" name="street" 
-            onChange={(event) => {
-              setStreet(event.target.value);
-            }}>
-            </input>
-          </div> 
-          <div>
-            <label htmlFor="houseNumber">Numer Domu:</label>
-            <input type="number" id="houseNumber" name="houseNumber" 
-            onChange={(event) => {
-              setHouseNumber(event.target.value);
-            }}>
-            </input>
-          </div>
-          <div>
-            <label htmlFor="flatNumber">Numer Lokalu:</label>
-            <input type="number" id="houseNumber" name="houseNumber" 
-            onChange={(event) => {
-              setFlatNumber(event.target.value);
-            }}>
-            </input>
-          </div>
-          <div>
-            <label htmlFor="zipCode" style={{display: 'inline-block'}}>Kod pocztowy:</label>
-          <div style={{verticalAlign: 'middle', marginTop: '10px'}} onClick={findZipCodes}>
-            <Autocomplete
-              id="zipCodesLookup"
-              options={zipCodesList}
-              onChange={(newValue) => {
-                setZipCodeId(newValue.id);
-              }}
-              sx={{ width: 200, padding: 0 }}
-              getOptionLabel={(option) => option.label}
-              renderInput={(params) => <TextField {...params} label="Kod pocztowy" />}
-            />
-            </div>
-          </div>
-          <button className="form-control btn btn-primary" type="submit">
-            Dodaj
-          </button>
-          </form>
-        </Box>
-        </Modal>
 
         <label>Wybierz datę</label>
         <input type="date" id="date" name="date" defaultValue={transport?.date}
@@ -182,7 +119,7 @@ function TransportAdd() {
             <Autocomplete
               id="carsLookup"
               options={carsList}
-              onChange={(newValue) => {
+              onChange={(event, newValue) => {
                 setCarId(newValue.id);
               }}
               getOptionLabel={(option) => option.label}
@@ -203,7 +140,7 @@ function TransportAdd() {
           <Autocomplete
             id="WorkersLookup"
             options={workersList}
-            onChange={(newValue) => {
+            onChange={(event, newValue) => {
               setWorkerId(newValue.id);
             }}
             getOptionLabel={(option) => option.label}

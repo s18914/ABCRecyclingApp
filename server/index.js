@@ -224,10 +224,11 @@ app.post("/addressCreate", (req, res) => {
   const street = req.body.street;
   const houseNumber = req.body.houseNumber;
   const flatNumber = req.body.flatNumber;
+  const zipCodeId = req.body.zipCodeId;
 
   client.query(
-    "INSERT INTO addresses (street, houseNumber, flatNumber) VALUES ($1,$2, $3)",
-    [street, houseNumber, flatNumber],
+    "INSERT INTO addresses (street, house_number, flat_number, zip_code_id) VALUES ($1,$2,$3,$4)",
+    [street, houseNumber, flatNumber, zipCodeId],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -239,9 +240,8 @@ app.post("/addressCreate", (req, res) => {
   );
 });
 
-//ZIPCode
-app.get("/zipCodesForLookup", (req, res) => {
-  client.query("SELECT zip_code as label, zip_code_id as id FROM zip_codes", (err, result) => {
+app.get("/addressLookup", (req, res) => {
+  client.query("SELECT * FROM get_addresses_lookup()", (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -250,6 +250,8 @@ app.get("/zipCodesForLookup", (req, res) => {
     }
   });
 });
+
+//ZIPCode
 
 app.get("/zipCodes", (req, res) => {
   client.query("SELECT zip_code, province, city FROM zip_codes", (err, result) => {
@@ -585,7 +587,7 @@ app.post("/workerCreate", (req, res) => {
 });
 
 app.get("/workers", (req, res) => {
-  client.query("SELECT * FROM workers", (err, result) => {
+  client.query("SELECT * FROM get_workers()", (err, result) => {
     if (err) {
       console.log(err);
     } else {
