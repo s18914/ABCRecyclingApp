@@ -11,16 +11,12 @@ import { FaCheckCircle, FaPlus, FaListUl} from 'react-icons/fa'
 import {Link} from 'react-router-dom';
 
 function TransportAdd() {
-  //transport
+
   const [date, setDate] = useState("");
   const [phone, setPhone] = useState("");
-
-  //listy samochodu, pracownika, adresu
   const [carsList, setCarList] = useState([]);
   const [workersList, setWorkersList] = useState([]);
   const [addressList, setAddressList] = useState([]);
-
-  //id do lookupa samochodu, pracownika, adresu
   const [carId, setCarId] = useState(0);
   const [workerId, setWorkerId] = useState(0);
   const [addressId, setAddressId] = useState(0);
@@ -28,7 +24,6 @@ function TransportAdd() {
   const navigate = useNavigate();
   const [transport, setTransport] = useState();
   let isAddMode = ({id}.id === undefined ? true : false);
-  const [open, setOpen] = React.useState(false);  
 
   const addTransport = (event) => {
     event.preventDefault();
@@ -150,23 +145,11 @@ function TransportAdd() {
         </div>
 
         <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
+          <ImCancelCircle style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} onClick={() => {navigate("/transports")}}/>
           {isAddMode && <FaCheckCircle onClick={addTransport} style={{color: 'green', cursor: 'pointer'}}/>}
           {!isAddMode && <FaCheckCircle style={{color: 'green', cursor: 'pointer'}} />}
         </div>
       </form>
-      <div className='btn-panel'>
-        <a href={'/transports'}>
-          <ImCancelCircle style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} onClick={() => {navigate("/transports")}}/>
-          <button onClick={addTransport}>
-            Zatwierdź
-          </button>
-        </a> 
-        <a href={'/transports'}>
-          <button>
-            Anuluj
-          </button>
-        </a> 
-      </div>
     </div>
   )
 }

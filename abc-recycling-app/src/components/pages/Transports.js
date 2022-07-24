@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import DataTable from 'react-data-table-component'
 import { useState } from "react";
 import Axios from "../../request";
@@ -7,10 +7,17 @@ import { FaGlasses } from 'react-icons/fa'
 import { FaTimes } from 'react-icons/fa'
 import { FaPen } from 'react-icons/fa'
 import {AiOutlinePlusSquare} from 'react-icons/ai'
+import FilterComponent from "../FilterComponent";
 
 const Transports = props => {
 
   const [transportList, setTransportList] = useState([]);
+  const [filterText, setFilterText] = React.useState("");
+  const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
+  const paginationComponentOptions = {
+    rowsPerPageText: 'Rekordów na stronie',
+    rangeSeparatorText: 'z',
+  };
   const columns =  [
     {
       name: 'Id',
@@ -19,7 +26,8 @@ const Transports = props => {
     },
     {
       name: 'Adres',
-      selector: row => row.address,
+      width: '300px',
+      selector: row => row.transport_address,
     },
     {
       name: 'Telefon',
@@ -28,8 +36,13 @@ const Transports = props => {
     },
     {
       name: 'Data',
+      width: '160px',
+      selector: row => row.transport_date,
+    },
+    {
+      name: 'Kierowca',
       width: '180px',
-      selector: row => row.date,
+      selector: row => row.transport_worker,
     },
     {
       name: "",
@@ -39,7 +52,6 @@ const Transports = props => {
         <Link to={`/transports/details/${row.transport_id}`}>
         <FaGlasses
           style={{color: '#3286DA', cursor: 'pointer', transform: 'scale(1.4)'}} 
-          //onClick={() => onShow(task.id)}
         />
         </Link>
       )
@@ -81,6 +93,30 @@ const Transports = props => {
     });
   };
 
+  const filteredItems = transportList.filter(
+    item =>
+      JSON.stringify(Object.values(item))
+        .toLowerCase()
+        .indexOf(filterText.toLowerCase()) !== -1
+  );
+
+  const subHeaderComponent = useMemo(() => {
+    const handleClear = () => {
+      if (filterText) {
+        setResetPaginationToggle(!resetPaginationToggle);
+        setFilterText("");
+      }
+    };
+
+    return (
+      <FilterComponent
+        onFilter={e => setFilterText(e.target.value)}
+        onClear={handleClear}
+        filterText={filterText}
+      />
+    );
+  }, [filterText, resetPaginationToggle]);
+
   useEffect(() => {
     Axios('/transports').then(
       response => {
@@ -94,8 +130,13 @@ const Transports = props => {
       <DataTable
         title="Lista transportów"
         columns={columns}
-        data={transportList}
+        data={filteredItems}
         noDataComponent='brak rekordów'
+        pagination
+        paginationComponentOptions={paginationComponentOptions}
+        striped
+        subHeader
+        subHeaderComponent={subHeaderComponent}
       />
       <div className='btn-panel'>
         <Link to={'/transports/add'}>

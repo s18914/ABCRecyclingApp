@@ -103,19 +103,6 @@ function WorkerAdd() {
             {!isAddMode && <FaCheckCircle style={{color: 'green', cursor: 'pointer'}} />}
           </div>
         </form>
-      <div className='btn-panel'>
-        <Link to={'/workers'}>
-          <ImCancelCircle style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} onClick={() => {navigate("/workers")}}/>
-          <button onClick={addWorker}>
-            Zatwierdź
-          </button>
-        </Link> 
-        <Link to={'/workers'}>
-          <button>
-            Anuluj
-          </button>
-        </Link> 
-      </div>
     </div>
   )
 }

@@ -44,7 +44,7 @@ app.post("/transportCreate", (req, res) => {
 });
 
 app.get("/transports", (req, res) => {
-  client.query("SELECT * FROM transports", (err, result) => {
+  client.query("SELECT transport_id, transport_address, phone, to_char(transport_date, 'YYYY-MM-DD') transport_date, transport_worker FROM get_transports()", (err, result) => {
     if (err) {
       console.log(err);
     } else {
