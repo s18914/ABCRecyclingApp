@@ -50,25 +50,34 @@ function CustomerAdd() {
 
   const validate = (values) => {
     let errors = {};
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-
-    if (!values.name) {
-      errors.name = "To pole nie może być puste";
-    } 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+    const numberRegex = /[0-9]*/;
+    const nipRegex = /[0-9]{4}-[0-9]{3}-[0-9]{3}/;
+    const idRegex = /([a-z]|[A-Z]){4}[0-9]{6}/;
+    const accountRegex = /[0-9]{2}-[0-9]{8}-[0-9]{19}/;
 
     if(isCompany){
+
+      if (!values.name) {
+        errors.name = "To pole nie może być puste";
+      } 
+
       if (!values.nip) {
         errors.nip = "To pole nie może być puste";
-      } 
+      } else if ((!numberRegex.test(values.nip) && values.nip.length !== 10) || !nipRegex.test(values.nip)) {
+        errors.nip = "nip powinien składać się z 10 cyfr i mieć format: 0000-000-000 lub być pisany ciągiem";
+      }
 
       if (!values.account_number) {
         errors.account_number = "To pole nie może być puste";
-      } 
+      } else if ((!numberRegex.test(values.account_number) && values.account_number.length !== 26) || !accountRegex.test(values.account_number)) {
+        errors.account_number = "Numer konta powinien składać się z 26 cyfr i mieć format: 00-00000000-0000000000000000 lub być pisany ciągiem";
+      }
 
       if (!values.email) {
         errors.email = "To pole nie może być puste";
-      } else if (!regex.test(values.email)) {
-        errors.email = "Invalid email format";
+      } else if (!emailRegex.test(values.email)) {
+        errors.email = "Adres email nie jest poprawny";
       }
     } else {
       if (!values.surname) {
@@ -76,15 +85,10 @@ function CustomerAdd() {
       } 
       if (!values.id_number) {
         errors.id_number = "To pole nie może być puste";
+      }else if ((!numberRegex.test(values.id_number) && values.id_number.length !== 10) || !idRegex.test(values.id_number)) {
+        errors.id_number = "Numer dowodu powinien składać się z 4 liter oraz 6 cyfr i mieć format: AAAA000000";
       }
     }
-    //company
-    
-
-    //person
-    // if (!values.id_number) {
-    //   errors.id_number = "To pole nie może być puste";
-    // } 
 
     return errors;
   };
@@ -130,8 +134,8 @@ function CustomerAdd() {
 
       Axios.post('/companyCreate', {
         name: name,
-        nip: nip, 
-        account_number: account_number, 
+        nip: nip.replace('-', ''), 
+        account_number: account_number.replace('-', ''),
         email: email
       }).then((response) => {
         console.log("success", response.data);
@@ -244,19 +248,22 @@ function CustomerAdd() {
           <form className='simpleForm'>
             <label>Wpisz imię</label>
             <input type="text" id="name" name="name" placeholder="Imię.." defaultValue={customer?.name}
-              onChange={e => setName(e.target.value)}
+              onChange={(e) => {setName(e.target.value); handleChange(e);}}
               >
             </input>
             <label>Wpisz nazwisko</label>
-            <input type="text" id="surname" name="surname" placeholder="Nazwisko.." defaultValue={customer?.surname} onChange={(event) => {
-                setSurname(event.target.value);
+            <input type="text" id="surname" name="surname" placeholder="Nazwisko.." defaultValue={customer?.surname} onChange={(e) => {
+                setSurname(e.target.value);
+                handleChange(e);
               }}>
             </input>
-            <label>Wpisz numer dowodu</label>
-            <input type="text" id="id_number" name="id_number" placeholder="Numer dowodu..[9 znaków]" defaultValue={customer?.id_number} onChange={(event) => {
-                setIdNumber(event.target.value);
+            <label>Wpisz numer dowodu<span className="required">*</span></label>
+            <input type="text" id="id_number" name="id_number" placeholder="Numer dowodu..[9 znaków]" defaultValue={customer?.id_number} onChange={(e) => {
+                setIdNumber(e.target.value);
+                handleChange(e);
               }}>
             </input>
+            <p className="required"> {formErrors.id_number} </p>
             <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
               <ImCancelCircle style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} onClick={() => {navigate("/customers")}}/>
               {isAddMode && <FaCheckCircle onClick={addCustomer} style={{color: 'green', cursor: 'pointer'}}/>}
