@@ -20,6 +20,44 @@ function PurchaseAdd() {
   const [transportId, setTransportId] = useState(null);
   const [isCompany, setIsCompany] = useState(true);
 
+  //Walidacja
+  const [formValues, setFormValues] = useState({ contractorId: "", id_number: "", Weight: "", price: "" });
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const submit = () => {
+    console.log(formValues);
+    updateDocument();
+  };
+
+  const handleChange = (e) => {
+    console.log(e.target);
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setFormErrors(validate(formValues));
+    setIsSubmitting(true);
+  };
+
+  const validate = (values) => {
+    let errors = {};
+    const idRegex = /([a-z]|[A-Z]){4}[0-9]{6}/;
+
+    if (isCompany !== null && contractorId === 0) {
+      errors.contractorId = "To pole nie może być puste";
+    } else if (isCompany === null && !values.id_number) {
+      errors.contractorId = "To pole nie może być puste";
+    } else if (isCompany === null && !idRegex.test(values.id_number)) {
+      errors.contractorId = "Numer dowodu powinien składać się z 4 liter oraz 6 cyfr i mieć format: AAAA000000";
+    }
+
+    console.log(values)
+    return errors;
+  };
+
   useEffect(() => {
     if(isAddMode && docId === undefined) {
       addDocument();
@@ -34,7 +72,10 @@ function PurchaseAdd() {
         }
       )
     }
-  }, [docId]);
+    if (Object.keys(formErrors).length === 0 && isSubmitting) {
+      submit();
+    }
+  }, [formErrors]);
 
   const addDocument = () => {
     Axios.get('/purchaseInit').then((response) => {
@@ -53,8 +94,6 @@ function PurchaseAdd() {
   };
 
   const updateDocument = (e) => {
-    e.preventDefault();
-
     if(isCompany === null){
       Axios.put('/purchaseDocumentUpdateAndAddPerson', {
         document_id: docId,
@@ -137,17 +176,18 @@ function PurchaseAdd() {
         <input type="radio" value="Company" name="contractor" onClick={() => {setIsCompany(null)}} style={{marginLeft: '20px'}}/> Nowa osoba
       </div>
       <form>
-        <label>Wybierz klienta</label>
+        <label>Wybierz klienta<span className="required">*</span></label>
+        <p className="required"> {formErrors.contractorId} </p>
         {isCompany === true && 
           <div onClick={findCompanies}>
             <Autocomplete
               id="customer-lookup"
               options={customersList}
-              onChange={(event, value) => setContractorId(value.id)}
+              onChange={(event, value) => {setContractorId(value.id); handleChange(event)}}
               getOptionLabel={(option) => option.label}
               checked={isCompany}
               sx={{ width: 300 }}
-              renderInput={(params) => <TextField {...params} label="Wybierz firmę"/>}
+              renderInput={(params) => <TextField {...params} label="Wybierz firmę..."/>}
             />
           </div>
         }
@@ -156,17 +196,18 @@ function PurchaseAdd() {
             <Autocomplete
               id="customer-lookup"
               options={customersList}
-              onChange={(event, value) => setContractorId(value.id)}
+              onChange={(event, value) => {setContractorId(value.id); handleChange(event)}}
               getOptionLabel={(option) => option.label}
               sx={{ width: 300 }}
-              renderInput={(params) => <TextField {...params} label="Wybierz osobę"/>}
+              renderInput={(params) => <TextField {...params} label="Wybierz osobę..."/>}
             />
           </div>
         }
         {isCompany === null && 
           <div className='simpleForm'>
-            <input id="id_number" placeholder="Wprowadź numer dowodu nowego klienta" style={{width: '40%'}} onChange={(event) => {
+            <input id="id_number" name='id_number' placeholder="Wprowadź numer dowodu nowego klienta..." style={{width: '40%', height: '56px'}} onChange={(event) => {
                 setIdNumber(event.target.value);
+                handleChange(event)
               }}></input>
           </div>
         }
@@ -201,7 +242,7 @@ function PurchaseAdd() {
         }
         <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
           <ImCancelCircle style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} onClick={() => {navigate("/purchases")}}/>
-          <FaCheckCircle onClick={updateDocument} style={{color: 'green', cursor: 'pointer'}}/>
+          <FaCheckCircle onClick={handleSubmit} style={{color: 'green', cursor: 'pointer'}}/>
         </div>
         </form>
     </div>

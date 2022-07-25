@@ -3,7 +3,6 @@ import Axios from "../../request";
 import { FaCheckCircle, FaBuilding, FaUserAlt } from 'react-icons/fa'
 import { ImCancelCircle} from 'react-icons/im'
 import { useParams, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
 
 
 function CustomerAdd() {
@@ -80,9 +79,6 @@ function CustomerAdd() {
         errors.email = "Adres email nie jest poprawny";
       }
     } else {
-      if (!values.surname) {
-        errors.surname = "To pole nie może być puste";
-      } 
       if (!values.id_number) {
         errors.id_number = "To pole nie może być puste";
       }else if ((!numberRegex.test(values.id_number) && values.id_number.length !== 10) || !idRegex.test(values.id_number)) {
@@ -111,8 +107,6 @@ function CustomerAdd() {
 
   useEffect(() => {
     getCustomer({id}.id);
-    console.log(formErrors);
-    console.log( Object.keys(formErrors).length + "  ii")
     if (Object.keys(formErrors).length === 0 && isSubmitting) {
       submit();
     }
@@ -236,7 +230,6 @@ function CustomerAdd() {
             <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
               <ImCancelCircle style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} onClick={() => {navigate("/customers")}}/>
               <FaCheckCircle onClick={handleSubmit} style={{color: 'green', cursor: 'pointer'}}/>
-              
             </div>
           </form>
         </>
@@ -258,7 +251,7 @@ function CustomerAdd() {
               }}>
             </input>
             <label>Wpisz numer dowodu<span className="required">*</span></label>
-            <input type="text" id="id_number" name="id_number" placeholder="Numer dowodu..[9 znaków]" defaultValue={customer?.id_number} onChange={(e) => {
+            <input type="text" id="id_number" name="id_number" placeholder="Numer dowodu np. ABCD123456" defaultValue={customer?.id_number} onChange={(e) => {
                 setIdNumber(e.target.value);
                 handleChange(e);
               }}>
@@ -266,8 +259,7 @@ function CustomerAdd() {
             <p className="required"> {formErrors.id_number} </p>
             <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
               <ImCancelCircle style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} onClick={() => {navigate("/customers")}}/>
-              {isAddMode && <FaCheckCircle onClick={addCustomer} style={{color: 'green', cursor: 'pointer'}}/>}
-              {!isAddMode && <FaCheckCircle onClick={updateCustomer} style={{color: 'green', cursor: 'pointer'}}/>}
+              <FaCheckCircle onClick={handleSubmit} style={{color: 'green', cursor: 'pointer'}}/>
             </div>
           </form>
         </>

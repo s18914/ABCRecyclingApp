@@ -195,7 +195,7 @@ body .main form .required {
   font-size: small;
   margin: 0 0 10px 0;
 }
-body .main form.simpleForm input, body .main form.simpleForm select {
+body .main .simpleForm input, body .main .simpleForm select {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -204,7 +204,7 @@ body .main form.simpleForm input, body .main form.simpleForm select {
   border-radius: 4px;
   box-sizing: border-box;
 }
-body .main form.simpleForm .btn-submit {
+body .main .simpleForm .btn-submit {
   width: auto;
   height: auto;
   background-color: rgb(154, 207, 154);
