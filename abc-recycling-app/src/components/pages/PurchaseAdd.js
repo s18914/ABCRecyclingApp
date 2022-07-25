@@ -21,7 +21,7 @@ function PurchaseAdd() {
   const [isCompany, setIsCompany] = useState(true);
 
   //Walidacja
-  const [formValues, setFormValues] = useState({ contractorId: "", id_number: "", Weight: "", price: "" });
+  const [formValues, setFormValues] = useState({ contractorId: "", id_number: "", weight: "", price: "" });
   const [formErrors, setFormErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -45,6 +45,8 @@ function PurchaseAdd() {
   const validate = (values) => {
     let errors = {};
     const idRegex = /([a-z]|[A-Z]){4}[0-9]{6}/;
+    const numericRegex = /\d+[\.]\d+/;
+    const numberRegex = /[0-9]+/;
 
     if (isCompany !== null && contractorId === 0) {
       errors.contractorId = "To pole nie może być puste";
@@ -54,7 +56,28 @@ function PurchaseAdd() {
       errors.contractorId = "Numer dowodu powinien składać się z 4 liter oraz 6 cyfr i mieć format: AAAA000000";
     }
 
-    console.log(values)
+    if(isAddMode){
+      productList.forEach(prod => {
+        const inputPriceId = 'priceOf' + prod.type_id;
+        const inputWeightId = 'weightOf' + prod.type_id;
+        let weight = document.getElementById(inputWeightId).value;
+        let price = document.getElementById(inputPriceId).value;
+
+        if (weight === '' || weight === null) weight = 0;
+        if (price === '' || price === null) price = 0;
+
+        //Walidacja
+        console.log("price" + price);
+        if(!numberRegex.test(price) && !numericRegex.test(price)) {
+          errors.price = "W pole ceny została wprowadzona wartość, która nie jest liczbą. Dozwolony format: 0 oraz 0.0";
+        }
+
+        if(!numberRegex.test(weight) && !numericRegex.test(weight)) {
+          errors.weight = "W pole wagi została wprowadzona wartość, która nie jest liczbą. Dozwolony format: 0 oraz 0.0";
+        }
+      });
+    }
+    
     return errors;
   };
 
@@ -149,6 +172,7 @@ function PurchaseAdd() {
         const inputWeightId = 'weightOf' + prod.type_id;
         let weight = document.getElementById(inputWeightId).value;
         let price = document.getElementById(inputPriceId).value;
+
         if (weight === '' || weight === null) weight = 0;
         if (price === '' || price === null) price = 0;
 
@@ -225,6 +249,8 @@ function PurchaseAdd() {
         {isAddMode && 
         <>
           <label className="main-label">Dodaj towary:</label>
+          <p className="required"> {formErrors.weight} </p>
+          <p className="required"> {formErrors.price} </p>
           {productList.map((item) => {
             let inputPriceId = 'priceOf' + item.type_id;
             let inputWeightId = 'weightOf' + item.type_id;
