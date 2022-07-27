@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import DataTable from 'react-data-table-component'
 import { useState } from "react";
 import Axios from "../../request";
@@ -10,9 +10,15 @@ import FilterComponent from "../FilterComponent";
 import { useNavigate } from "react-router-dom";
 
 
-const Addresses = props => {
+const Addresses = props => { 
 
   const [addressesList, setAddressesList] = useState([]);
+  const [filterText, setFilterText] = React.useState("");
+  const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
+  const paginationComponentOptions = {
+    rowsPerPageText: 'Rekordów na stronie',
+    rangeSeparatorText: 'z',
+  };
   const navigate = useNavigate();
   const columns =  [
     {
@@ -83,14 +89,43 @@ const Addresses = props => {
     )
   }, []);
 
+  const filteredItems = addressesList.filter(
+    item =>
+      JSON.stringify(Object.values(item))
+        .toLowerCase()
+        .indexOf(filterText.toLowerCase()) !== -1
+  );
+
+  const subHeaderComponent = useMemo(() => {
+    const handleClear = () => {
+      if (filterText) {
+        setResetPaginationToggle(!resetPaginationToggle);
+        setFilterText("");
+      }
+    };
+
+    return (
+      <FilterComponent
+        onFilter={e => setFilterText(e.target.value)}
+        onClear={handleClear}
+        filterText={filterText}
+      />
+    );
+  }, [filterText, resetPaginationToggle]);
+
   return (
     <div className='main'>
       <FaAngleLeft onClick={() => {navigate("/transport/add")}} style={{color: 'green', cursor: 'pointer', transform: 'scale(2.1)'}} >Tranporty</FaAngleLeft>
       <DataTable
         title="Lista adresów"
         columns={columns}
-        data={addressesList}
+        data={filteredItems}
         noDataComponent='brak rekordów'
+        pagination
+        paginationComponentOptions={paginationComponentOptions}
+        striped
+        subHeader
+        subHeaderComponent={subHeaderComponent}
       />
       <div className='btn-panel'>
         <Link to={'/address/add'}>

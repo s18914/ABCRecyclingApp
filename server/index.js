@@ -222,13 +222,13 @@ app.get("/addresses", (req, res) => {
 
 app.post("/addressCreate", (req, res) => {
   const street = req.body.street;
-  const houseNumber = req.body.houseNumber;
-  const flatNumber = req.body.flatNumber;
-  const zipCodeId = req.body.zipCodeId;
+  const house_number = req.body.house_number;
+  const flat_number = req.body.flat_number;
+  const zip_code_id = req.body.zip_code_id;
 
   client.query(
     "INSERT INTO addresses (street, house_number, flat_number, zip_code_id) VALUES ($1,$2,$3,$4)",
-    [street, houseNumber, flatNumber, zipCodeId],
+    [street, house_number, flat_number, zip_code_id],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -256,14 +256,14 @@ app.get("/address/:id", (req, res) => {
 
 app.put("/addressUpdate", (req, res) => {
   const street = req.body.street;
-  const houseNumber = req.body.houseNumber;
-  const flatNumber = req.body.flatNumber;
-  const zipCodeId = req.body.zipCodeId;
+  const house_number = req.body.house_number;
+  const flat_number = req.body.flat_number;
+  const zip_code_id = req.body.zip_code_id;
   const id = req.body.id;
 
   client.query(
-    "Update addresses set street = $1, houseNumber = $2, flatNumber = $3, zipCodeId = $4 where address_id = $5",
-    [street, houseNumber, flatNumber, zipCodeId, id],
+    "Update addresses set street = $1, house_number = $2, flat_number = $3, zip_code_id = $4 where address_id = $5",
+    [street, house_number, flat_number, zip_code_id, id],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -617,12 +617,12 @@ app.put("/SaleUpdatePayment", (req, res) => {
 app.post("/workerCreate", (req, res) => {
   const name = req.body.name;
   const surname = req.body.surname;
-  const idNumber = req.body.idNumber;
-  const roleId = req.body.roleId;
+  const id_number = req.body.id_number;
+  const role_id = req.body.role_id;
 
   client.query(
     "INSERT INTO workers (name, surname, id_number, role_id) VALUES ($1,$2,$3,$4)",
-    [name, surname, idNumber, roleId],
+    [name, surname, id_number, role_id],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -661,12 +661,12 @@ app.put("/workerUpdate", (req, res) => {
   const id = req.body.id;
   const name = req.body.name;
   const surname = req.body.surname;
-  const idNumber = req.body.idNumber;
-  const roleId = req.body.roleId;
+  const id_number = req.body.id_number;
+  const role_id = req.body.role_id;
 
   client.query(
     "Update workers set name = $1, surname = $2, id_number = $3, role_id = $4 where worker_id = $5",
-    [name, surname, idNumber, roleId, id],
+    [name, surname, id_number, role_id, id],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -678,7 +678,7 @@ app.put("/workerUpdate", (req, res) => {
 });
 
 app.delete("/workerDelete/:id", (req, res) => {
-  const id = req.params.id;
+  const id = req.params.id; 
   client.query("DELETE FROM workers WHERE worker_id = $1", 
   [id], 
   (err, result) => {

@@ -10,9 +10,9 @@ import Autocomplete from '@mui/material/Autocomplete';
 function AddressAdd() {
   const [address, setAddress] = useState();
   const [street, setSreet] = useState("");
-  const [houseNumber, setHouseNumber] = useState(0);
-  const [flatNumber, setFlatNumber] = useState(0);
-  const [zipCodeId, setZipCodeId] = useState("");
+  const [house_number, setHouseNumber] = useState(0);
+  const [flat_number, setFlatNumber] = useState(0);
+  const [zip_code_id, setZipCodeId] = useState(0);
   const [zipCodesList, setZipCodesList] = useState([]);
 
   const {id} = useParams();
@@ -24,8 +24,8 @@ function AddressAdd() {
       Axios.get(`/address/${id}`).then((response) => {
         setAddress(response.data);
         setSreet(response.data?.street);
-        setHouseNumber(response.data?.houseNumber);
-        setFlatNumber(response.data?.flatNumber);
+        setHouseNumber(response.data?.house_number);
+        setFlatNumber(response.data?.flat_number);
       });
     }
   };
@@ -38,9 +38,9 @@ function AddressAdd() {
     event.preventDefault();
     Axios.post('/addressCreate', {
       street: street, 
-      houseNumber: houseNumber,
-      flatNumber: flatNumber,
-      zipCodeId: zipCodeId
+      house_number: house_number,
+      flat_number: flat_number,
+      zip_code_id: zip_code_id
     }).then((data) => {
       console.log("success", data.data);
       navigate("/transports/add");
@@ -51,9 +51,10 @@ function AddressAdd() {
     e.preventDefault();
     Axios.put('/addressUpdate', {
       street: street, 
-      houseNumber: houseNumber,
-      flatNumber: flatNumber,
-      id: {id}.id
+      house_number: house_number,
+      flat_number: flat_number,
+      zip_code_id: zip_code_id,
+      //id: {id}.id
     }).then((data) => {
       console.log("success", data.data);
       navigate("/addresses");
@@ -81,13 +82,13 @@ function AddressAdd() {
             }}>
             </input>
             <label>Numer domu</label>
-            <input type="number" id="houseNumber" name="houseNumber" defaultValue={address?.houseNumber}
+            <input type="number" id="house_number" name="house_number" defaultValue={address?.house_number}
             onChange={(event) => {
                 setHouseNumber(event.target.value);
             }}>
             </input>
             <label>Numer Lokalu</label>
-            <input type="number" id="flatNumber" name="flatNumber" defaultValue={address?.houseNumber}
+            <input type="number" id="flat_number" name="flat_number" defaultValue={address?.flat_number}
             onChange={(event) => {
                 setFlatNumber(event.target.value);
             }}>
