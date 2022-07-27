@@ -53,6 +53,7 @@ const App = () => {
           <Route path='/stock' exact element={<Stock/>} />
           <Route path='/addresses' exact element={<Addresses/>} />
           <Route path='/address/add' exact element={<AddressAdd/>} />
+          <Route path='/address/edit/:id' exact element={<AddressAdd/>} />
         </Routes>
       </Router>
     </div>

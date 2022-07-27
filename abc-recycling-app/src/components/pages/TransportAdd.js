@@ -70,7 +70,6 @@ function TransportAdd() {
       {isAddMode &&<h1>Dodaj nowy transport</h1>}
       {!isAddMode && <h1>Edytuj transport</h1>}
       <form className='simpleForm'>
-
         <label>Wybierz adres</label>
         <div>
           <div style={{display: 'inline-block', verticalAlign: 'middle', marginTop: '10px'}} onClick={findAddresses}>

@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect } from "react";
 import Axios from "../../request";
 import { useParams, useNavigate } from "react-router-dom";
-import { FaCheckCircle } from 'react-icons/fa'
+import { FaCheckCircle, FaAngleLeft } from 'react-icons/fa'
 import { ImCancelCircle} from 'react-icons/im'
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -72,7 +72,8 @@ function AddressAdd() {
     <div className='main'>
         {isAddMode &&<h1>Dodaj nowy adres</h1>}
         {!isAddMode && <h1>Edytuj adres</h1>}
-        <form>
+        <FaAngleLeft onClick={() => {navigate("/addresses")}} style={{color: 'green', cursor: 'pointer'}} />
+        <form className='simpleForm'>
             <label>Ulica</label>
             <input type="text" id="street" name="street" defaultValue={address?.street} 
             onChange={(event) => {

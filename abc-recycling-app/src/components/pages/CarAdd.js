@@ -14,6 +14,11 @@ function CarAdd() {
   let isAddMode = ({id}.id === undefined ? true : false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    getCar({id}.id);
+  }, []);
+  
+
   const getCar = (id) => {
     if(!isAddMode) {
       Axios.get(`/car/${id}`).then((response) => {
@@ -23,10 +28,6 @@ function CarAdd() {
       });
     }
   };
-
-  useEffect(() => {
-    getCar({id}.id);
-  }, []);
 
   const addCar = (event) => {
     event.preventDefault();
@@ -55,7 +56,7 @@ function CarAdd() {
     <div className='main'>
         {isAddMode &&<h1>Dodaj nowy samochód</h1>}
         {!isAddMode && <h1>Edytuj samochód</h1>}
-        <form>
+        <form className='simpleForm'>
             <label>Numer Rejestracyjny</label>
             <input type="text" id="registrationNumber" name="registrationNumber" defaultValue={car?.registrationNumber} 
             onChange={(event) => {

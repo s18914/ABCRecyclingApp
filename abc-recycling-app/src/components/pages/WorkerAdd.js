@@ -13,7 +13,7 @@ function WorkerAdd() {
   const [worker, setWorker] = useState();
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
-  const [idNumber, setIdNumber] = useState(0);
+  const [idNumber, setIdNumber] = useState("");
   const [roleId, setRoleId] = useState(0);
   const [rolesList, setRolesList] = useState([]);
 
@@ -81,7 +81,6 @@ function WorkerAdd() {
                 setIdNumber(event.target.value);
             }}>
             </input>
-            <label>Rola</label>
             <div>
             <br />
             <div onClick={findOptions}>
@@ -94,7 +93,7 @@ function WorkerAdd() {
                 getOptionLabel={(option) => option.label}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
                 sx={{ width: 300 }}
-                renderInput={(params) => <TextField {...params} label="Rola" />}
+                renderInput={(params) => <TextField {...params} label="Stanowisko" />}
               />
             </div>
             </div>

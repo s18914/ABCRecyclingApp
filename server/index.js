@@ -44,7 +44,7 @@ app.post("/transportCreate", (req, res) => {
 });
 
 app.get("/transports", (req, res) => {
-  client.query("SELECT transport_id, transport_address, phone, to_char(transport_date, 'YYYY-MM-DD') transport_date, transport_worker FROM get_transports()", (err, result) => {
+  client.query("SELECT transport_id, transport_address, phone, registration_number, to_char(transport_date, 'YYYY-MM-DD') transport_date, transport_worker FROM get_transports()", (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -56,7 +56,7 @@ app.get("/transports", (req, res) => {
 
 app.get("/transport/:id", (req, res) => {
   const id = req.params.id;
-  client.query("SELECT * FROM transports WHERE transport_id = $1", [id], (err, result) => {
+  client.query("SELECT address_id, date, phone, car_id, worker_id FROM get_transports() WHERE transport_id = $1", [id], (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -74,8 +74,8 @@ app.put("/transportUpdate", (req, res) => {
   const workerId = req.body.workerId;
 
   client.query(
-    "Update transports set date = $1, phone = $2, address_id = $3, car_id = $4, worker_id = $5 where transport_id = $6",
-    [id, date, phone, addressId, carId, workerId],
+    "Update transports set address_id = $1, date = $2, phone = $3, car_id = $4, worker_id = $5 where transport_id = $6",
+    [addressId, date, phone, carId, workerId, id],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -238,6 +238,53 @@ app.post("/addressCreate", (req, res) => {
       }
     }
   );
+});
+
+app.get("/address/:id", (req, res) => {
+  const id = req.params.id;
+  client.query("SELECT street, house_number, flat_number, zip_code_id FROM addresses WHERE address_id = $1", 
+  [id], 
+  (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows[0]);
+    }
+  });
+});
+
+
+app.put("/addressUpdate", (req, res) => {
+  const street = req.body.street;
+  const houseNumber = req.body.houseNumber;
+  const flatNumber = req.body.flatNumber;
+  const zipCodeId = req.body.zipCodeId;
+  const id = req.body.id;
+
+  client.query(
+    "Update addresses set street = $1, houseNumber = $2, flatNumber = $3, zipCodeId = $4 where address_id = $5",
+    [street, houseNumber, flatNumber, zipCodeId, id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.delete("/addressDelete/:id", (req, res) => {
+  const id = req.params.id;
+  client.query("DELETE FROM addresses WHERE address_id = $1", 
+  [id], 
+  (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
 });
 
 app.get("/addressLookup", (req, res) => {
@@ -599,7 +646,7 @@ app.get("/workers", (req, res) => {
     
 app.get("/worker/:id", (req, res) => {
   const id = req.params.id;
-  client.query("SELECT * FROM workers WHERE worker_id = $1", 
+  client.query("SELECT * FROM	get_workers() WHERE worker_id = $1", 
   [id],
   (err, result) => {
     if (err) {
@@ -614,11 +661,12 @@ app.put("/workerUpdate", (req, res) => {
   const id = req.body.id;
   const name = req.body.name;
   const surname = req.body.surname;
-  const id_number = req.body.id_number;
+  const idNumber = req.body.idNumber;
+  const roleId = req.body.roleId;
 
   client.query(
-    "Update workers set name = $1, surname = $2, id_number = $3 where worker_id = $4",
-    [name, surname, id_number, id],
+    "Update workers set name = $1, surname = $2, id_number = $3, role_id = $4 where worker_id = $5",
+    [name, surname, idNumber, roleId, id],
     (err, result) => {
       if (err) {
         console.log(err);

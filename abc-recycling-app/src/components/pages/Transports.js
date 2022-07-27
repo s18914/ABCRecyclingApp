@@ -40,21 +40,14 @@ const Transports = props => {
       selector: row => row.transport_date,
     },
     {
+      name: 'Ciężarówka',
+      width: '180px',
+      selector: row => row.registration_number,
+    },
+    {
       name: 'Kierowca',
       width: '180px',
       selector: row => row.transport_worker,
-    },
-    {
-      name: "",
-      button: true,
-      width: '60px',
-      cell: row => (
-        <Link to={`/transports/details/${row.transport_id}`}>
-        <FaGlasses
-          style={{color: '#3286DA', cursor: 'pointer', transform: 'scale(1.4)'}} 
-        />
-        </Link>
-      )
     },
     {
       name: "",
