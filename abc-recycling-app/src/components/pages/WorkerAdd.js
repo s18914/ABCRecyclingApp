@@ -21,6 +21,17 @@ function WorkerAdd() {
   const navigate = useNavigate();
   let isAddMode = ({id}.id === undefined ? true : false);
 
+  //walidacja
+  // const [formValues, setFormValues] = useState({ name: "", surname: "", idNumber: "", roleId: ""});
+  // const [formErrors, setFormErrors] = useState({});
+  // const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // const submit = () => {
+  //   console.log(formValues);
+  //   if(isAddMode) addWorker();
+  //   updateWorker();
+  // };
+
   const getWorker = (id) => {
     if(!isAddMode) {
       Axios.get(`/worker/${id}`).then((response) => {
@@ -50,6 +61,20 @@ function WorkerAdd() {
     })
   };
 
+  const updateWorker = (e) => {
+    e.preventDefault();
+    Axios.put('/workerUpdate', {
+      name: name, 
+      surname: surname,
+      idNumber: idNumber,
+      roleId: roleId,
+      id: {id}.id
+    }).then((response) => {
+      console.log("success", response.data);
+      navigate("/workers");
+    });
+  };
+
   const findOptions = () => {
     Axios('/roles').then(
       response => {
@@ -59,10 +84,11 @@ function WorkerAdd() {
   };
 
   return (
-    <div className='main' >
+    <div className='main'>
       {isAddMode &&<h1>Dodaj nowego pracownika</h1>}
       {!isAddMode && <h1>Edytuj pracownika</h1>}
-        <form className='simpleForm'>
+        <form>
+          <div className='simpleForm'>
             <label>Imię</label>
             <input type="text" id="name" name="name" defaultValue={worker?.name} 
             onChange={(event) => {
@@ -81,6 +107,7 @@ function WorkerAdd() {
                 setIdNumber(event.target.value);
             }}>
             </input>
+            </div>
             <div>
             <br />
             <div onClick={findOptions}>
@@ -99,7 +126,7 @@ function WorkerAdd() {
             </div>
           <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
             {isAddMode && <FaCheckCircle onClick={addWorker} style={{color: 'green', cursor: 'pointer'}}/>}
-            {!isAddMode && <FaCheckCircle style={{color: 'green', cursor: 'pointer'}} />}
+            {!isAddMode && <FaCheckCircle onClick={updateWorker} style={{color: 'green', cursor: 'pointer'}} />}
           </div>
         </form>
     </div>
