@@ -162,7 +162,7 @@ body {
         }
         
 
-        button {
+        .btnModal {
             margin: 15px;
             padding: 15px 20px;
             background-color: #205225;
@@ -170,6 +170,26 @@ body {
             border: 1px solid #1c4720;
             border-radius: 5px;
         }
+
+        form {
+            display: flex;
+            flex-direction: column;
+
+            .inputStyle {
+                width: 288px;
+                height: 35px;
+                padding: 5px;
+                border-radius: 4px;
+                border-style: solid;
+                border-width: 1px;
+                border-color: rgba(0, 0, 0, 0.23);
+            }
+        }
+    }
+
+    .smallModal {
+        width: 400px;
+        left: 67%;
     }
 
     .main {
