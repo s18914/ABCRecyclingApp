@@ -14,6 +14,38 @@ function CarAdd() {
   let isAddMode = ({id}.id === undefined ? true : false);
   const navigate = useNavigate();
 
+  const [formValues, setFormValues] = useState({ registration_number: ""});
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const submit = () => {
+    console.log(formValues);
+    if(isAddMode) addCar();
+    updateCar();
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setFormErrors(validate(formValues));
+    setIsSubmitting(true);
+  };
+
+  const validate = (values) => {
+    let errors = {};
+    const numberRegex = /[0-9]*/;
+
+    if (!values.registration_number) {
+      errors.street = "To pole nie może być puste";
+    } 
+
+    return errors;
+  };
+
   useEffect(() => {
     getCar({id}.id);
   }, []);
@@ -56,11 +88,12 @@ function CarAdd() {
     <div className='main'>
         {isAddMode &&<h1>Dodaj nowy samochód</h1>}
         {!isAddMode && <h1>Edytuj samochód</h1>}
-        <form className='simpleForm'>
-            <label>Numer Rejestracyjny</label>
+        <form className='simpleForm' onSubmit={handleSubmit} noValidate>
+            <label>Numer Rejestracyjny<span className="required">*</span></label>
             <input type="text" id="registration_number" name="registration_number" defaultValue={car?.registration_number} 
             onChange={(event) => {
                 setRegistrationNumber(event.target.value);
+                handleChange(event);
             }}>
             </input>
             <label>Data ważności przeglądu</label>

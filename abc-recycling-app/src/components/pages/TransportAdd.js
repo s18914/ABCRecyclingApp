@@ -69,7 +69,28 @@ function TransportAdd() {
     <div className='main'>
       {isAddMode &&<h1>Dodaj nowy transport</h1>}
       {!isAddMode && <h1>Edytuj transport</h1>}
-      <form className='simpleForm'>
+      <form>
+      <div className='simpleForm'>
+        <label>Wybierz datę</label>
+        <div style={{ width: '300px'}}>
+        <input type="date" id="date" name="date" defaultValue={transport?.date}
+        onChange={(event) => {
+          setDate(event.target.value);
+        }}>
+        </input>
+        </div>
+
+        <label>Wpisz telefon odbiorcy</label>
+        <div style={{ width: '300px'}}>
+        <input type="text" id="phone" name="phone" defaultValue={transport?.phone}
+        onChange={(event) => {
+          setPhone(event.target.value);
+        }}>
+        </input>
+        </div>
+        </div>
+        
+        <div>
         <label>Wybierz adres</label>
         <div>
           <div style={{display: 'inline-block', verticalAlign: 'middle', marginTop: '10px'}} onClick={findAddresses}>
@@ -88,24 +109,7 @@ function TransportAdd() {
           <Link to='/address/add'>
           <FaPlus title='Dodaj nowy adres' className='icon'> </FaPlus>
           </Link>
-          <Link to='/addresses'>
-          <FaListUl title='Zobacz listę adresów' className='icon'> </FaListUl>
-          </Link>
         </div>
-
-        <label>Wybierz datę</label>
-        <input type="date" id="date" name="date" defaultValue={transport?.date}
-        onChange={(event) => {
-          setDate(event.target.value);
-        }}>
-        </input>
-
-        <label>Wpisz telefon odbiorcy</label>
-        <input type="text" id="phone" name="phone" defaultValue={transport?.phone}
-        onChange={(event) => {
-          setPhone(event.target.value);
-        }}>
-        </input>
 
         <label>Wybierz ciężarówkę</label>
         <div>
@@ -124,12 +128,10 @@ function TransportAdd() {
           <Link to='/cars/add'>
           <FaPlus title='Dodaj nową ciężarówkę' className='icon'> </FaPlus>
           </Link>
-          <Link to='/cars'>
-          <FaListUl title='Zobacz listę ciężarówek' className='icon'> </FaListUl>
-          </Link>
         </div>
 
         <label>Wybierz kierowcę</label>
+        <br></br>
         <div style={{display: 'inline-block', verticalAlign: 'middle', marginTop: '10px'}} onClick={findDrivers}>
           <Autocomplete
             id="WorkersLookup"
@@ -141,6 +143,8 @@ function TransportAdd() {
             sx={{ width: 300 }}
             renderInput={(params) => <TextField {...params} label="Kierowca" />}
           />
+        </div>
+        
         </div>
 
         <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
