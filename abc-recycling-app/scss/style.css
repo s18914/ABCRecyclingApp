@@ -4,21 +4,25 @@
   font-weight: normal;
   font-style: normal;
 }
+
 @font-face {
   font-family: "PoppinsLight";
   src: url("fonts/Poppins-Light.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
+
 body {
   font-family: PoppinsRegular;
 }
+
 body .btn-panel {
   display: flex;
   justify-content: center;
   margin-top: 100px;
   margin-bottom: 10px;
 }
+
 body .btn-panel .btn {
   display: inline-block;
   color: #fff;
@@ -30,12 +34,14 @@ body .btn-panel .btn {
   text-decoration: none;
   font-size: 15px;
 }
+
 body .btn-panel-small {
   display: flex;
   justify-content: right;
   padding: 20px;
   border-bottom: 1px solid grey;
 }
+
 body .header {
   background-color: #153418;
   height: 80px;
@@ -43,20 +49,24 @@ body .header {
   justify-content: flex-start;
   align-items: center;
 }
+
 body .header h1 {
   color: #FFFFFF;
   font-family: PoppinsLight;
 }
+
 body .header .menu-bars {
   width: 250px;
   margin-left: 2rem;
   font-size: 2rem;
   background: none;
 }
+
 body .header > img {
   width: 170px;
   padding: 15px 10px;
 }
+
 body .menu-bars {
   margin-left: 2rem;
   font-size: 2rem;
@@ -64,10 +74,12 @@ body .menu-bars {
   padding-top: 10px;
   margin-left: 40px;
 }
+
 body .nav-menu.active {
   left: 0;
   transition: 350ms;
 }
+
 body .nav-menu {
   background-color: #205225;
   width: 220px;
@@ -79,15 +91,18 @@ body .nav-menu {
   left: -100%;
   transition: 850ms;
 }
+
 body .nav-menu .active {
   left: 0;
   transition: 350ms;
 }
+
 body .nav-menu .nav-menu-items {
   width: 100%;
   padding-left: 10px;
   margin-top: 10px;
 }
+
 body .nav-menu .nav-menu-items .nav-text {
   display: flex;
   justify-content: start;
@@ -96,6 +111,7 @@ body .nav-menu .nav-menu-items .nav-text {
   list-style: none;
   height: 60px;
 }
+
 body .nav-menu .nav-menu-items .nav-text a {
   text-decoration: none;
   color: #f5f5f5;
@@ -107,6 +123,7 @@ body .nav-menu .nav-menu-items .nav-text a {
   padding: 0 16px;
   border-radius: 4px;
 }
+
 body .nav-menu .nav-menu-items .navbar-toggle {
   background-color: #205225;
   width: 100%;
@@ -115,9 +132,11 @@ body .nav-menu .nav-menu-items .navbar-toggle {
   justify-content: start;
   align-items: center;
 }
+
 body span {
   margin-left: 16px;
 }
+
 body .modal {
   position: absolute;
   top: 50%;
@@ -130,18 +149,22 @@ body .modal {
   border-radius: 5px;
   padding: 20px;
 }
+
 body .modal .formRow {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr;
   margin: 10px;
 }
+
 body .modal .formRow input {
   width: 50px;
 }
+
 body .modal .formRow div {
   padding: 10px;
 }
+
 body .modal .btnModal {
   margin: 15px;
   padding: 15px 20px;
@@ -150,10 +173,12 @@ body .modal .btnModal {
   border: 1px solid #1c4720;
   border-radius: 5px;
 }
+
 body .modal form {
   display: flex;
   flex-direction: column;
 }
+
 body .modal form .inputStyle {
   width: 288px;
   height: 35px;
@@ -163,16 +188,20 @@ body .modal form .inputStyle {
   border-width: 1px;
   border-color: rgba(0, 0, 0, 0.23);
 }
+
 body .smallModal {
   width: 400px;
   left: 67%;
 }
+
 body .main {
   padding: 3% 8% 3% 250px;
 }
+
 body .main .strong-table {
   font-size: large;
 }
+
 body .main table {
   border-style: solid;
   border-width: 1px;
@@ -182,36 +211,46 @@ body .main table {
   overflow: hidden;
   width: 70%;
 }
+
 body .main table tr:last-child td:first-child {
   border-bottom-left-radius: 10px;
 }
+
 body .main table tr:last-child td:last-child {
   border-bottom-right-radius: 10px;
 }
+
 body .main table h2 {
   text-align: center;
 }
+
 body .main table tr td {
   padding: 0.5rem;
 }
+
 body .main table tbody tr:nth-child(odd) {
   background-color: #d9d9d9;
 }
+
 body .main table tbody tr:nth-child(even) {
   background-color: #f2f2f2;
 }
+
 body .main form {
   display: flex;
   flex-direction: column;
 }
+
 body .main form .main-label {
   margin-top: 25px;
 }
+
 body .main form .required {
   color: red;
   font-size: small;
   margin: 0 0 10px 0;
 }
+
 body .main .simpleForm input, body .main .simpleForm select {
   width: 100%;
   padding: 12px 20px;
@@ -221,16 +260,18 @@ body .main .simpleForm input, body .main .simpleForm select {
   border-radius: 4px;
   box-sizing: border-box;
 }
+
 body .main .simpleForm .btn-submit {
   width: auto;
   height: auto;
-  background-color: rgb(154, 207, 154);
+  background-color: #9acf9a;
   font-size: 10px;
   padding: 5px;
   color: white;
   border: 1px solid #479c65;
   margin: 0;
 }
+
 body .main .formProducts {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
@@ -239,29 +280,33 @@ body .main .formProducts {
   width: 450px;
   border-top: 1px solid grey;
 }
+
 body .main .formProducts input {
   width: 100px;
 }
+
 body .main .formProducts div {
   padding: 10px;
 }
+
 body .main .list-of-products {
   margin-top: 60px;
   padding: 0;
   max-width: 80%;
   font-size: 13px;
 }
+
 body .main .list-of-products ol:first-child {
   border-bottom: 1px solid grey;
 }
+
 body .main .list-of-products ol {
   display: grid;
   grid-template-columns: 15% 65% 10% 10%;
   padding: 5px 0;
   margin: 2px 5px;
 }
+
 body .main .list-of-products ol div {
   margin-left: 5px;
 }
-
-/*# sourceMappingURL=style.css.map */

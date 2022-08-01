@@ -2,6 +2,7 @@ import { useState, useEffect} from "react";
 import Axios from "../../request";
 import { FaCheckCircle} from 'react-icons/fa'
 import { useParams, useNavigate  } from "react-router-dom";
+import TransportModal from "./TransportModal"
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { ImCancelCircle} from 'react-icons/im'
@@ -22,6 +23,7 @@ function SaleAdd() {
   const [formValues, setFormValues] = useState({ contractorId: "", Weight: "", price: "" });
   const [formErrors, setFormErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   const submit = () => {
     console.log(formValues);
@@ -112,7 +114,6 @@ function SaleAdd() {
   };
 
   const updateDocument = (e) => {
-    e.preventDefault();
     if(isAddMode) updateProducts();
      console.log(contractorId)
     Axios.put('/saleDocumentUpdate', {
@@ -136,7 +137,7 @@ function SaleAdd() {
   const findTransports = () => {
     Axios('/TransportsLookup').then(
       response => {
-        setCustomersList(response.data);
+        setTransportsList(response.data);
       }
     )
   };
@@ -194,6 +195,7 @@ function SaleAdd() {
             renderInput={(params) => <TextField {...params} label="Transport"/>}
           />
         </div>
+        <TransportModal id={id} />
         {isAddMode && 
           <>
             <label className="main-label">Dodaj towary:</label>

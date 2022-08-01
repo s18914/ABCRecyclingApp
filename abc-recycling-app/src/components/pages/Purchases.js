@@ -21,6 +21,11 @@ const Purchases = props => {
   const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
   const columns =  [
     {
+      name: 'No.',
+      width: '60px',
+      selector: row => row.purchase_id,
+    },
+    {
       name: 'Kontrahent',
       width: '280px',
       selector: row => row.name,
@@ -38,13 +43,13 @@ const Purchases = props => {
         if (row.transport_info === 'Nieustalony') {
           return (
             <div
-              style={{backgroundColor: '#41B53D', color: 'white', cursor: 'pointer', width: '150px', textAlign: 'center', fontWeight: '600', borderRadius: '3px', padding: '0'}}
+              style={{backgroundColor: '#41B53D', color: 'white', cursor: 'pointer', width: '120px', textAlign: 'center', fontWeight: '600', borderRadius: '3px', padding: '0'}}
               onClick={() => addAddress(row.purchase_id)}
             >+</div>
           );
         } else {
           return (
-            row.status
+            row.transport_info
           );
         }
       },
