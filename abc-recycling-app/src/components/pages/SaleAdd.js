@@ -114,7 +114,6 @@ function SaleAdd() {
   };
 
   const updateDocument = (e) => {
-    e.preventDefault();
     if(isAddMode) updateProducts();
      console.log(contractorId)
     Axios.put('/saleDocumentUpdate', {
@@ -138,7 +137,7 @@ function SaleAdd() {
   const findTransports = () => {
     Axios('/TransportsLookup').then(
       response => {
-        setCustomersList(response.data);
+        setTransportsList(response.data);
       }
     )
   };

@@ -22,6 +22,11 @@ const Sales = props => {
   };
   const columns =  [
     {
+      name: 'No.',
+      width: '60px',
+      selector: row => row.sales_id,
+    },
+    {
       name: 'Kontrahent',
       width: '220px',
       selector: row => row.name,
@@ -38,14 +43,15 @@ const Sales = props => {
       cell: row => {
         if (row.transport_info === 'Nieustalony') {
           return (
-            <div
-              style={{backgroundColor: '#41B53D', color: 'white', cursor: 'pointer', width: '150px', textAlign: 'center', fontWeight: '600', borderRadius: '3px', padding: '0'}}
-              onClick={() => addAddress(row.sales_id)}
-            >+</div>
+            <Link to={`/sales/edit/${row.sales_id}`}>
+              <div
+              style={{backgroundColor: '#41B53D', color: 'white', cursor: 'pointer', width: '120px', textAlign: 'center', fontWeight: '600', borderRadius: '3px', padding: '0'}}
+              >+</div>
+            </Link>
           );
         } else {
           return (
-            row.status
+            row.transport_info
           );
         }
       },
@@ -165,10 +171,6 @@ const Sales = props => {
     }).then((response) => {
       console.log("success", response.data);
     });
-  };
-
-  const addAddress =  (id) => {
-    return 1;
   };
 
   const filteredItems = saleList.filter(

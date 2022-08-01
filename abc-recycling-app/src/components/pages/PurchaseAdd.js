@@ -4,6 +4,7 @@ import { FaCheckCircle} from 'react-icons/fa'
 import { useParams, useNavigate} from "react-router-dom";
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import TransportModal from "./TransportModal"
 import { ImCancelCircle} from 'react-icons/im'
 
 function PurchaseAdd() {
@@ -246,6 +247,7 @@ function PurchaseAdd() {
               renderInput={(params) => <TextField {...params} label="Transport"/>}
             />
           </div>
+        <TransportModal id={id} />
         {isAddMode && 
         <>
           <label className="main-label">Dodaj towary:</label>
