@@ -40,16 +40,11 @@ function CarAdd() {
     const numberRegex = /[0-9]*/;
 
     if (!values.registration_number) {
-      errors.street = "To pole nie może być puste";
+      errors.registration_number = "To pole nie może być puste";
     } 
 
     return errors;
   };
-
-  useEffect(() => {
-    getCar({id}.id);
-  }, []);
-  
 
   const getCar = (id) => {
     if(!isAddMode) {
@@ -60,6 +55,13 @@ function CarAdd() {
       });
     }
   };
+  
+  useEffect(() => {
+    getCar({id}.id);
+    if (Object.keys(formErrors).length === 0 && isSubmitting) {
+      submit();
+    }
+  }, [formErrors]);
 
   const addCar = (event) => {
     event.preventDefault();
@@ -96,6 +98,7 @@ function CarAdd() {
                 handleChange(event);
             }}>
             </input>
+            <p className="required"> {formErrors.registration_number} </p>
             <label>Data ważności przeglądu</label>
             <input type="date" id="overview_date" name="overview_date" defaultValue={car?.overview_date}
             onChange={(event) => {
@@ -104,8 +107,7 @@ function CarAdd() {
             </input>
             <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
               <ImCancelCircle style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} onClick={() => {navigate("/cars")}}/>
-              {isAddMode && <FaCheckCircle onClick={addCar} style={{color: 'green', cursor: 'pointer'}}/>}
-              {!isAddMode && <FaCheckCircle onClick={updateCar} style={{color: 'green', cursor: 'pointer'}} />}
+              {isAddMode && <FaCheckCircle onClick={handleSubmit} style={{color: 'green', cursor: 'pointer'}}/>}
             </div>
         </form>
     </div>

@@ -25,7 +25,6 @@ function WorkerAdd() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submit = () => {
-    console.log(formValues);
     if(isAddMode) addWorker();
     updateWorker();
   };
@@ -51,7 +50,7 @@ function WorkerAdd() {
     } 
 
     if (!values.surname) {
-      errors.name = "To pole nie może być puste";
+      errors.surname = "To pole nie może być puste";
     } 
 
     if (!values.id_number) {
@@ -59,6 +58,10 @@ function WorkerAdd() {
     }else if ((!numberRegex.test(values.id_number) && values.id_number.length !== 10) || !idRegex.test(values.id_number)) {
       errors.id_number = "Numer dowodu powinien składać się z 4 liter oraz 6 cyfr i mieć format: AAAA000000";
     }
+
+    if (!values.role_id) {
+      errors.role_id = "To pole nie może być puste";
+    } 
     
     return errors;
   };
