@@ -3,7 +3,6 @@ import DataTable from 'react-data-table-component'
 import { useState } from "react";
 import Axios from "../../request";
 import {Link} from 'react-router-dom';
-import { FaGlasses } from 'react-icons/fa'
 import { FaTimes } from 'react-icons/fa'
 import { FaPen } from 'react-icons/fa'
 import {AiOutlinePlusSquare} from 'react-icons/ai'

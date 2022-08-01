@@ -72,18 +72,22 @@ function TransportAdd() {
       <form>
       <div className='simpleForm'>
         <label>Wybierz datę</label>
+        <div style={{ width: '300px'}}>
         <input type="date" id="date" name="date" defaultValue={transport?.date}
         onChange={(event) => {
           setDate(event.target.value);
         }}>
         </input>
+        </div>
 
         <label>Wpisz telefon odbiorcy</label>
+        <div style={{ width: '300px'}}>
         <input type="text" id="phone" name="phone" defaultValue={transport?.phone}
         onChange={(event) => {
           setPhone(event.target.value);
         }}>
         </input>
+        </div>
         </div>
         
         <div>
