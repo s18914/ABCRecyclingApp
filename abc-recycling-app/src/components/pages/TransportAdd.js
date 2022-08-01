@@ -106,9 +106,7 @@ function TransportAdd() {
               renderInput={(params) => <TextField {...params} label="Adres" />}
             />
           </div>
-          <Link to='/address/add'>
-          <FaPlus title='Dodaj nowy adres' className='icon'> </FaPlus>
-          </Link>
+          <FaPlus style={{verticalAlign: 'middle', margin: '5px', fontSize: '20px'}} title='Dodaj nowy adres' className='icon'> </FaPlus>
         </div>
 
         <label>Wybierz ciężarówkę</label>
@@ -125,9 +123,7 @@ function TransportAdd() {
               renderInput={(params) => <TextField {...params} label="Ciężarówka" />}
             />
           </div>
-          <Link to='/cars/add'>
-          <FaPlus title='Dodaj nową ciężarówkę' className='icon'> </FaPlus>
-          </Link>
+          <FaPlus style={{verticalAlign: 'middle', margin: '5px', fontSize: '20px'}} title='Dodaj nową ciężarówkę' className='icon'> </FaPlus>
         </div>
 
         <label>Wybierz kierowcę</label>

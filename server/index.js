@@ -766,6 +766,17 @@ app.put("/productUpdate", (req, res) => {
   );
 });
 
+//CarsAfterOverviewDate
+app.get("/getOldCars", (req, res) => {
+  client.query("SELECT * from get_old_cars()", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows);
+    }
+  });
+});
+
 app.listen(3001, () => {
   console.log("Your server is running on port 3001");
 });
