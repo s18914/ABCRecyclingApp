@@ -14,7 +14,19 @@ export const SidebarData = [
     title: 'Transport',
     path: '/transports',
     icon: <FaIcons.FaTruck />,
-    cName: 'nav-text'
+    cName: 'nav-text',
+    subNav: [
+      {    
+        title: 'Adresy',
+        path: '/addresses',
+        icon: <FaIcons.FaBuilding />,
+      },
+      {    
+        title: 'Ciężarówki',
+        path: '/cars',
+        icon: <FaIcons.FaCar />,
+      }
+    ]
   },
   {
     title: 'Sprzedaż',
