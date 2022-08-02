@@ -6,6 +6,7 @@ import { SidebarData } from './SidebarData';
 import '../css/style.css';
 import { IconContext } from 'react-icons';
 import Logo from'../logo.png';
+import SubMenu from './SubMenu';
 
 function Navbar() {
 
@@ -30,14 +31,7 @@ function Navbar() {
                   </Link>
                 </li>
                 {SidebarData.map((item, index) => {
-                  return (
-                    <li key={index} className={item.cName}>
-                      <Link to={item.path}>
-                        {item.icon}
-                        <span>{item.title}</span>
-                      </Link>
-                    </li>
-                  );
+                  return <SubMenu item={item} key={index} />;
                 })}
               </ul>
             </nav>
