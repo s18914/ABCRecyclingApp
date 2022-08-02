@@ -90,7 +90,7 @@ function CarAdd() {
     <div className='main'>
         {isAddMode &&<h1>Dodaj nowy samochód</h1>}
         {!isAddMode && <h1>Edytuj samochód</h1>}
-        <form className='simpleForm' onSubmit={handleSubmit} noValidate>
+        <form className='simpleForm' style={{width: '300px'}} onSubmit={handleSubmit} noValidate>
             <label>Numer Rejestracyjny<span className="required">*</span></label>
             <input type="text" id="registration_number" name="registration_number" defaultValue={car?.registration_number} 
             onChange={(event) => {
@@ -105,11 +105,11 @@ function CarAdd() {
                 setOverviewDate(event.target.value);
             }}>
             </input>
-            <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
-              <ImCancelCircle style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} onClick={() => {navigate("/cars")}}/>
-              {isAddMode && <FaCheckCircle onClick={handleSubmit} style={{color: 'green', cursor: 'pointer'}}/>}
-            </div>
         </form>
+        <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
+          <ImCancelCircle style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} onClick={() => {navigate("/cars")}}/>
+          {isAddMode && <FaCheckCircle onClick={handleSubmit} style={{color: 'green', cursor: 'pointer'}}/>}
+        </div>
     </div>
   )
 }

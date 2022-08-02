@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect } from "react";
 import Axios from "../../request";
 import { useParams, useNavigate } from "react-router-dom";
-import { FaCheckCircle, FaAngleLeft } from 'react-icons/fa'
+import { FaCheckCircle } from 'react-icons/fa'
 import { ImCancelCircle} from 'react-icons/im'
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -87,7 +87,7 @@ function AddressAdd() {
       zip_code_id: zip_code_id
     }).then((data) => {
       console.log("success", data.data);
-      navigate("/transports/add");
+      navigate("/addresses");
     })
   };
 
@@ -117,8 +117,8 @@ function AddressAdd() {
     <div className='main'>
         {isAddMode &&<h1>Dodaj nowy adres</h1>}
         {!isAddMode && <h1>Edytuj adres</h1>}
-        <FaAngleLeft onClick={() => {navigate("/addresses")}} style={{color: 'green', cursor: 'pointer'}} />
-        <form className='simpleForm' onSubmit={handleSubmit} noValidate>
+        <form onSubmit={handleSubmit} noValidate>
+        <div className='simpleForm' style={{width: '300px'}}>
             <label>Ulica<span className="required">*</span></label>
             <input type="text" id="street" name="street" defaultValue={address?.street} 
             onChange={(event) => {
@@ -140,8 +140,8 @@ function AddressAdd() {
                 handleChange(event);
             }}>
             </input>
+            </div>
             <div>
-            <br />
             <label>Kod pocztowy<span className="required">*</span></label>
             <div onClick={findZipCodes}>
               <Autocomplete

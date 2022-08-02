@@ -120,7 +120,7 @@ function WorkerAdd() {
       {isAddMode &&<h1>Dodaj nowego pracownika</h1>}
       {!isAddMode && <h1>Edytuj pracownika</h1>}
         <form>
-          <div className='simpleForm' onSubmit={handleSubmit} noValidate>
+          <div className='simpleForm' style={{width: '300px'}} onSubmit={handleSubmit} noValidate>
             <label>Imię<span className="required">*</span></label>
             <input type="text" id="name" name="name" defaultValue={worker?.name} 
             onChange={(event) => {
@@ -147,7 +147,6 @@ function WorkerAdd() {
             <p className="required"> {formErrors.id_number} </p>
             </div>
             <div>
-            <br />
             <label>Stanowisko pracownika<span className="required">*</span></label>
             <div onClick={findOptions}>
               <Autocomplete

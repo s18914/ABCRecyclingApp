@@ -3,7 +3,7 @@ import DataTable from 'react-data-table-component'
 import { useState } from "react";
 import Axios from "../../request";
 import {Link} from 'react-router-dom';
-import { FaTimes, FaAngleLeft } from 'react-icons/fa'
+import { FaTimes } from 'react-icons/fa'
 import { FaPen } from 'react-icons/fa'
 import {AiOutlinePlusSquare} from 'react-icons/ai'
 import FilterComponent from "../FilterComponent";
@@ -115,7 +115,6 @@ const Addresses = props => {
 
   return (
     <div className='main'>
-      <FaAngleLeft onClick={() => {navigate("/transport/add")}} style={{color: 'green', cursor: 'pointer', transform: 'scale(2.1)'}} >Tranporty</FaAngleLeft>
       <DataTable
         title="Lista adresów"
         columns={columns}

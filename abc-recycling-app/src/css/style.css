@@ -85,7 +85,7 @@ body .nav-menu .active {
 }
 body .nav-menu .nav-menu-items {
   width: 100%;
-  padding-left: 10px;
+  padding-left: 0px;
   margin-top: 10px;
 }
 body .nav-menu .nav-menu-items .nav-text {
