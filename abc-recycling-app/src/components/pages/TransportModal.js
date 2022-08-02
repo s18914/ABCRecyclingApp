@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import { ImCancelCircle} from 'react-icons/im'
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { FaCheckCircle, FaPlus, FaListUl} from 'react-icons/fa'
+import { FaCheckCircle} from 'react-icons/fa'
 import {Link} from 'react-router-dom';
 
 function TransportModal({...props}) {
@@ -24,6 +24,33 @@ function TransportModal({...props}) {
   const [addressId, setAddressId] = useState(0);
   const [transport, setTransport] = useState();
 
+  //Walidacja
+  const [formValues, setFormValues] = useState({ address: "", date: "", worker: "", car: "" });
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const submit = () => {
+    console.log(formValues);
+    addTransport();
+  };
+
+  const handleChange = (e) => {
+    console.log(e.target);
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setFormErrors(validate(formValues));
+    setIsSubmitting(true);
+  };
+
+  const validate = (values) => {
+    let errors = {};
+    
+    return errors;
+  };
 
   const addTransport = (event) => {
     event.preventDefault();
@@ -92,6 +119,8 @@ function TransportModal({...props}) {
           <h3>Dodaj transport</h3>
           <form>
             <div>
+            <label>Wybierz adres<span className="required">*</span></label>
+            <p className="required"> {formErrors.address} </p>
             <div style={{display: 'inline-block', verticalAlign: 'middle', marginTop: '10px'}} onClick={findAddresses}>
                 <Autocomplete
                 id="addressLookup"
@@ -107,19 +136,21 @@ function TransportModal({...props}) {
             </div>
             <AddressModal />
             </div>
-            <label>Wybierz datę</label>
-            <input className='inputStyle' type="date" id="date" name="date" defaultValue={transport?.date}
+            <label>Wybierz datę<span className="required">*</span></label>
+            <p className="required"> {formErrors.date} </p>
+            <input className='inputStyle' type="date" id="date" name="date"
                 onChange={(event) => {
                 setDate(event.target.value);
                 }}>
             </input>
             <label>Wpisz telefon odbiorcy</label>
-            <input className='inputStyle' type="text" id="phone" name="phone" defaultValue={transport?.phone}
+            <input className='inputStyle' type="text" id="phone" name="phone" 
             onChange={(event) => {
             setPhone(event.target.value);
             }}>
             </input>
-            <label>Wybierz ciężarówkę</label>
+            <label>Wybierz ciężarówkę<span className="required">*</span></label>
+            <p className="required"> {formErrors.car} </p>
             <div>
             <div style={{display: 'inline-block', verticalAlign: 'middle', marginTop: '10px'}} onClick={findCars}>
                 <Autocomplete
@@ -135,7 +166,8 @@ function TransportModal({...props}) {
             </div>
             </div>
 
-            <label>Wybierz kierowcę</label>
+            <label>Wybierz kierowcę<span className="required">*</span></label>
+            <p className="required"> {formErrors.worker} </p>
             <div style={{display: 'inline-block', verticalAlign: 'middle', marginTop: '10px'}} onClick={findDrivers}>
             <Autocomplete
                 id="WorkersLookup"

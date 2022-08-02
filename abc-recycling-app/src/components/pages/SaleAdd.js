@@ -18,6 +18,7 @@ function SaleAdd() {
   const [productList, setProductList] = useState([]);
   const [contractorId, setContractorId] = useState(0);
   const [transportId, setTransportId] = useState(0);
+  
 
   //Walidacja
   const [formValues, setFormValues] = useState({ contractorId: "", Weight: "", price: "" });
@@ -81,6 +82,8 @@ function SaleAdd() {
       addDocument();
     }
     else getDocument({id}.id);
+
+    findCompanies();
 
     if(isAddMode) {
       Axios.get('/productTypes').then(
@@ -180,8 +183,9 @@ function SaleAdd() {
             options={customersList}
             onChange={(event, value) => {setContractorId(value.id); handleChange(event);}}
             getOptionLabel={(option) => option.label}
+            defaultValue={customersList.find(v => v.label[0])} 
             sx={{ width: 300 }}
-            renderInput={(params) => <TextField {...params} label="Wybierz firmę"/>}
+            renderInput={(params) => <TextField {...params} variant="outlined"/>}
           />
         </div>
         <label className="main-label">Wybierz transport: </label>
