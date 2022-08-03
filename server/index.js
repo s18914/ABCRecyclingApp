@@ -7,20 +7,30 @@ require('dotenv').config();
 app.use(cors());
 app.use(express.json());
 
+const { Client } = require('pg');
+let client;
 
-const { Client } = require('pg')
+function connect() {
+  client = new Client({
+    user: process.env.DATABASE_USER,
+    host: process.env.DATABASE_HOST,
+    database: process.env.DATABASE,
+    password: process.env.DATABASE_PASSWORD,
+    port: 5432,
+  });
+  
+  client.connect(function(err) {
+    if (err) throw err;
+    console.log("Connected!");
+  });
+  
+  client.on("error", ( error, client) => {
+    console.log("błąd: " + error);
+    setTimeout(connect, 500);
+  })
+}
 
-const client = new Client({
-  user: process.env.DATABASE_USER,
-  host: process.env.DATABASE_HOST,
-  database: process.env.DATABASE,
-  password: process.env.DATABASE_PASSWORD,
-  port: 5432,
-});
-client.connect(function(err) {
-  if (err) throw err;
-  console.log("Connected!");
-});
+connect();
 
 //Transport
 app.post("/transportCreate", (req, res) => {

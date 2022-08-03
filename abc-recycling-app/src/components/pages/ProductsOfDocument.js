@@ -11,9 +11,9 @@ function ProductsOfDocument({refresh, ...props}) {
   const [open, setOpen] = React.useState(false);
   const [id, setId] = React.useState(undefined);
 
-  const countSum = () => {
+  const countSum = (data) => {
     let s = 0;
-    productList.map((item) => {
+    data.map((item) => {
       s = s + parseFloat(item.price);
     })
     return s;
@@ -24,14 +24,13 @@ function ProductsOfDocument({refresh, ...props}) {
     if(id !== undefined) {
       Axios.get(`/documentProducts/${id}`).then(
         response => {
-          setProductList(
-            JSON.parse(JSON.stringify(response.data))
-          );
+          const data = JSON.parse(JSON.stringify(response.data))
+          setProductList(data);
+          setSum(countSum(data));
         }
       )
     }
 
-    setSum(countSum())
   }, [props.id]);
 
   //modal
@@ -82,21 +81,19 @@ function ProductsOfDocument({refresh, ...props}) {
         return (
           <ol key={item.type_id}>
             <div>{item.type_name}</div>
-            <div style={{background: "linear-gradient(90deg, rgb(190 222 237) "+ Math.round((item.price/sum*100)) + "%, #ffffff " + Math.round((item.price/sum*100)) + "%)"}} />
+            <div style={{background: sum > 0 ? "linear-gradient(90deg, rgb(190 222 237) "+ Math.round((item.price/sum*100)) + "%, #ffffff " + Math.round((item.price/sum*100)) + "%)" : null}} />
             <div>{item.weight}</div>
             <div>{item.price}</div>
           </ol>
         );
       })}
       </ul>
-      {sum && 
-        <div className='btn-panel-small'>
-          <FaPen
-            style={{color: 'grey', cursor: 'pointer'}}
-            onClick={handleOpen}
-          />
-        </div>
-      } 
+      <div className='btn-panel-small'>
+        <FaPen
+          style={{color: 'grey', cursor: 'pointer'}}
+          onClick={handleOpen}
+        />
+      </div>
       <Modal
         open={open}
         onClose={handleClose}
