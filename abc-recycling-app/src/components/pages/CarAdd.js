@@ -33,6 +33,7 @@ function CarAdd() {
     e.preventDefault();
     setFormErrors(validate(formValues));
     setIsSubmitting(true);
+    navigate("/cars");
   };
 
   const validate = (values) => {
@@ -107,7 +108,7 @@ function CarAdd() {
         </form>
         <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
           <ImCancelCircle style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} onClick={() => {navigate("/cars")}}/>
-          {isAddMode && <FaCheckCircle onClick={handleSubmit} style={{color: 'green', cursor: 'pointer'}}/>}
+          <FaCheckCircle onClick={handleSubmit} style={{color: 'green', cursor: 'pointer'}}/>
         </div>
     </div>
   )

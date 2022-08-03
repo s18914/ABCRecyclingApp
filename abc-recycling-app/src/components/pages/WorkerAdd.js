@@ -38,6 +38,7 @@ function WorkerAdd() {
     e.preventDefault();
     setFormErrors(validate(formValues));
     setIsSubmitting(true);
+    navigate("/workers");
   };
 
   const validate = (values) => {
@@ -166,7 +167,7 @@ function WorkerAdd() {
             </div>
           <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
             <ImCancelCircle style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} onClick={() => {navigate("/workers")}}/>
-            {isAddMode && <FaCheckCircle onClick={handleSubmit} style={{color: 'green', cursor: 'pointer'}}/>}
+            <FaCheckCircle onClick={handleSubmit} style={{color: 'green', cursor: 'pointer'}}/>
           </div>
         </form>
     </div>
