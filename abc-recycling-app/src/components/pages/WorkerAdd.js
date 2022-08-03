@@ -150,15 +150,17 @@ function WorkerAdd() {
             <label>Stanowisko pracownika<span className="required">*</span></label>
             <div onClick={findOptions}>
               <Autocomplete
-                id="rolesLookup"
+                id="role_id"
                 options={rolesList}
-                onChange={(event, value) => {
-                  setRoleId(value.id);
+                onChange={(event) => {
+                  setRoleId(event.target.value.id);
+                  handleChange(event);
                 }}
                 getOptionLabel={(option) => option.label}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
                 sx={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} label="Stanowisko" />}
+                defaultValue={worker?.role_id}
               />
             </div>
             </div>

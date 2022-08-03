@@ -24,7 +24,7 @@ const SidebarLabel = styled.span`
 const DropdownLink = styled(Link)`
   background: #339933;
   height: 60px;
-  padding-left: 3rem;
+  padding-left: 2rem;
   display: flex;
   align-items: center;
   text-decoration: none;

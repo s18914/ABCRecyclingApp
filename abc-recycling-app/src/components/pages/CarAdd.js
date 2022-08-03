@@ -37,7 +37,6 @@ function CarAdd() {
 
   const validate = (values) => {
     let errors = {};
-    const numberRegex = /[0-9]*/;
 
     if (!values.registration_number) {
       errors.registration_number = "To pole nie może być puste";

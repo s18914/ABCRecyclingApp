@@ -7,8 +7,6 @@ import { FaTimes } from 'react-icons/fa'
 import { FaPen } from 'react-icons/fa'
 import {AiOutlinePlusSquare} from 'react-icons/ai'
 import FilterComponent from "../FilterComponent";
-import { useNavigate } from "react-router-dom";
-
 
 const Addresses = props => { 
 
@@ -19,7 +17,6 @@ const Addresses = props => {
     rowsPerPageText: 'Rekordów na stronie',
     rangeSeparatorText: 'z',
   };
-  const navigate = useNavigate();
   const columns =  [
     {
       name: 'Id',

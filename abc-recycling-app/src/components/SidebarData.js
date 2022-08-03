@@ -1,6 +1,7 @@
 import React from 'react';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
+import * as RiIcons from 'react-icons/ri';
 import * as FiIcons from 'react-icons/fi';
 
 export const SidebarData = [
@@ -11,20 +12,24 @@ export const SidebarData = [
     cName: 'nav-text'
   },
   {
-    title: 'Transport',
-    path: '/transports',
+    title: 'Transporty',
+    path: '',
     icon: <FaIcons.FaTruck />,
     cName: 'nav-text',
+    iconClosed: <RiIcons.RiArrowDownSFill />,
+    iconOpened: <RiIcons.RiArrowUpSFill />,
     subNav: [
+      {    
+        title: 'Lista transportów',
+        path: '/transports',
+      },
       {    
         title: 'Adresy',
         path: '/addresses',
-        icon: <FaIcons.FaBuilding />,
       },
       {    
         title: 'Ciężarówki',
         path: '/cars',
-        icon: <FaIcons.FaCar />,
       }
     ]
   },

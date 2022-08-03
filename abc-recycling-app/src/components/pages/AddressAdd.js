@@ -42,7 +42,6 @@ function AddressAdd() {
 
   const validate = (values) => {
     let errors = {};
-    const numberRegex = /[0-9]*/;
 
     if (!values.street) {
       errors.street = "To pole nie może być puste";
