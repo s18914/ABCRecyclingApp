@@ -160,7 +160,7 @@ function PurchaseAdd() {
   const findTransports = () => {
     Axios('/TransportsLookup').then(
       response => {
-        setCustomersList(response.data);
+        setTransportsList(response.data);
       }
     )
   };
