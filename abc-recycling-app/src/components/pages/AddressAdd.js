@@ -38,6 +38,7 @@ function AddressAdd() {
     e.preventDefault();
     setFormErrors(validate(formValues));
     setIsSubmitting(true);
+    navigate("/addresses");
   };
 
   const validate = (values) => {
@@ -159,8 +160,7 @@ function AddressAdd() {
             </div>
             <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
               <ImCancelCircle style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} onClick={() => {navigate("/addresses")}}/>
-              {isAddMode && <FaCheckCircle onClick={addAddress} style={{color: 'green', cursor: 'pointer'}}/>}
-              {!isAddMode && <FaCheckCircle onClick={updateAddress} style={{color: 'green', cursor: 'pointer'}} />}
+              <FaCheckCircle onClick={handleSubmit} style={{color: 'green', cursor: 'pointer'}}/>
             </div>
         </form>
     </div>
