@@ -57,7 +57,7 @@ const Purchases = props => {
     {
       name: 'Data',
       width: '100px',
-      selector: row => row.date,
+      selector: row => row.date === null ? row.date : row.date.substring(0, 10),
     },
     {
       name: "",

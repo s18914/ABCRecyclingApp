@@ -132,12 +132,12 @@ body .modal {
 }
 body .modal .formRow {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 4fr 3fr 2fr 3fr 2fr;
   grid-template-rows: 1fr;
   margin: 10px;
 }
 body .modal .formRow input {
-  width: 50px;
+  width: 60px;
 }
 body .modal .formRow div {
   padding: 10px;
@@ -162,6 +162,25 @@ body .modal form .inputStyle {
   border-style: solid;
   border-width: 1px;
   border-color: rgba(0, 0, 0, 0.23);
+}
+body .modal .stock-info {
+  margin-top: 20px;
+  padding: 0;
+  width: 200px;
+  font-size: 13px;
+  border-left: 1px solid grey;
+}
+body .modal .stock-info ol:first-child {
+  border-bottom: 1px solid grey;
+}
+body .modal .stock-info ol {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  padding: 5px 0;
+  margin: 2px 5px;
+}
+body .modal .stock-info ol div {
+  margin-left: 5px;
 }
 body .smallModal {
   width: 400px;
@@ -261,6 +280,24 @@ body .main .list-of-products ol {
   margin: 2px 5px;
 }
 body .main .list-of-products ol div {
+  margin-left: 5px;
+}
+body .main .stock-info {
+  margin-top: 30px;
+  padding: 0;
+  width: 300px;
+  font-size: 13px;
+}
+body .main .stock-info ol:first-child {
+  border-bottom: 1px solid grey;
+}
+body .main .stock-info ol {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  padding: 5px 0;
+  margin: 2px 5px;
+}
+body .main .stock-info ol div {
   margin-left: 5px;
 }
 

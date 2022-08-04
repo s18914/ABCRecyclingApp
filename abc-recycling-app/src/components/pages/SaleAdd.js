@@ -6,6 +6,7 @@ import TransportModal from "./TransportModal"
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { ImCancelCircle} from 'react-icons/im'
+import StockInfo from "./StockInfo";
 
 function SaleAdd() {
   
@@ -185,7 +186,7 @@ function SaleAdd() {
             getOptionLabel={(option) => option.label}
             defaultValue={customersList.find(v => v.label[0])} 
             sx={{ width: 300 }}
-            renderInput={(params) => <TextField {...params} variant="outlined"/>}
+            renderInput={(params) => <TextField {...params} label="Klient"/>}
           />
         </div>
         <label className="main-label">Wybierz transport: </label>
@@ -201,22 +202,25 @@ function SaleAdd() {
         </div>
         <TransportModal id={id} />
         {isAddMode && 
-          <>
-            <label className="main-label">Dodaj towary:</label>
-            {productList.map((item) => {
-              let inputPriceId = 'priceOf' + item.type_id;
-              let inputWeightId = 'weightOf' + item.type_id;
-              return (
-                <div className='formProducts simpleForm' key={item.type_id}>
-                  <div>{item.name}</div>
-                  <div>Masa:</div>
-                  <input id={inputWeightId}></input>
-                  <div>Cena:</div>
-                  <input id={inputPriceId}></input>
-                </div>
-              );
-            })}
-          </>
+          <div style={{display: 'flex', flexDirection: 'row'}}>
+            <div style={{margin: '25px 30px 0 0 '}}>
+              <label className="main-label">Dodaj towary:</label>
+              {productList.map((item) => {
+                let inputPriceId = 'priceOf' + item.type_id;
+                let inputWeightId = 'weightOf' + item.type_id;
+                return (
+                  <div className='formProducts simpleForm' key={item.type_id}>
+                    <div>{item.name}</div>
+                    <div>Masa:</div>
+                    <input id={inputWeightId}></input>
+                    <div>Cena:</div>
+                    <input id={inputPriceId}></input>
+                  </div>
+                );
+              })}
+            </div>
+            <StockInfo/>
+          </div>
         }
         <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
           <ImCancelCircle style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} onClick={() => {navigate("/sales")}}/>
