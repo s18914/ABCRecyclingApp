@@ -47,7 +47,7 @@ app.post("/transportCreate", (req, res) => {
       if (err) {
         console.log(err);
       } else {
-        res.json({value:"siema"});
+        res.json(result.rows);
       }
     }
   );
@@ -146,7 +146,7 @@ app.post("/carCreate", (req, res) => {
       if (err) {
         console.log(err);
       } else {
-        res.json({value:"siema"});
+        res.json(result.rows);
       }
     }
   );
