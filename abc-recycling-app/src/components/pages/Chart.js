@@ -37,7 +37,6 @@ function Chart() {
       type.y = parseFloat(type.y);
       console.log(type)
     })}
-    console.log(stockList)
   }, []);
 
   

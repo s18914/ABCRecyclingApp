@@ -3,7 +3,8 @@ import { useState } from "react";
 import Axios from "../../request";
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import {FaPen} from 'react-icons/fa'
+import {FaPen, FaCheckCircle} from 'react-icons/fa';
+import StockInfo from "./StockInfo";
 
 function ProductsOfDocument({refresh, ...props}) {
   const [productList, setProductList] = useState([]);
@@ -56,12 +57,9 @@ function ProductsOfDocument({refresh, ...props}) {
           price: price,
           weight: weight
         }).then((response) => {
-          console.log("success", response.data);
           handleClose();
         });
       });
-
-      refresh(id);
     } catch (error) {
       console.error(error);
     }
@@ -69,7 +67,7 @@ function ProductsOfDocument({refresh, ...props}) {
   //
 
   return (
-    <div>
+    <div className='main'>
       <ul className='list-of-products'>
       <ol> 
         <div>Produkt</div> 
@@ -101,24 +99,27 @@ function ProductsOfDocument({refresh, ...props}) {
       >
         <Box className='modal'>
           <h2>Modyfikuj produkty</h2>
-          <form> 
-            {productList.map((item) => {
-              let inputPriceId = 'priceOf' + item.type_id;
-              let inputWeightId = 'weightOf' + item.type_id;
-              return (
-                <div className='formRow' key={item.type_id}>
-                  <div>{item.type_name}</div>
-                  <div>Masa:  {item.weight}</div>
-                  <input id={inputWeightId} defaultValue = {item?.weight}></input>
-                  <div>Cena:  {item.price}</div>
-                  <input id={inputPriceId} defaultValue = {item?.price}></input>
-                </div>
-              );
-            })}
-          </form>
-          <button onClick={updateProducts}>
-              Zatwierdź
-            </button>
+          <div style={{display: 'flex', flexDirection: 'row'}}>
+            <form> 
+              {productList.map((item) => {
+                let inputPriceId = 'priceOf' + item.type_id;
+                let inputWeightId = 'weightOf' + item.type_id;
+                return (
+                  <div className='formRow' key={item.type_id}>
+                    <div>{item.type_name}</div>
+                    <div>Masa:  {item.weight}</div>
+                    <input id={inputWeightId} defaultValue = {item?.weight}></input>
+                    <div>Cena:  {item.price}</div>
+                    <input id={inputPriceId} defaultValue = {item?.price}></input>
+                  </div>
+                );
+              })}
+            </form>
+            <StockInfo/>
+          </div>
+          <div className='btn-panel' style={{transform: 'scale(3.0)', marginTop: '30px'}}>
+            <FaCheckCircle onClick={updateProducts} style={{color: 'green', cursor: 'pointer'}}/>
+          </div>
         </Box>
       </Modal>
     </div>

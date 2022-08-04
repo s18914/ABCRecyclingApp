@@ -28,7 +28,7 @@ const Sales = props => {
     },
     {
       name: 'Kontrahent',
-      width: '220px',
+      width: '200px',
       selector: row => row.name,
     },
     {
@@ -58,18 +58,18 @@ const Sales = props => {
     },
     {
       name: 'Data',
-      width: '100px',
-      selector: row => row.date,
+      width: '110px',
+      selector: row => row.date === null ? row.date : row.date.substring(0, 10),
     },
     {
       name: 'Status wysyłki',
-      width: '140px',
+      width: '130px',
       selector: row => row.status
     },
     {
       name: "Zmień status",
       button: true,
-      width: '180px',
+      width: '140px',
       cell: row => (
         <>
           <IoArrowBack
@@ -94,7 +94,7 @@ const Sales = props => {
               style={{color: '#41B53D', cursor: 'pointer', transform: 'scale(1.8)'}}
               onDoubleClick={() => {
                 setPayment(row.sales_id, 0);
-                setDocId(0);
+                
               }}
             />
           );
@@ -104,7 +104,6 @@ const Sales = props => {
               style={{color: 'grey', cursor: 'pointer', transform: 'scale(1.8)'}}
               onClick={() => {
                 setPayment(row.sales_id, 1);
-                setDocId(0);
               }}
             />
           );
@@ -202,6 +201,7 @@ const Sales = props => {
       response => {
         setSaleList(response.data);
         setDocId(response.data?.sales_id);
+        console.log(response.data)
       }
     )
   }, [docId]);

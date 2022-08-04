@@ -26,7 +26,7 @@ function connect() {
   
   client.on("error", ( error, client) => {
     console.log("błąd: " + error);
-    setTimeout(connect, 500);
+    setTimeout(connect, 1000);
   })
 }
 
