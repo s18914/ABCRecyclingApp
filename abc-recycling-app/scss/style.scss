@@ -184,6 +184,16 @@ body {
                 border-width: 1px;
                 border-color: rgba(0, 0, 0, 0.23);
             }
+
+            .required {
+                color: red;
+                font-size: small;
+                margin: 0;
+            }
+
+            .top-space {
+                margin-top: 15px;
+            }
         }
 
         .stock-info {
@@ -212,7 +222,7 @@ body {
 
     .smallModal {
         width: 400px;
-        left: 67%;
+        left: 56%;
     }
 
     .main {
