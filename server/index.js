@@ -263,6 +263,17 @@ app.get("/address/:id", (req, res) => {
   });
 });
 
+app.get("/lastAddress", (req, res) => {
+  client.query("SELECT concat(a.street, ' ', a.house_number, ' ', a.flat_number, ', ', z.city) as label, a.address_id as id FROM addresses a inner join public.zip_codes z on z.zip_code_id = a.zip_code_id order by address_id desc LIMIT 1",  
+  (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows[0]);
+    }
+  });
+});
+
 
 app.put("/addressUpdate", (req, res) => {
   const street = req.body.street;

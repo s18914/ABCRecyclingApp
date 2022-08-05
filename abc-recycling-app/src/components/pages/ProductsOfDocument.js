@@ -99,7 +99,7 @@ function ProductsOfDocument({refresh, ...props}) {
       >
         <Box className='modal'>
           <h2>Modyfikuj produkty</h2>
-          <div style={{display: 'flex', flexDirection: 'row'}}>
+          <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
             <form> 
               {productList.map((item) => {
                 let inputPriceId = 'priceOf' + item.type_id;

@@ -22,6 +22,7 @@ function TransportModal({...props}) {
   const [carId, setCarId] = useState(0);
   const [workerId, setWorkerId] = useState(0);
   const [addressId, setAddressId] = useState(0);
+  const [addressLabel, setAddressLabel] = useState(addressList[0]);
   const [transport, setTransport] = useState();
 
   //Walidacja
@@ -48,8 +49,31 @@ function TransportModal({...props}) {
 
   const validate = (values) => {
     let errors = {};
+
+    if (addressId === 0) {
+      errors.address = "To pole nie może być puste";
+    } 
+
+    if (!values.date) {
+      errors.date = "To pole nie może być puste";
+    } 
+
+    if (workerId === 0) {
+      errors.worker = "To pole nie może być puste";
+    } 
+
+    if (carId === 0) {
+      errors.car = "To pole nie może być puste";
+    } 
     
     return errors;
+  };
+
+  async function handleAddressAdd(val) {
+    findAddresses();
+    console.log("moje val: " + val + typeof val)
+    setAddressId(val.id);
+    setAddressLabel(val);
   };
 
   const addTransport = (event) => {
@@ -95,7 +119,13 @@ function TransportModal({...props}) {
 
   useEffect(() => {
     if(props.id !== undefined && props !== undefined) setId(props.id)
-  }, [props.id]);
+    findAddresses();
+    console.log("effect")
+
+    if (Object.keys(formErrors).length === 0 && isSubmitting) {
+      submit();
+    }
+  }, [formErrors]);
 
   //modal
   const handleOpen = () => setOpen(true);
@@ -121,67 +151,78 @@ function TransportModal({...props}) {
             <div>
             <label>Wybierz adres<span className="required">*</span></label>
             <p className="required"> {formErrors.address} </p>
-            <div style={{display: 'inline-block', verticalAlign: 'middle', marginTop: '10px'}} onClick={findAddresses}>
+            <div style={{display: 'inline-block', verticalAlign: 'middle', marginTop: '10px'}}>
                 <Autocomplete
-                id="addressLookup"
-                options={addressList}
-                onChange={(event, newValue) => {
-                    setAddressId(newValue.id);
-                }}
-                getOptionLabel={(option) => option.label}
-                isOptionEqualToValue={(option, value) => option.id === value.id}
-                sx={{ width: 300 }}
-                renderInput={(params) => <TextField {...params} label="Adres" />}
+                  disablePortal
+                  id="addressLookup"
+                  options={addressList}
+                  onChange={(event, newValue) => {
+                      setAddressId(newValue.id);
+                      handleChange(event);
+                      setAddressLabel(newValue);
+                  }}
+                  value={addressLabel}
+                  getOptionLabel={(option) => option.label}
+                  isOptionEqualToValue={(option, value) => option.id === value.id}
+                  sx={{ width: 300 }}
+                  renderInput={(params) => <TextField {...params} label="Adres" onChange={(e) => setAddressId(e.target.value)}/>}
                 />
             </div>
-            <AddressModal />
+            <AddressModal handleAddressAdd={handleAddressAdd}/>
             </div>
-            <label>Wybierz datę<span className="required">*</span></label>
+            <label className='top-space'>Wybierz datę<span className="required">*</span></label>
             <p className="required"> {formErrors.date} </p>
             <input className='inputStyle' type="date" id="date" name="date"
                 onChange={(event) => {
-                setDate(event.target.value);
+                  setDate(event.target.value);
+                  handleChange(event);
                 }}>
             </input>
-            <label>Wpisz telefon odbiorcy</label>
+
+            <label className='top-space'>Wpisz telefon odbiorcy</label>
             <input className='inputStyle' type="text" id="phone" name="phone" 
-            onChange={(event) => {
-            setPhone(event.target.value);
-            }}>
+              onChange={(event) => {
+                setPhone(event.target.value);
+                handleChange(event);
+              }}>
             </input>
-            <label>Wybierz ciężarówkę<span className="required">*</span></label>
+
+            <label className='top-space'>Wybierz ciężarówkę<span className="required">*</span></label>
             <p className="required"> {formErrors.car} </p>
             <div>
             <div style={{display: 'inline-block', verticalAlign: 'middle', marginTop: '10px'}} onClick={findCars}>
                 <Autocomplete
-                id="carsLookup"
-                options={carsList}
-                onChange={(event, newValue) => {
+                  id="carsLookup"
+                  options={carsList}
+                  onChange={(event, newValue) => {
                     setCarId(newValue.id);
-                }}
-                getOptionLabel={(option) => option.label}
-                sx={{ width: 300 }}
-                renderInput={(params) => <TextField {...params} label="Ciężarówka" />}
+                    handleChange(event);
+                  }}
+                  getOptionLabel={(option) => option.label}
+                  sx={{ width: 300 }}
+                  renderInput={(params) => <TextField {...params} label="Ciężarówka" />}
                 />
             </div>
             </div>
 
-            <label>Wybierz kierowcę<span className="required">*</span></label>
+            <label className='top-space'>Wybierz kierowcę<span className="required">*</span></label>
             <p className="required"> {formErrors.worker} </p>
             <div style={{display: 'inline-block', verticalAlign: 'middle', marginTop: '10px'}} onClick={findDrivers}>
             <Autocomplete
-                id="WorkersLookup"
-                options={workersList}
-                onChange={(event, newValue) => {
+              id="WorkersLookup"
+              options={workersList}
+              onChange={(event, newValue) => {
                 setWorkerId(newValue.id);
-                }}
-                getOptionLabel={(option) => option.label}
-                sx={{ width: 300 }}
-                renderInput={(params) => <TextField {...params} label="Kierowca" />}
+                handleChange(event);
+              }}
+              getOptionLabel={(option) => option.label}
+              sx={{ width: 300 }}
+              renderInput={(params) => <TextField {...params} label="Kierowca" />}
             />
             </div>
-                <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
-                <FaCheckCircle onClick={addTransport} style={{color: 'green', cursor: 'pointer'}} />
+                <div className='btn-panel' style={{transform: 'scale(4.0)', margin: '40px 0 20px 0'}}>
+                  <ImCancelCircle onClick={handleClose} style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} />
+                  <FaCheckCircle onClick={handleSubmit} style={{color: 'green', cursor: 'pointer'}} />
                 </div>
             </form>
         </Box> 
