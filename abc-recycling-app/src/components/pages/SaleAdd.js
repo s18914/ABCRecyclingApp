@@ -19,6 +19,7 @@ function SaleAdd() {
   const [productList, setProductList] = useState([]);
   const [contractorId, setContractorId] = useState(0);
   const [transportId, setTransportId] = useState(0);
+  const [transportLabel, setTransportLabel] = useState({id: 0, label: 'Transport'});
   
 
   //Walidacja
@@ -146,6 +147,12 @@ function SaleAdd() {
     )
   };
 
+  async function handleTransportAdd(val) {
+    findTransports();
+    setTransportId(val?.id);
+    setTransportLabel(val);
+  };
+
   function updateProducts() {
     try {
       productList.forEach(prod => {
@@ -176,7 +183,7 @@ function SaleAdd() {
       {isAddMode &&<h1>Dodaj nowy dokument sprzedaży</h1>}
       {!isAddMode && <h1>Edytuj dokument sprzedaży</h1>}
       <form>
-        <label>Wybierz klienta</label>
+        <label>Wybierz klienta<span className="required">*</span></label>
         <p className="required"> {formErrors.contractorId} </p>
         <div onClick={findCompanies}>
           <Autocomplete
@@ -193,14 +200,21 @@ function SaleAdd() {
         <div onClick={findTransports}>
           <Autocomplete
             id="transport-lookup"
+            disablePortal
             options={transportsList}
-            onChange={(event, value) => setTransportId(value.id)}
-            getOptionLabel={(option) => option.label}
+            onChange={(event, value) => {
+              setTransportId(value.id)
+              handleChange(event);
+              setTransportLabel(value);
+            }}
+            value={transportLabel}
+            getOptionLabel={(option) => option.label || ""}
+            isOptionEqualToValue={(option, value) => option.id === value.id}
             sx={{ width: 300 }}
-            renderInput={(params) => <TextField {...params} label="Transport"/>}
+            renderInput={(params) => <TextField {...params} label="Transport" onChange={(e) => setTransportId(e.target.value.id)}/>}
           />
         </div>
-        <TransportModal id={id} />
+        <TransportModal handleTransportAdd={handleTransportAdd} />
         {isAddMode && 
           <div style={{display: 'flex', flexDirection: 'row'}}>
             <div style={{margin: '25px 30px 0 0 '}}>

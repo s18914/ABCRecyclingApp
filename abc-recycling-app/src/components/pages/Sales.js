@@ -201,7 +201,6 @@ const Sales = props => {
       response => {
         setSaleList(response.data);
         setDocId(response.data?.sales_id);
-        console.log(response.data)
       }
     )
   }, [docId]);
