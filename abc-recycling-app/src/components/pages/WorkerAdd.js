@@ -9,10 +9,11 @@ import { FaCheckCircle } from 'react-icons/fa'
 
 
 function WorkerAdd() {
+  const [role_id, setRoleId] = useState(0);
   const [rolesList, setRolesList] = useState([]);
   const {id} = useParams();
   const navigate = useNavigate();
-  let isAddMode = ({id}.id === undefined ? true : false);
+  let isAddMode = id === undefined;
   const [formValues, setFormValues] = useState({ name: "", surname: "", id_number: "", role_id: 0});
   const [formErrors, setFormErrors] = useState({});
 
@@ -141,11 +142,14 @@ function WorkerAdd() {
             <label htmlFor='role_id'>Stanowisko pracownika<span className="required">*</span></label>
             <div onClick={findOptions}>
               <Autocomplete
-                value={formValues.role_id}
                 id="role_id"
                 options={rolesList}
-                onChange={handleChange}
+                onChange={(event) => {
+                  setRoleId(event.target.value.id);
+                  handleChange(event);
+                }}
                 getOptionLabel={(option) => option.label}
+                isOptionEqualToValue={(option, value) => option.id === value.id}
                 sx={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} label="Stanowisko" />}
                 //defaultValue={worker?.role_id}

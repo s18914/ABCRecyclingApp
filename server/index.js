@@ -208,7 +208,7 @@ app.delete("/carDelete/:id", (req, res) => {
 });
 
 app.get("/CarsLookup", (req, res) => {
-  client.query("SELECT * from get_cars_4_lookup()", (err, result) => {
+  client.query("SELECT * from get_car_4_lookup()", (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -644,7 +644,7 @@ app.post("/workerCreate", (req, res) => {
 });
 
 app.get("/workers", (req, res) => {
-  client.query("SELECT * FROM get_workers()", (err, result) => {
+  client.query("SELECT w.worker_id, w.name, w.surname, w.id_number, r.name as role_name FROM public.workers w inner join public.roles r on r.role_id = w.role_id;", (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -656,7 +656,7 @@ app.get("/workers", (req, res) => {
     
 app.get("/worker/:id", (req, res) => {
   const id = req.params.id;
-  client.query("SELECT * FROM	get_workers() WHERE worker_id = $1", 
+  client.query("SELECT * FROM public.workers w inner join public.roles r on r.role_id = w.role_id WHERE worker_id = $1", 
   [id],
   (err, result) => {
     if (err) {

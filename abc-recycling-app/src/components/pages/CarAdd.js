@@ -44,12 +44,13 @@ function CarAdd() {
 
   const validate = (values) => {
     let errors = {};
-    const numberRegex = /[0-9]*/;
-    const idRegex = /([a-z]|[A-Z]){3}[0-9]{5}/;
+    const registrationNumberRegex = /([[A-Z]){1}([A-Z]|[0-9]){5}/;
 
     if (!values.registration_number) {
       errors.registration_number = "To pole nie może być puste";
-    } 
+    } else if (!registrationNumberRegex.test(values.registration_number) && values.registration_number.length !== 7) {
+      errors.registration_number = "Numer rejestracyjny powinien składać się z 7 znaków, z czego pierwsze 2 powinny być literami.";
+    }
     
     if (new Date(values.overview_date) < new Date()) {
       errors.overview_date = "Ta data nie może być z przeszłosci";
