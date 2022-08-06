@@ -22,7 +22,7 @@ function TransportModal({...props}) {
   const [carId, setCarId] = useState(0);
   const [workerId, setWorkerId] = useState(0);
   const [addressId, setAddressId] = useState(0);
-  const [addressLabel, setAddressLabel] = useState(addressList[0]);
+  const [addressLabel, setAddressLabel] = useState({id: 0, label: 'Adres'});
   const [transport, setTransport] = useState();
 
   //Walidacja
@@ -31,7 +31,6 @@ function TransportModal({...props}) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submit = () => {
-    console.log(formValues);
     addTransport();
   };
 
@@ -42,9 +41,9 @@ function TransportModal({...props}) {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
     setFormErrors(validate(formValues));
     setIsSubmitting(true);
+    handleClose();
   };
 
   const validate = (values) => {
@@ -71,13 +70,12 @@ function TransportModal({...props}) {
 
   async function handleAddressAdd(val) {
     findAddresses();
-    console.log("moje val: " + val + typeof val)
-    setAddressId(val.id);
+    console.log("handle adres add: " + val)
+    setAddressId(val?.id);
     setAddressLabel(val);
   };
 
   const addTransport = (event) => {
-    event.preventDefault();
     Axios.post('/transportCreate', {
       addressId: addressId,
       date: date, 
@@ -85,6 +83,9 @@ function TransportModal({...props}) {
       carId: carId,
       workerId: workerId
     }).then((data) => {
+      Axios.get(`/lastTransport`).then((response) => {
+        props.handleTransportAdd(response.data);
+      });
       console.log("success", data.data);
     })
   };
@@ -111,7 +112,6 @@ function TransportModal({...props}) {
     Axios('/addressLookup').then(
       response => {
         setAddressList(response.data);
-        console.log(response.data);
       }
     )
   };
@@ -162,7 +162,7 @@ function TransportModal({...props}) {
                       setAddressLabel(newValue);
                   }}
                   value={addressLabel}
-                  getOptionLabel={(option) => option.label}
+                  getOptionLabel={(option) => option.label || ""}
                   isOptionEqualToValue={(option, value) => option.id === value.id}
                   sx={{ width: 300 }}
                   renderInput={(params) => <TextField {...params} label="Adres" onChange={(e) => setAddressId(e.target.value)}/>}

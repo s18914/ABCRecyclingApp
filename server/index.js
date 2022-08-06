@@ -75,6 +75,17 @@ app.get("/transport/:id", (req, res) => {
   });
 });
 
+app.get("/lastTransport", (req, res) => {
+  client.query("SELECT label, id from get_transports_4_lookup() order by id desc LIMIT 1",  
+  (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows[0]);
+    }
+  });
+});
+
 app.put("/transportUpdate", (req, res) => {
   const id = req.body.id;
   const date = req.body.date;

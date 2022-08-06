@@ -64,17 +64,11 @@ function AddressModal({...props}) {
       flat_number: flat_number,
       zip_code_id: zip_code_id
     }).then((data) => {
+      Axios.get(`/lastAddress`).then((response) => {
+        props.handleAddressAdd(response.data);
+      });
       handleClose();
     })
-
-    Axios.get(`/lastAddress`).then((response) => {
-      console.log("response: " + response.data)
-      let lastId = response.data.id
-      let label = response.data.label
-      let string = `{label: '${label}', id:'${lastId}'}`
-      console.log("mój string: " + string)
-      props.handleAddressAdd(response.data);
-    });
   };
 
   const findZipCodes = () => {

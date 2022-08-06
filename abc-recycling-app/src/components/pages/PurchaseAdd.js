@@ -4,8 +4,8 @@ import { FaCheckCircle} from 'react-icons/fa'
 import { useParams, useNavigate} from "react-router-dom";
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import TransportModal from "./TransportModal"
-import { ImCancelCircle} from 'react-icons/im'
+import TransportModal from "./TransportModal";
+import { ImCancelCircle} from 'react-icons/im';
 
 function PurchaseAdd() {
   
@@ -20,6 +20,7 @@ function PurchaseAdd() {
   const [id_number, setIdNumber] = useState("");
   const [transportId, setTransportId] = useState(null);
   const [isCompany, setIsCompany] = useState(true);
+  const [transportLabel, setTransportLabel] = useState({id: 0, label: 'Transport'});
 
   //Walidacja
   const [formValues, setFormValues] = useState({ contractorId: "", id_number: "", weight: "", price: "" });
@@ -165,6 +166,12 @@ function PurchaseAdd() {
     )
   };
 
+  async function handleTransportAdd(val) {
+    findTransports();
+    setTransportId(val?.id);
+    setTransportLabel(val);
+  };
+
   function updateProducts() {
     try {
       productList.forEach(prod => {
@@ -241,13 +248,19 @@ function PurchaseAdd() {
             <Autocomplete
               id="transport-lookup"
               options={transportsList}
-              onChange={(event, value) => setTransportId(value.id)}
-              getOptionLabel={(option) => option.label}
+              onChange={(event, value) => {
+                setTransportId(value.id)
+                handleChange(event);
+                setTransportLabel(value);
+              }}
+              value={transportLabel}
+              getOptionLabel={(option) => option.label || ""}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
               sx={{ width: 300 }}
-              renderInput={(params) => <TextField {...params} label="Transport"/>}
+              renderInput={(params) => <TextField {...params} label="Transport" onChange={(e) => setTransportId(e.target.value.id)}/>}
             />
           </div>
-        <TransportModal id={id} />
+        <TransportModal handleTransportAdd={handleTransportAdd} />
         {isAddMode && 
         <>
           <label className="main-label">Dodaj towary:</label>
