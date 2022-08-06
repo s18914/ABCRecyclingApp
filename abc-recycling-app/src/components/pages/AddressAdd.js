@@ -3,42 +3,51 @@ import { useState, useEffect } from "react";
 import Axios from "../../request";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaCheckCircle } from 'react-icons/fa'
-import { ImCancelCircle} from 'react-icons/im'
+import { ImCancelCircle } from 'react-icons/im'
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
 function AddressAdd() {
-  const [address, setAddress] = useState();
-  const [street, setSreet] = useState("");
-  const [house_number, setHouseNumber] = useState(0);
-  const [flat_number, setFlatNumber] = useState(0);
+  // const [address, setAddress] = useState();
+  // const [street, setSreet] = useState("");
+  // const [house_number, setHouseNumber] = useState(0);
+  // const [flat_number, setFlatNumber] = useState(0);
   const [zip_code_id, setZipCodeId] = useState(0);
   const [zipCodesList, setZipCodesList] = useState([]);
 
-  const {id} = useParams();
-  let isAddMode = ({id}.id === undefined ? true : false);
+  const { id } = useParams();
+  let isAddMode = ({ id }.id === undefined ? true : false);
   const navigate = useNavigate();
 
-  const [formValues, setFormValues] = useState({ street: "", house_number: 0, zip_code_id: 0});
-  const [formErrors, setFormErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formValues, setFormValues] = useState({ street: "", house_number: 0, flat_number: 0, zip_code_id: 0 });
+  const [formErrors, setFormErrors] = useState(null);
+  //const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submit = () => {
     console.log(formValues);
-    if(isAddMode) addAddress();
-    updateAddress();
+    isAddMode ? addAddress() : updateAddress();
   };
+
+  useEffect(() => {
+    if (id) {
+      getAddress(id)
+    }
+  }, [id])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
+    const errors  = validate(formValues)
+    setFormErrors(errors);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setFormErrors(validate(formValues));
-    setIsSubmitting(true);
-    navigate("/addresses");
+    const errors  = validate(formValues)
+    setFormErrors(errors);
+    if (!errors) { 
+      submit()
+    }
   };
 
   const validate = (values) => {
@@ -46,123 +55,122 @@ function AddressAdd() {
 
     if (!values.street) {
       errors.street = "To pole nie może być puste";
-    } 
+    }
 
     if (!values.house_number) {
       errors.house_number = "To pole nie może być puste";
-    } 
+    }
 
     if (!values.zip_code_id) {
       errors.zip_code_id = "To pole nie może być puste";
-    } 
+    }
 
     return errors;
   };
 
-  const getAddress = (id) => {
-    if(!isAddMode) {
-      Axios.get(`/address/${id}`).then((response) => {
-        setAddress(response.data);
-        setSreet(response.data?.street);
-        setHouseNumber(response.data?.house_number);
-        setFlatNumber(response.data?.flat_number);
-      });
+  const getAddress = async (id) => {
+    if (!isAddMode) {
+      try {
+        //debugger;
+        const response = await Axios.get(`/address/${id}`)
+        //setCar(response.data);
+        //setRegistrationNumber(response.data?.registration_number);
+        //setOverviewDate(response.data?.overview_date);
+
+        //Destrukturyzacja => z obiektu response wybiera klucze 
+        const { street, house_number, flat_number, zip_code_id } = response.data
+
+        const newFormValues = {
+          street,
+          house_number,
+          flat_number,
+          zip_code_id
+        }
+
+        setFormValues(newFormValues)
+
+      } catch (error) {
+
+      }
     }
   };
 
-  useEffect(() => {
-    getAddress({id}.id);
-    if (Object.keys(formErrors).length === 0 && isSubmitting) {
-      submit();
-    }
-  }, [formErrors]);
+  // useEffect(() => {
+  //   getAddress({ id }.id);
+  //   if (Object.keys(formErrors).length === 0 && isSubmitting) {
+  //     submit();
+  //   }
+  // }, [formErrors]);
 
 
-  const addAddress = (event) => {
-    event.preventDefault();
-    Axios.post('/addressCreate', {
-      street: street, 
-      house_number: house_number,
-      flat_number: flat_number,
-      zip_code_id: zip_code_id
-    }).then((data) => {
-      console.log("success", data.data);
+  const addAddress = async () => {
+    const response = await Axios.post('/carCreate', {...formValues})
+    console.log("success", response.data);
+    if (false) { 
       navigate("/addresses");
+    }
+  };
+
+  const updateAddress = async () => {
+    const response = await Axios.put('/addressUpdate', {
+      ...formValues,
+      id
     })
-  };
-
-  const updateAddress = (e) => {
-    e.preventDefault();
-    Axios.put('/addressUpdate', {
-      street: street, 
-      house_number: house_number,
-      flat_number: flat_number,
-      zip_code_id: zip_code_id,
-      //id: {id}.id
-    }).then((data) => {
-      console.log("success", data.data);
+    console.log("success", response.data);
+    if (false) {
       navigate("/addresses");
-    });
+    }
   };
 
   const findZipCodes = () => {
     Axios('/ZipCodesLookup').then(
       response => {
-        setZipCodesList(response.data);
+        setZipCodesList(response.data || []);
       }
     )
   };
 
   return (
     <div className='main'>
-        {isAddMode &&<h1>Dodaj nowy adres</h1>}
-        {!isAddMode && <h1>Edytuj adres</h1>}
-        <form onSubmit={handleSubmit} noValidate>
-        <div className='simpleForm' style={{width: '300px'}}>
-            <label>Ulica<span className="required">*</span></label>
-            <input type="text" id="street" name="street" defaultValue={address?.street} 
-            onChange={(event) => {
-                setSreet(event.target.value);
-                handleChange(event);
-            }}>
-            </input>
-            <label>Numer domu<span className="required">*</span></label>
-            <input type="number" id="house_number" name="house_number" defaultValue={address?.house_number}
-            onChange={(event) => {
-                setHouseNumber(event.target.value);
-                handleChange(event);
-            }}>
-            </input>
-            <label>Numer Lokalu</label>
-            <input type="number" id="flat_number" name="flat_number" defaultValue={address?.flat_number}
-            onChange={(event) => {
-                setFlatNumber(event.target.value);
-                handleChange(event);
-            }}>
-            </input>
-            </div>
-            <div>
-            <label>Kod pocztowy<span className="required">*</span></label>
-            <div onClick={findZipCodes}>
-              <Autocomplete
-                id="ZipCodesLookup"
-                options={zipCodesList}
-                onChange={(event, value) => {
-                  setZipCodeId(value.id);
-                  handleChange(event);
-                }}
-                getOptionLabel={(option) => option.label}
-                isOptionEqualToValue={(option, value) => option.id === value.id}
-                sx={{ width: 300 }}
-                renderInput={(params) => <TextField {...params} label="Kod pocztowy" />}
-              />
-            </div>
-            </div>
-            <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
-              <ImCancelCircle style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} onClick={() => {navigate("/addresses")}}/>
-              <FaCheckCircle onClick={handleSubmit} style={{color: 'green', cursor: 'pointer'}}/>
-            </div>
-        </form>
+      {isAddMode && <h1>Dodaj nowy adres</h1>}
+      {!isAddMode && <h1>Edytuj adres</h1>}
+      <form onSubmit={handleSubmit} noValidate>
+        <div className='simpleForm' style={{ width: '300px' }}>
+          <label htmlFor='street'>Ulica<span className="required">*</span></label>
+          <input type="text" id="street" name="street" value={formValues.street}
+            onChange={handleChange}>
+          </input>
+          <label htmlFor='house_number'>Numer domu<span className="required">*</span></label>
+          <input type="number" id="house_number" name="house_number" value={formValues.house_number}
+            onChange={handleChange}>
+          </input>
+          <label htmlFor='flat_number'>Numer Lokalu</label>
+          <input type="number" id="flat_number" name="flat_number" value={formValues.flat_number}
+            onChange={handleChange}>
+          </input>
+        </div>
+        <div>
+          <label htmlFor='ZipCodesLookup'>Kod pocztowy<span className="required">*</span></label>
+          <div onClick={findZipCodes}>
+            <Autocomplete
+              value={formValues.zip_code_id}
+              id="ZipCodesLookup"
+              options={zipCodesList}
+              onChange={handleChange}
+              getOptionLabel={(option) => option.label}
+              isOptionEqualToValue={(option, value) => {
+                return option.id === value
+              }}
+              sx={{ width: 300 }}
+              renderInput={(params) => <TextField {...params} label="Kod pocztowy" />}
+            />
+          </div>
+        </div>
+        <div className='btn-panel' style={{ transform: 'scale(4.0)' }}>
+          <ImCancelCircle style={{ color: 'grey', cursor: 'pointer', padding: '0 15px' }} onClick={() => { navigate("/addresses") }} />
+          <FaCheckCircle onClick={handleSubmit} style={{ color: 'green', cursor: 'pointer' }} />
+        </div>
+      </form>
     </div>
   )
 }

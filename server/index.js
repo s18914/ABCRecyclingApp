@@ -47,7 +47,7 @@ app.post("/transportCreate", (req, res) => {
       if (err) {
         console.log(err);
       } else {
-        res.json({value:"siema"});
+        res.send(result);
       }
     }
   );
@@ -136,17 +136,17 @@ app.get("/ZipCodesLookup", (req, res) => {
 
 //Car
 app.post("/carCreate", (req, res) => {
-  const registrationNumber = req.body.registrationNumber;
-  const overviewDate = req.body.overviewDate;
+  const registration_number = req.body.registration_number;
+  const overview_date = req.body.overview_date;
 
   client.query(
     "INSERT INTO cars (registration_number, overview_date) VALUES ($1,$2)",
-    [registrationNumber, overviewDate],
+    [registration_number, overview_date],
     (err, result) => {
       if (err) {
         console.log(err);
       } else {
-        res.json({value:"siema"});
+        res.send(result);
       }
     }
   );
@@ -178,12 +178,12 @@ app.get("/cars", (req, res) => {
 
 app.put("/carUpdate", (req, res) => {
   const id = req.body.id;
-  const registrationNumber = req.body.registrationNumber;
-  const overviewDate = req.body.overviewDate;
+  const registration_number = req.body.registration_number;
+  const overview_date = req.body.overview_date;
 
   client.query(
     "Update cars set registration_number = $1, overview_date = $2 where car_id = $3",
-    [registrationNumber, overviewDate, id],
+    [registration_number, overview_date, id],
     (err, result) => {
       if (err) {
         console.log(err);
