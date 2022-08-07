@@ -33,7 +33,6 @@ function PurchaseAdd() {
   };
 
   const handleChange = (e) => {
-    console.log(e.target);
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
   };
@@ -46,16 +45,16 @@ function PurchaseAdd() {
 
   const validate = (values) => {
     let errors = {};
-    const idRegex = /([a-z]|[A-Z]){4}[0-9]{6}/;
+    const idRegex = /([a-z]|[A-Z]){3}[0-9]{6}/;
     const numericRegex = /\d+[\.]\d+/;
-    const numberRegex = /[0-9]+/;
+    const numberRegex = /^-?\d+$/;
 
     if (isCompany !== null && contractorId === 0) {
       errors.contractorId = "To pole nie może być puste";
     } else if (isCompany === null && !values.id_number) {
       errors.contractorId = "To pole nie może być puste";
-    } else if (isCompany === null && !idRegex.test(values.id_number)) {
-      errors.contractorId = "Numer dowodu powinien składać się z 4 liter oraz 6 cyfr i mieć format: AAAA000000";
+    } else if (isCompany === null && (!idRegex.test(values.id_number) || values.id_number.length !== 9)) {
+      errors.contractorId = "Numer dowodu powinien składać się z 4 liter oraz 6 cyfr i mieć format: AAA000000";
     }
 
     if(isAddMode){
@@ -68,14 +67,14 @@ function PurchaseAdd() {
         if (weight === '' || weight === null) weight = 0;
         if (price === '' || price === null) price = 0;
 
+        console.log(price + "   " + numberRegex.test(price) + " : " + numericRegex.test(price))
         //Walidacja
-        console.log("price" + price);
         if(!numberRegex.test(price) && !numericRegex.test(price)) {
-          errors.price = "W pole ceny została wprowadzona wartość, która nie jest liczbą. Dozwolony format: 0 oraz 0.0";
+          errors.price = "W pole CENY została wprowadzona wartość, która nie jest liczbą. Dozwolony format: 0 oraz 0.0";
         }
 
         if(!numberRegex.test(weight) && !numericRegex.test(weight)) {
-          errors.weight = "W pole wagi została wprowadzona wartość, która nie jest liczbą. Dozwolony format: 0 oraz 0.0";
+          errors.weight = "W pole WAGI została wprowadzona wartość, która nie jest liczbą. Dozwolony format: 0 oraz 0.0";
         }
       });
     }
@@ -97,6 +96,7 @@ function PurchaseAdd() {
         }
       )
     }
+
     if (Object.keys(formErrors).length === 0 && isSubmitting) {
       submit();
     }

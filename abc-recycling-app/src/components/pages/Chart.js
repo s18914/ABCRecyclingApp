@@ -35,7 +35,6 @@ function Chart() {
       if(type.y !== undefined) type.label = type.y;
       type["color"] = color;
       type.y = parseFloat(type.y);
-      console.log(type)
     })}
   }, []);
 
@@ -67,7 +66,6 @@ function Chart() {
             textAnchor: "end",
             transform: "rotate(-90)",
             fontSize: 20,
-            textTransform: "uppercase"
           }}
         />
         <VerticalBarSeries

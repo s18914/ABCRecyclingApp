@@ -127,6 +127,7 @@ const Customers = props => {
   }, [filterText, resetPaginationToggle]);
 
   useEffect(() => {
+    console.log("effect " + onlyCompanies)
     Axios('/customers').then(
       response => {
         setCustomerList(

@@ -52,7 +52,7 @@ function CustomerAdd() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
     const numberRegex = /[0-9]*/;
     const nipRegex = /[0-9]{4}-[0-9]{3}-[0-9]{3}/;
-    const idRegex = /([a-z]|[A-Z]){4}[0-9]{6}/;
+    const idRegex = /([a-z]|[A-Z]){3}[0-9]{6}/;
     const accountRegex = /[0-9]{2}-[0-9]{8}-[0-9]{19}/;
 
     if(isCompany){
@@ -80,9 +80,9 @@ function CustomerAdd() {
       }
     } else {
       if (!values.id_number) {
-        errors.id_number = "To pole nie może być puste";
-      }else if ((!numberRegex.test(values.id_number) && values.id_number.length !== 10) || !idRegex.test(values.id_number)) {
-        errors.id_number = "Numer dowodu powinien składać się z 4 liter oraz 6 cyfr i mieć format: AAAA000000";
+        errors.id_number = "Proszę uzupełnić numer dowodu";
+      }else if (!idRegex.test(values.id_number) || values.id_number.length !== 9) {
+        errors.id_number = "Numer dowodu powinien składać się z 3 liter oraz 6 cyfr i mieć format: AAA000000";
       }
     }
 
@@ -113,7 +113,6 @@ function CustomerAdd() {
   }, [formErrors]);
   
   const addCustomer = (event) => {
-    event.preventDefault();
     Axios.post('/customerCreate', {
       name: name, 
       surname: surname, 
@@ -139,7 +138,6 @@ function CustomerAdd() {
   };
 
   const updateCustomer = (e) => {
-    e.preventDefault();
     Axios.put('/customerUpdate', {
       name: name, 
       surname: surname,
@@ -251,7 +249,7 @@ function CustomerAdd() {
               }}>
             </input>
             <label>Wpisz numer dowodu<span className="required">*</span></label>
-            <input type="text" id="id_number" name="id_number" placeholder="Numer dowodu np. ABCD123456" defaultValue={customer?.id_number} onChange={(e) => {
+            <input type="text" id="id_number" name="id_number" placeholder="Numer dowodu np. ABC123456" defaultValue={customer?.id_number} onChange={(e) => {
                 setIdNumber(e.target.value);
                 handleChange(e);
               }}>

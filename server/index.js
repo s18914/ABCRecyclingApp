@@ -219,7 +219,7 @@ app.delete("/carDelete/:id", (req, res) => {
 });
 
 app.get("/CarsLookup", (req, res) => {
-  client.query("SELECT * from get_cars_4_lookup()", (err, result) => {
+  client.query("SELECT * from get_car_4_lookup()", (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -357,7 +357,7 @@ app.get("/customers", (req, res) => {
 
 app.get("/customer/:id", (req, res) => {
   const id = req.params.id;
-  client.query("SELECT c.*, cu.*, co.* FROM contractors c left join customers cu on cu.contractor_id = c.contractor_id left join companies co on co.contractor_id = c.contractor_id where c.contractor_id = $1", [id], (err, result) => {
+  client.query("SELECT c.*, cu.*, co.*, c.name FROM contractors c left join customers cu on cu.contractor_id = c.contractor_id left join companies co on co.contractor_id = c.contractor_id where c.contractor_id = $1", [id], (err, result) => {
     if (err) {
       console.log(err);
     } else {

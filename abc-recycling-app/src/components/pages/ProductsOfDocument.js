@@ -12,6 +12,7 @@ function ProductsOfDocument({refresh, ...props}) {
   const [open, setOpen] = React.useState(false);
   const [id, setId] = React.useState(undefined);
 
+
   const countSum = (data) => {
     let s = 0;
     data.map((item) => {
@@ -19,6 +20,56 @@ function ProductsOfDocument({refresh, ...props}) {
     })
     return s;
   }
+
+  //Walidacja
+  const [formValues, setFormValues] = useState({ weight: "", price: "" });
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const submit = () => {
+    updateProducts();
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setFormErrors(validate(formValues));
+    setIsSubmitting(true);
+
+    if (Object.keys(formErrors).length === 0 && isSubmitting) {
+      console.log("submit w effect");
+      submit();
+    }
+  };
+
+  const validate = (values) => {
+    console.log("walidacja")
+    let errors = {};
+    const numericRegex = /\d+[\.]\d+/;
+    const numberRegex = /^-?\d+$/;
+
+    productList.forEach(prod => {
+      const inputPriceId = 'priceOf' + prod.type_id;
+      const inputWeightId = 'weightOf' + prod.type_id;
+      let weight = document.getElementById(inputWeightId).value;
+      let price = document.getElementById(inputPriceId).value;
+
+      if (weight === '' || weight === null) weight = 0;
+      if (price === '' || price === null) price = 0;
+
+      console.log(typeof price + "   " + numberRegex.test(price) + " : " + numericRegex.test(price))
+
+      //Walidacja
+      if(!numberRegex.test(price) && !numericRegex.test(price)) {
+        errors.price = "W pole CENY została wprowadzona wartość, która nie jest liczbą. Dozwolony format: 0 oraz 0.0";
+      }
+
+      if(!numberRegex.test(weight) && !numericRegex.test(weight)) {
+        errors.weight = "W pole WAGI została wprowadzona wartość, która nie jest liczbą. Dozwolony format: 0 oraz 0.0";
+      }
+    });
+    
+    return errors;
+  };
 
   useEffect(() => {
     if(props.id !== undefined && props !== undefined) setId(props.id)
@@ -31,7 +82,6 @@ function ProductsOfDocument({refresh, ...props}) {
         }
       )
     }
-
   }, [props.id]);
 
   //modal
@@ -43,13 +93,14 @@ function ProductsOfDocument({refresh, ...props}) {
   function updateProducts() {
     try {
       productList.forEach(prod => {
-        const id = prod.document_id;
+        //const id = prod.document_id;
         const inputPriceId = 'priceOf' + prod.type_id;
         const inputWeightId = 'weightOf' + prod.type_id;
         let weight = document.getElementById(inputWeightId).value;
         let price = document.getElementById(inputPriceId).value;
         if (weight === '' || weight === null) weight = 0;
         if (price === '' || price === null) price = 0;
+        console.log(id + " " + weight);
 
         Axios.put('/productUpdate', {
           document_id: id,
@@ -57,6 +108,7 @@ function ProductsOfDocument({refresh, ...props}) {
           price: price,
           weight: weight
         }).then((response) => {
+          console.log("success", response.data);
           handleClose();
         });
       });
@@ -99,6 +151,8 @@ function ProductsOfDocument({refresh, ...props}) {
       >
         <Box className='modal'>
           <h2>Modyfikuj produkty</h2>
+          <p className="required"> {formErrors.weight} </p>
+          <p className="required"> {formErrors.price} </p>
           <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
             <form> 
               {productList.map((item) => {
@@ -118,7 +172,7 @@ function ProductsOfDocument({refresh, ...props}) {
             <StockInfo/>
           </div>
           <div className='btn-panel' style={{transform: 'scale(3.0)', marginTop: '30px'}}>
-            <FaCheckCircle onClick={updateProducts} style={{color: 'green', cursor: 'pointer'}}/>
+            <FaCheckCircle onClick={handleSubmit} style={{color: 'green', cursor: 'pointer'}}/>
           </div>
         </Box>
       </Modal>

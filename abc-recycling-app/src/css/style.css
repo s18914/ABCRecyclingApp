@@ -163,13 +163,13 @@ body .modal form .inputStyle {
   border-width: 1px;
   border-color: rgba(0, 0, 0, 0.23);
 }
-body .modal form .required {
+body .modal form .top-space {
+  margin-top: 15px;
+}
+body .modal .required {
   color: red;
   font-size: small;
   margin: 0;
-}
-body .modal form .top-space {
-  margin-top: 15px;
 }
 body .modal .stock-info {
   margin-top: 20px;
