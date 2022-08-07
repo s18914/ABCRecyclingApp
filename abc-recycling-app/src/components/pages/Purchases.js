@@ -42,10 +42,11 @@ const Purchases = props => {
       cell: row => {
         if (row.transport_info === 'Nieustalony') {
           return (
-            <div
+            <Link to={`/sales/edit/${row.sales_id}`}>
+              <div
               style={{backgroundColor: '#41B53D', color: 'white', cursor: 'pointer', width: '120px', textAlign: 'center', fontWeight: '600', borderRadius: '3px', padding: '0'}}
-              onClick={() => addAddress(row.purchase_id)}
-            >+</div>
+              >+</div>
+            </Link>
           );
         } else {
           return (
@@ -125,7 +126,7 @@ const Purchases = props => {
   useEffect(() => {
     Axios('/purchases').then(
       response => {
-        setPurchaseList(response.data);
+        setPurchaseList(response.data.filter(e => e.name !== 'ROBOCZY'));
         setDocId(response.data?.document_id);
       }
     )

@@ -120,7 +120,6 @@ function TransportModal({...props}) {
   useEffect(() => {
     if(props.id !== undefined && props !== undefined) setId(props.id)
     findAddresses();
-    console.log("effect")
 
     if (Object.keys(formErrors).length === 0 && isSubmitting) {
       submit();

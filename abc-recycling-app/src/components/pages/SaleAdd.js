@@ -124,7 +124,7 @@ function SaleAdd() {
     Axios.put('/saleDocumentUpdate', {
       document_id: docId,
       contractor_Id: contractorId,
-      transport_Id: transportId,
+      transport_Id: transportId === 0 ? null : transportId,
     }).then((response) => {
       console.log("success", response.data);
       navigate("/sales");

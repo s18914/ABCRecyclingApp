@@ -14,6 +14,7 @@ const Sales = props => {
   
   const [saleList, setSaleList] = useState([]);
   const [docId, setDocId] = useState(0);
+  const [ref, setRef] = useState(1);
   const [filterText, setFilterText] = React.useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
   const paginationComponentOptions = {
@@ -94,7 +95,6 @@ const Sales = props => {
               style={{color: '#41B53D', cursor: 'pointer', transform: 'scale(1.8)'}}
               onDoubleClick={() => {
                 setPayment(row.sales_id, 0);
-                
               }}
             />
           );
@@ -151,6 +151,7 @@ const Sales = props => {
       status_id: ++status
     }).then((response) => {
       console.log("success", response.data);
+      setRef(2);
     });
   };
 
@@ -160,6 +161,7 @@ const Sales = props => {
       status_id: --status
     }).then((response) => {
       console.log("success", response.data);
+      setRef(0);
     });
   };
 
@@ -169,6 +171,7 @@ const Sales = props => {
       val: val
     }).then((response) => {
       console.log("success", response.data);
+      setRef(4);
     });
   };
 
@@ -203,7 +206,7 @@ const Sales = props => {
         setDocId(response.data?.sales_id);
       }
     )
-  }, [docId]);
+  }, [docId, ref]);
 
   return (
     <div className='main'>
