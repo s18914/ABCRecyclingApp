@@ -30,29 +30,13 @@ const Home = props => {
     )
   }, []);
 
-  return (
-    <table className='main'>
-    <tr>
-      <td style={{padding: '20px'}}>
-      <DataTable
-        columns={columns}
-        data={oldCarsList}
-        noDataComponent=''
-      />
-      </td>
-      <td style={{padding: '20px'}}>
-      <DataTable
-        columns={notesColumns}
-        data={notesList}
-        noDataComponent=''
-      />
-      <label>Nowa notatka</label>
-      <textarea style={{width: '550px'}}></textarea>
-      <button>Dodaj</button>
-      </td>
-    </tr>
-  </table>
-  );
+  // return (
+  //     // <DataTable className='main'
+  //     //   columns={columns}
+  //     //   data={oldCarsList}
+  //     //   noDataComponent=''
+  //     // />
+  // );
 }
 
 export default Home

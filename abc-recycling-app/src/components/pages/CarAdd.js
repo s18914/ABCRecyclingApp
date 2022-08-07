@@ -3,113 +3,120 @@ import { useState, useEffect } from "react";
 import Axios from "../../request";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaCheckCircle } from 'react-icons/fa'
-import { ImCancelCircle} from 'react-icons/im'
+import { ImCancelCircle } from 'react-icons/im'
+import { format } from 'date-fns'
+
 
 function CarAdd() {
-  const [car, setCar] = useState();
-  const [registration_number, setRegistrationNumber] = useState("");
-  const [overview_date, setOverviewDate] = useState(new Date());
-
-  const {id} = useParams();
-  let isAddMode = ({id}.id === undefined ? true : false);
+  const { id } = useParams();
+  let isAddMode = id === undefined;
   const navigate = useNavigate();
-
-  const [formValues, setFormValues] = useState({ registration_number: ""});
-  const [formErrors, setFormErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formValues, setFormValues] = useState({ registration_number: "", overview_date: format(new Date(), `yyyy-MM-dd`) });
+  const [formErrors, setFormErrors] = useState(null);
 
   const submit = () => {
     console.log(formValues);
-    if(isAddMode) addCar();
-    updateCar();
+    isAddMode ? addCar() : updateCar();
   };
+
+  useEffect(() => {
+    if (id) {
+      getCar(id)
+    }
+  }, [id])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
+    const errors  = validate(formValues)
+    setFormErrors(errors);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setFormErrors(validate(formValues));
-    setIsSubmitting(true);
+    const errors  = validate(formValues)
+    setFormErrors(errors);
     navigate("/cars");
+    if (!errors) { 
+      submit()
+    }
   };
 
   const validate = (values) => {
     let errors = {};
+    const registrationNumberRegex = /([[A-Z]){1}([A-Z]|[0-9]){5}/;
 
     if (!values.registration_number) {
       errors.registration_number = "To pole nie może być puste";
-    } 
+    } else if (!registrationNumberRegex.test(values.registration_number) && values.registration_number.length !== 7) {
+      errors.registration_number = "Numer rejestracyjny powinien składać się z 7 znaków, z czego pierwsze 2 powinny być literami.";
+    }
+    
+    if (new Date(values.overview_date) < new Date()) {
+      errors.overview_date = "Ta data nie może być z przeszłosci";
+    }
 
-    return errors;
+    return Object.entries(errors).length > 0 ?  errors : null;
   };
 
-  const getCar = (id) => {
-    if(!isAddMode) {
-      Axios.get(`/car/${id}`).then((response) => {
-        setCar(response.data);
-        setRegistrationNumber(response.data?.registration_number);
-        setOverviewDate(response.data?.overview_date);
-      });
+  const getCar = async (id) => {
+    if (!isAddMode) {
+      try {
+        //debugger;
+        const response = await Axios.get(`/car/${id}`)
+        //Destrukturyzacja => z obiektu response wybiera klucze 
+        const { overview_date, registration_number } = response.data
+        const newFormValues = {
+          registration_number,
+          overview_date: format(new Date(overview_date), `yyyy-MM-dd`)
+        }
+        setFormValues(newFormValues)
+      } catch (error) {
+
+      }
     }
   };
-  
-  useEffect(() => {
-    getCar({id}.id);
-    if (Object.keys(formErrors).length === 0 && isSubmitting) {
-      submit();
-    }
-  }, [formErrors]);
 
-  const addCar = (event) => {
-    event.preventDefault();
-    Axios.post('/carCreate', {
-      registration_number: registration_number, 
-      overview_date: overview_date
-    }).then((data) => {
-      console.log("success", data.data);
-      navigate("/transports/add");
-    })
-  };
-
-  const updateCar = (e) => {
-    e.preventDefault();
-    Axios.put('/carUpdate', {
-      registration_number: registration_number, 
-      overview_date: overview_date,
-      id: {id}.id
-    }).then((data) => {
-      console.log("success", data.data);
+  const addCar = async () => {
+    const response = await Axios.post('/carCreate', {...formValues, overview_date: new Date(formValues.overview_date)})
+    console.log("success", response.data);
+    if (false) { 
       navigate("/cars");
-    });
+    }
+  };
+
+  const updateCar = async () => {
+    const response = await Axios.put('/carUpdate', {
+      ...formValues,
+      overview_date: new Date(formValues.overview_date),
+      id
+    })
+    console.log("success", response.data);
+    if (false) {
+      navigate("/cars");
+    }
   };
 
   return (
     <div className='main'>
-        {isAddMode &&<h1>Dodaj nowy samochód</h1>}
-        {!isAddMode && <h1>Edytuj samochód</h1>}
-        <form className='simpleForm' style={{width: '300px'}} onSubmit={handleSubmit} noValidate>
-            <label>Numer Rejestracyjny<span className="required">*</span></label>
-            <input type="text" id="registration_number" name="registration_number" defaultValue={car?.registration_number} 
-            onChange={(event) => {
-                setRegistrationNumber(event.target.value);
-                handleChange(event);
-            }}>
-            </input>
-            <p className="required"> {formErrors.registration_number} </p>
-            <label>Data ważności przeglądu</label>
-            <input type="date" id="overview_date" name="overview_date" defaultValue={car?.overview_date}
-            onChange={(event) => {
-                setOverviewDate(event.target.value);
-            }}>
-            </input>
-        </form>
-        <div className='btn-panel' style={{transform: 'scale(4.0)'}}>
-          <ImCancelCircle style={{color: 'grey', cursor: 'pointer', padding: '0 15px'}} onClick={() => {navigate("/cars")}}/>
-          <FaCheckCircle onClick={handleSubmit} style={{color: 'green', cursor: 'pointer'}}/>
-        </div>
+      {isAddMode && <h1>Dodaj nowy samochód</h1>}
+      {!isAddMode && <h1>Edytuj samochód</h1>}
+      <form className='simpleForm' style={{ width: '300px' }} onSubmit={handleSubmit} noValidate>
+        <label htmlFor='registration_number'>Numer Rejestracyjny<span className="required">*</span></label>
+        <input type="text" id="registration_number" name="registration_number" value={formValues.registration_number}
+          onChange={handleChange}>
+        </input>
+        <p className="required"> {formErrors?.registration_number} </p>
+        <label htmlFor='overview_date'>Data ważności przeglądu</label>
+        <input type="date" id="overview_date" name="overview_date" min={format(new Date(), `yyyy-MM-dd`)} value={formValues.overview_date}
+          onChange={handleChange}>
+        </input>
+        <p className="required"> {formErrors?.overview_date} </p>
+      </form>
+      <div className='btn-panel' style={{ transform: 'scale(4.0)' }}>
+        <ImCancelCircle style={{ color: 'grey', cursor: 'pointer', padding: '0 15px' }} onClick={() => { navigate("/cars") }} />
+        <FaCheckCircle onClick={handleSubmit} style={{ color: 'green', cursor: 'pointer' }} />
+      </div>
     </div>
   )
 }

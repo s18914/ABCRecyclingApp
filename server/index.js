@@ -147,12 +147,12 @@ app.get("/ZipCodesLookup", (req, res) => {
 
 //Car
 app.post("/carCreate", (req, res) => {
-  const registrationNumber = req.body.registrationNumber;
-  const overviewDate = req.body.overviewDate;
+  const registration_number = req.body.registration_number;
+  const overview_date = req.body.overview_date;
 
   client.query(
     "INSERT INTO cars (registration_number, overview_date) VALUES ($1,$2)",
-    [registrationNumber, overviewDate],
+    [registration_number, overview_date],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -189,12 +189,12 @@ app.get("/cars", (req, res) => {
 
 app.put("/carUpdate", (req, res) => {
   const id = req.body.id;
-  const registrationNumber = req.body.registrationNumber;
-  const overviewDate = req.body.overviewDate;
+  const registration_number = req.body.registration_number;
+  const overview_date = req.body.overview_date;
 
   client.query(
     "Update cars set registration_number = $1, overview_date = $2 where car_id = $3",
-    [registrationNumber, overviewDate, id],
+    [registration_number, overview_date, id],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -219,7 +219,7 @@ app.delete("/carDelete/:id", (req, res) => {
 });
 
 app.get("/CarsLookup", (req, res) => {
-  client.query("SELECT * from get_cars_4_lookup()", (err, result) => {
+  client.query("SELECT * from get_car_4_lookup()", (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -666,7 +666,7 @@ app.post("/workerCreate", (req, res) => {
 });
 
 app.get("/workers", (req, res) => {
-  client.query("SELECT * FROM get_workers()", (err, result) => {
+  client.query("SELECT w.worker_id, w.name, w.surname, w.id_number, r.name as role_name FROM public.workers w inner join public.roles r on r.role_id = w.role_id;", (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -678,7 +678,7 @@ app.get("/workers", (req, res) => {
     
 app.get("/worker/:id", (req, res) => {
   const id = req.params.id;
-  client.query("SELECT * FROM	get_workers() WHERE worker_id = $1", 
+  client.query("SELECT * FROM public.workers w inner join public.roles r on r.role_id = w.role_id WHERE worker_id = $1", 
   [id],
   (err, result) => {
     if (err) {

@@ -9,36 +9,38 @@ import { FaCheckCircle } from 'react-icons/fa'
 
 
 function WorkerAdd() {
-  const [worker, setWorker] = useState();
-  const [name, setName] = useState("");
-  const [surname, setSurname] = useState("");
-  const [id_number, setIdNumber] = useState("");
   const [role_id, setRoleId] = useState(0);
   const [rolesList, setRolesList] = useState([]);
-
   const {id} = useParams();
   const navigate = useNavigate();
-  let isAddMode = ({id}.id === undefined ? true : false);
-
+  let isAddMode = id === undefined;
   const [formValues, setFormValues] = useState({ name: "", surname: "", id_number: "", role_id: 0});
   const [formErrors, setFormErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submit = () => {
-    if(isAddMode) addWorker();
-    updateWorker();
+    isAddMode ? addWorker() : updateWorker();
   };
+
+  useEffect(() => {
+    if (id) {
+      getWorker(id)
+    }
+  }, [id])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
+    const errors  = validate(formValues)
+    setFormErrors(errors);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setFormErrors(validate(formValues));
-    setIsSubmitting(true);
-    navigate("/workers");
+    const errors  = validate(formValues)
+    setFormErrors(errors);
+    if (!errors) { 
+      submit()
+    }
   };
 
   const validate = (values) => {
@@ -64,48 +66,46 @@ function WorkerAdd() {
       errors.role_id = "To pole nie może być puste";
     } 
     
-    return errors;
+    return Object.entries(errors).length > 0 ?  errors : null;
   };
 
-  const getWorker = (id) => {
-    if(!isAddMode) {
-      Axios.get(`/worker/${id}`).then((response) => {
-        setWorker(response.data);
-        setName(response.data?.name);
-        setSurname(response.data?.surname);
-        setIdNumber(response.data?.id_number);
-        setRoleId(response.data?.role_id);
-      });
+  const getWorker = async (id) => {
+    if (!isAddMode) {
+      try {
+        //debugger;
+        const response = await Axios.get(`/worker/${id}`)
+        //Destrukturyzacja => z obiektu response wybiera klucze 
+        const { name, surname, id_number, role_id } = response.data
+        const newFormValues = {
+          name,
+          surname,
+          id_number,
+          role_id
+        }
+        setFormValues(newFormValues)
+      } catch (error) {
+
+      }
     }
   };
 
-  useEffect(() => {
-    getWorker({id}.id);
-    if (Object.keys(formErrors).length === 0 && isSubmitting) {
-      submit();
-    }
-  }, [formErrors]);
-
-  const addWorker = (event) => {
-    Axios.post('/workerCreate', {
-      name: name, 
-      surname: surname, 
-      id_number: id_number,
-      role_id: role_id
-    }).then((data) => {
+  const addWorker = async () => {
+    const response = await Axios.post('/workerCreate', {...formValues})
+    console.log("success", response.data);
+    if (false) { 
       navigate("/workers");
+    }
+  };
+
+  const updateWorker = async () => {
+    const response = await Axios.put('/workerUpdate', {
+      ...formValues,
+      id
     })
-  };
-
-  const updateWorker = (e) => {
-    Axios.put('/workerUpdate', {
-      name: name, 
-      surname: surname,
-      id_number: id_number,
-      role_id: role_id
-    }).then((response) => {
+    console.log("success", response.data);
+    if (false) {
       navigate("/workers");
-    });
+    }
   };
 
   const findOptions = () => {
@@ -122,33 +122,24 @@ function WorkerAdd() {
       {!isAddMode && <h1>Edytuj pracownika</h1>}
         <form>
           <div className='simpleForm' style={{width: '300px'}} onSubmit={handleSubmit} noValidate>
-            <label>Imię<span className="required">*</span></label>
-            <input type="text" id="name" name="name" defaultValue={worker?.name} 
-            onChange={(event) => {
-                setName(event.target.value);
-                handleChange(event);
-            }}>
+            <label htmlFor='name'>Imię<span className="required">*</span></label>
+            <input type="text" id="name" name="name" value={formValues.name} 
+            onChange={handleChange}>
             </input>
             <p className="required"> {formErrors.name} </p>
-            <label>Nazwisko<span className="required">*</span></label>
-            <input type="text" id="surname" name="surname" defaultValue={worker?.surname} 
-            onChange={(event) => {
-                setSurname(event.target.value);
-                handleChange(event);
-            }}>
+            <label htmlFor='surname'>Nazwisko<span className="required">*</span></label>
+            <input type="text" id="surname" name="surname" value={formValues.surname} 
+            onChange={handleChange}>
             </input>
             <p className="required"> {formErrors.surname} </p>
-            <label>Numer dowodu<span className="required">*</span></label>
-            <input type="text" id="id_number" name="id_number" defaultValue={worker?.id_number} 
-            onChange={(event) => {
-                setIdNumber(event.target.value);
-                handleChange(event);
-            }}>
+            <label htmlFor='id_number'>Numer dowodu<span className="required">*</span></label>
+            <input type="text" id="id_number" name="id_number" value={formValues.id_number} 
+            onChange={handleChange}>
             </input>
             <p className="required"> {formErrors.id_number} </p>
             </div>
             <div>
-            <label>Stanowisko pracownika<span className="required">*</span></label>
+            <label htmlFor='role_id'>Stanowisko pracownika<span className="required">*</span></label>
             <div onClick={findOptions}>
               <Autocomplete
                 id="role_id"
@@ -161,7 +152,7 @@ function WorkerAdd() {
                 isOptionEqualToValue={(option, value) => option.id === value.id}
                 sx={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} label="Stanowisko" />}
-                defaultValue={worker?.role_id}
+                //defaultValue={worker?.role_id}
               />
             </div>
             </div>
