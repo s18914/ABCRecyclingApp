@@ -72,7 +72,7 @@ function CustomerAdd() {
 
       if (!values.account_number) {
         errors.account_number = "To pole nie może być puste";
-      } else if ((!numberRegex.test(values.account_number) && values.account_number.length !== 26) || !accountRegex.test(values.account_number)) {
+      } else if ((!numberRegex.test(values.account_number) && values.account_number.length !== 26) && !accountRegex.test(values.account_number)) {
         errors.account_number = "Numer konta powinien składać się z 26 cyfr i mieć format: 00-00000000-0000000000000000 lub być pisany ciągiem";
       }
 
