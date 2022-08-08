@@ -116,10 +116,10 @@ function AddressAdd() {
           <input type="text" id="street" name="street" maxlength='70' value={formValues.street} onChange={handleChange}>
           </input>
           <label htmlFor='house_number'>Numer domu<span className="required">*</span></label>
-          <input type="number" id="house_number" name="house_number" value={formValues.house_number} onChange={handleChange}>
+          <input type="number" id="house_number" name="house_number" min="1" value={formValues.house_number} onChange={handleChange}>
           </input>
           <label htmlFor='flat_number'>Numer Lokalu</label>
-          <input type="number" id="flat_number" name="flat_number" value={formValues.flat_number} onChange={handleChange}>
+          <input type="number" id="flat_number" name="flat_number" min="1" value={formValues.flat_number} onChange={handleChange}>
           </input>
         </div>
         <div>
