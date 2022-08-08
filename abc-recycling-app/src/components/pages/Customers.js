@@ -67,12 +67,22 @@ const Customers = props => {
       name: "",
       button: true,
       width: '60px',
-      cell: row => (
-        <FaTimes
+      cell: row => {
+        if (row.can_delete === "1") {
+          return (
+            <FaTimes
             style={{color: '#D83232', cursor: 'pointer', transform: 'scale(1.5)'}}
             onClick={() => deleteCustomer(row.id)}
-        />
-      )
+            />
+          );
+        } else {
+          return (
+            <FaTimes
+            style={{color: 'grey', cursor: 'pointer', transform: 'scale(1.5)'}}
+            />
+          );
+        }
+      },
     },
   ];
 
@@ -127,12 +137,12 @@ const Customers = props => {
   }, [filterText, resetPaginationToggle]);
 
   useEffect(() => {
-    console.log("effect " + onlyCompanies)
     Axios('/customers').then(
       response => {
         setCustomerList(
           onlyCompanies ? response.data.filter(e => e.type === 'C') : response.data.filter(e => e.type === 'P') 
         );
+        console.log(customerList)
       }
     )
   }, [onlyCompanies]);
