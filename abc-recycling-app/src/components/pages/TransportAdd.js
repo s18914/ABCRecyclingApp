@@ -17,7 +17,7 @@ function TransportAdd() {
   const [carsList, setCarList] = useState([]);
   const [workersList, setWorkersList] = useState([]);
   const [addressList, setAddressList] = useState([]);
-  const {id} = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
   let isAddMode = id === undefined;
   const [formValues, setFormValues] = useState({ phone: "", date: format(new Date(), `yyyy-MM-dd`), address_id: 0, car_id: 0, worker_id: 0 });
@@ -143,7 +143,7 @@ function TransportAdd() {
           <p className="required"> {formErrors?.date} </p>
 
           <label htmlFor='phone'>Wpisz telefon odbiorcy</label>
-          <input type="text" id="phone" name="phone" value={formValues.phone} onChange={handleChange}>
+          <input type="text" id="phone" name="phone" maxlength='9' value={formValues.phone} onChange={handleChange}>
           </input>
         </div>
         <p className="required"> {formErrors?.phone} </p>
@@ -151,7 +151,7 @@ function TransportAdd() {
         <div>
           <label htmlFor='address_id'>Wybierz adres</label>
           <div onClick={findAddresses}>
-          <Autocomplete
+            <Autocomplete
               id="addressLookup"
               options={addressList}
               onChange={(event, newValue) => {
@@ -168,7 +168,7 @@ function TransportAdd() {
 
           <label htmlFor='car_id'>Wybierz ciężarówkę</label>
           <div onClick={findCars}>
-          <Autocomplete
+            <Autocomplete
               id="carsLookup"
               options={carsList}
               onChange={(event, newValue) => {
@@ -183,16 +183,16 @@ function TransportAdd() {
 
           <label htmlFor='worker_id'>Wybierz kierowcę</label>
           <div onClick={findDrivers}>
-          <Autocomplete
-            id="WorkersLookup"
-            options={workersList}
-            onChange={(event, newValue) => {
-              setWorkerId(newValue.id);
-            }}
-            getOptionLabel={(option) => option.label}
-            sx={{ width: 300 }}
-            renderInput={(params) => <TextField {...params} label="Kierowca" />}
-          />
+            <Autocomplete
+              id="WorkersLookup"
+              options={workersList}
+              onChange={(event, newValue) => {
+                setWorkerId(newValue.id);
+              }}
+              getOptionLabel={(option) => option.label}
+              sx={{ width: 300 }}
+              renderInput={(params) => <TextField {...params} label="Kierowca" />}
+            />
           </div>
 
         </div>

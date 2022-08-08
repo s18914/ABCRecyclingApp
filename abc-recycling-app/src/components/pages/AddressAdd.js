@@ -113,7 +113,7 @@ function AddressAdd() {
       <form onSubmit={handleSubmit} noValidate>
         <div className='simpleForm' style={{ width: '300px' }}>
           <label htmlFor='street'>Ulica<span className="required">*</span></label>
-          <input type="text" id="street" name="street" value={formValues.street} onChange={handleChange}>
+          <input type="text" id="street" name="street" maxlength='70' value={formValues.street} onChange={handleChange}>
           </input>
           <label htmlFor='house_number'>Numer domu<span className="required">*</span></label>
           <input type="number" id="house_number" name="house_number" value={formValues.house_number} onChange={handleChange}>
@@ -125,18 +125,18 @@ function AddressAdd() {
         <div>
           <label htmlFor='ZipCodesLookup'>Kod pocztowy<span className="required">*</span></label>
           <div onClick={findZipCodes}>
-              <Autocomplete
-                id="ZipCodesLookup"
-                options={zipCodesList}
-                onChange={(event, value) => {
-                  setZipCodeId(value.id);
-                  handleChange(event);
-                }}
-                getOptionLabel={(option) => option.label}
-                isOptionEqualToValue={(option, value) => option.id === value.id}
-                sx={{ width: 300 }}
-                renderInput={(params) => <TextField {...params} label="Kod pocztowy" />}
-              />
+            <Autocomplete
+              id="ZipCodesLookup"
+              options={zipCodesList}
+              onChange={(event, value) => {
+                setZipCodeId(value.id);
+                handleChange(event);
+              }}
+              getOptionLabel={(option) => option.label}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              sx={{ width: 300 }}
+              renderInput={(params) => <TextField {...params} label="Kod pocztowy" />}
+            />
           </div>
         </div>
         <div className='btn-panel' style={{ transform: 'scale(4.0)' }}>

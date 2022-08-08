@@ -28,16 +28,16 @@ function CarAdd() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
-    const errors  = validate(formValues)
+    const errors = validate(formValues)
     setFormErrors(errors);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const errors  = validate(formValues)
+    const errors = validate(formValues)
     setFormErrors(errors);
     navigate("/cars");
-    if (!errors) { 
+    if (!errors) {
       submit()
     }
   };
@@ -51,12 +51,12 @@ function CarAdd() {
     } else if (!registrationNumberRegex.test(values.registration_number) && values.registration_number.length !== 7) {
       errors.registration_number = "Numer rejestracyjny powinien składać się z 7 znaków, z czego pierwsze 2 powinny być literami.";
     }
-    
+
     if (new Date(values.overview_date) < new Date()) {
       errors.overview_date = "Ta data nie może być z przeszłosci";
     }
 
-    return Object.entries(errors).length > 0 ?  errors : null;
+    return Object.entries(errors).length > 0 ? errors : null;
   };
 
   const getCar = async (id) => {
@@ -78,9 +78,9 @@ function CarAdd() {
   };
 
   const addCar = async () => {
-    const response = await Axios.post('/carCreate', {...formValues, overview_date: new Date(formValues.overview_date)})
+    const response = await Axios.post('/carCreate', { ...formValues, overview_date: new Date(formValues.overview_date) })
     console.log("success", response.data);
-    if (false) { 
+    if (false) {
       navigate("/cars");
     }
   };
@@ -103,7 +103,7 @@ function CarAdd() {
       {!isAddMode && <h1>Edytuj samochód</h1>}
       <form className='simpleForm' style={{ width: '300px' }} onSubmit={handleSubmit} noValidate>
         <label htmlFor='registration_number'>Numer Rejestracyjny<span className="required">*</span></label>
-        <input type="text" id="registration_number" name="registration_number" value={formValues.registration_number}
+        <input type="text" id="registration_number" name="registration_number" maxlength='7' value={formValues.registration_number}
           onChange={handleChange}>
         </input>
         <p className="required"> {formErrors?.registration_number} </p>

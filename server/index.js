@@ -18,13 +18,13 @@ function connect() {
     password: process.env.DATABASE_PASSWORD,
     port: 5432,
   });
-  
-  client.connect(function(err) {
+
+  client.connect(function (err) {
     if (err) throw err;
     console.log("Connected!");
   });
-  
-  client.on("error", ( error, client) => {
+
+  client.on("error", (error, client) => {
     console.log("błąd: " + error);
     setTimeout(connect, 1000);
   })
@@ -76,14 +76,14 @@ app.get("/transport/:id", (req, res) => {
 });
 
 app.get("/lastTransport", (req, res) => {
-  client.query("SELECT label, id from get_transports_4_lookup() order by id desc LIMIT 1",  
-  (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(result.rows[0]);
-    }
-  });
+  client.query("SELECT label, id from get_transports_4_lookup() order by id desc LIMIT 1",
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(result.rows[0]);
+      }
+    });
 });
 
 app.put("/transportUpdate", (req, res) => {
@@ -110,15 +110,15 @@ app.put("/transportUpdate", (req, res) => {
 
 app.delete("/transportDelete/:id", (req, res) => {
   const id = req.params.id;
-  client.query("DELETE FROM transports WHERE transport_id = $1", 
-  [id], 
-  (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send(result);
-    }
-  });
+  client.query("DELETE FROM transports WHERE transport_id = $1",
+    [id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    });
 });
 
 app.get("/TransportsLookup", (req, res) => {
@@ -165,15 +165,15 @@ app.post("/carCreate", (req, res) => {
 
 app.get("/car/:id", (req, res) => {
   const id = req.params.id;
-  client.query("SELECT * FROM cars WHERE car_id = $1", 
-  [id], 
-  (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(result.rows[0]);
-    }
-  });
+  client.query("SELECT * FROM cars WHERE car_id = $1",
+    [id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(result.rows[0]);
+      }
+    });
 });
 
 app.get("/cars", (req, res) => {
@@ -207,15 +207,15 @@ app.put("/carUpdate", (req, res) => {
 
 app.delete("/carDelete/:id", (req, res) => {
   const id = req.params.id;
-  client.query("DELETE FROM cars WHERE car_id = $1", 
-  [id], 
-  (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send(result);
-    }
-  });
+  client.query("DELETE FROM cars WHERE car_id = $1",
+    [id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    });
 });
 
 app.get("/CarsLookup", (req, res) => {
@@ -263,26 +263,26 @@ app.post("/addressCreate", (req, res) => {
 
 app.get("/address/:id", (req, res) => {
   const id = req.params.id;
-  client.query("SELECT street, house_number, flat_number, zip_code_id FROM addresses WHERE address_id = $1", 
-  [id], 
-  (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(result.rows[0]);
-    }
-  });
+  client.query("SELECT street, house_number, flat_number, zip_code_id FROM addresses WHERE address_id = $1",
+    [id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(result.rows[0]);
+      }
+    });
 });
 
 app.get("/lastAddress", (req, res) => {
-  client.query("SELECT concat(a.street, ' ', a.house_number, ' ', a.flat_number, ', ', z.city) as label, a.address_id as id FROM addresses a inner join public.zip_codes z on z.zip_code_id = a.zip_code_id order by address_id desc LIMIT 1",  
-  (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(result.rows[0]);
-    }
-  });
+  client.query("SELECT concat(a.street, ' ', a.house_number, ' ', a.flat_number, ', ', z.city) as label, a.address_id as id FROM addresses a inner join public.zip_codes z on z.zip_code_id = a.zip_code_id order by address_id desc LIMIT 1",
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(result.rows[0]);
+      }
+    });
 });
 
 
@@ -308,15 +308,15 @@ app.put("/addressUpdate", (req, res) => {
 
 app.delete("/addressDelete/:id", (req, res) => {
   const id = req.params.id;
-  client.query("DELETE FROM addresses WHERE address_id = $1", 
-  [id], 
-  (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send(result);
-    }
-  });
+  client.query("DELETE FROM addresses WHERE address_id = $1",
+    [id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    });
 });
 
 app.get("/addressLookup", (req, res) => {
@@ -405,15 +405,15 @@ app.put("/customerUpdate", (req, res) => {
 
 app.delete("/customerDelete/:id", (req, res) => {
   const id = req.params.id;
-  client.query("DELETE FROM contractors WHERE contractor_id = $1", 
-  [id], 
-  (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send(result);
-    }
-  });
+  client.query("DELETE FROM contractors WHERE contractor_id = $1",
+    [id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    });
 });
 
 app.get("/CustomersLookup", (req, res) => {
@@ -433,7 +433,7 @@ app.post("/companyCreate", (req, res) => {
   const nip = req.body.nip;
   const account_number = req.body.account_number;
   const email = req.body.email;
- 
+
   client.query(
     "INSERT INTO companies (name, nip, account_number, email) VALUES ($1,$2,$3, $4)",
     [name, nip, account_number, email],
@@ -518,7 +518,7 @@ app.put("/saleDocumentUpdate", (req, res) => {
   const document_id = req.body.document_id;
   const contractor_Id = req.body.contractor_Id;
   let transport_Id = req.body.transport_Id;
-  if(transport_Id === undefined) transport_Id = null;
+  if (transport_Id === undefined) transport_Id = null;
 
   client.query(
     "Update sales set contractor_Id = $1, transport_Id = $2 where document_id = $3",
@@ -537,7 +537,7 @@ app.put("/purchaseDocumentUpdate", (req, res) => {
   const document_id = req.body.document_id;
   const contractor_Id = req.body.contractor_Id;
   let transport_Id = req.body.transport_Id;
-  if(transport_Id === undefined) transport_Id = null;
+  if (transport_Id === undefined) transport_Id = null;
 
   client.query(
     "Update purchases set contractor_Id = $1, transport_Id = $2 where document_id = $3",
@@ -556,7 +556,7 @@ app.put("/purchaseDocumentUpdateAndAddPerson", (req, res) => {
   const document_id = req.body.document_id;
   const id_number = req.body.id_number;
   const transport_Id = req.body.transport_Id;
-  if(transport_Id === undefined) transport_Id = null;
+  if (transport_Id === undefined) transport_Id = null;
 
   client.query(
     "call update_purchase_with_new_client($1, $2, $3)",
@@ -584,15 +584,15 @@ app.get("/document/:id", (req, res) => {
 
 app.delete("/documentDelete/:id", (req, res) => {
   const id = req.params.id;
-  client.query("DELETE FROM documents WHERE document_id = $1", 
-  [id], 
-  (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send(result);
-    }
-  });
+  client.query("DELETE FROM documents WHERE document_id = $1",
+    [id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    });
 });
 
 //Sale
@@ -610,7 +610,7 @@ app.get("/sales", (req, res) => {
 app.put("/saleUpdateStatus", (req, res) => {
   const id = req.body.id;
   const status_id = req.body.status_id;
-  if(status_id >= 0 && status_id <=3 ) {
+  if (status_id >= 0 && status_id <= 3) {
     client.query("update sales set status_id = $2 WHERE document_id = $1", [id, status_id], (err, result) => {
       if (err) {
         console.log(err);
@@ -625,13 +625,13 @@ app.put("/SaleUpdatePayment", (req, res) => {
   const id = req.body.id;
   const val = req.body.val;
 
-  if(val) {
+  if (val) {
     client.query("update sales set is_paid = 'true' WHERE document_id = $1", [id], (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(result.rows[0]);
-    }
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(result.rows[0]);
+      }
     });
   } else {
     client.query("update sales set is_paid = 'false' WHERE document_id = $1", [id], (err, result) => {
@@ -640,9 +640,9 @@ app.put("/SaleUpdatePayment", (req, res) => {
       } else {
         res.json(result.rows[0]);
       }
-      });
+    });
   }
-  
+
 });
 
 //Worker
@@ -675,18 +675,18 @@ app.get("/workers", (req, res) => {
     }
   });
 });
-    
+
 app.get("/worker/:id", (req, res) => {
   const id = req.params.id;
-  client.query("SELECT * FROM public.workers w inner join public.roles r on r.role_id = w.role_id WHERE worker_id = $1", 
-  [id],
-  (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(result.rows[0]);
-    }
-  });
+  client.query("SELECT * FROM public.workers w inner join public.roles r on r.role_id = w.role_id WHERE worker_id = $1",
+    [id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(result.rows[0]);
+      }
+    });
 });
 
 app.put("/workerUpdate", (req, res) => {
@@ -710,16 +710,16 @@ app.put("/workerUpdate", (req, res) => {
 });
 
 app.delete("/workerDelete/:id", (req, res) => {
-  const id = req.params.id; 
-  client.query("DELETE FROM workers WHERE worker_id = $1", 
-  [id], 
-  (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send(result);
-    }
-  });
+  const id = req.params.id;
+  client.query("DELETE FROM workers WHERE worker_id = $1",
+    [id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    });
 });
 
 app.get("/WorkersLookup", (req, res) => {
