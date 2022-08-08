@@ -19,6 +19,7 @@ function CustomerAdd() {
   const [account_number, setAccountNumber] = useState("");
   const [email, setEmail] = useState("");
   const [isCompany, setMode] = useState(true);
+  const [customerList, setCustomerList] = useState([]);
 
   //walidacja
   const [formValues, setFormValues] = useState({ name: "", surname: "", id_number: "", nip: "", account_number: "", email: "" });
@@ -60,11 +61,13 @@ function CustomerAdd() {
       if (!values.name) {
         errors.name = "To pole nie może być puste";
       } 
-
+      
       if (!values.nip) {
         errors.nip = "To pole nie może być puste";
-      } else if ((!numberRegex.test(values.nip) && values.nip.length !== 10) || !nipRegex.test(values.nip)) {
-        errors.nip = "nip powinien składać się z 10 cyfr i mieć format: 0000-000-000 lub być pisany ciągiem";
+      } else if ((!numberRegex.test(values.nip) || values.nip.length !== 10) && (!nipRegex.test(values.nip) || values.nip.length !== 12)) {
+        errors.nip = "Numer NIP powinien składać się z 10 cyfr i mieć format: 0000-000-000 lub być pisany ciągiem";
+      } else if (customerList.find(c => c.nip === values.nip) !== undefined){
+        errors.nip = "Taki numer NIP istnieje już w bazie danych";
       }
 
       if (!values.account_number) {
@@ -81,12 +84,12 @@ function CustomerAdd() {
     } else {
       if (!values.id_number) {
         errors.id_number = "Proszę uzupełnić numer dowodu";
-      }else if (!idRegex.test(values.id_number) || values.id_number.length !== 9) {
+      } else if (!idRegex.test(values.id_number) || values.id_number.length !== 9) {
         errors.id_number = "Numer dowodu powinien składać się z 3 liter oraz 6 cyfr i mieć format: AAA000000";
       }
     }
 
-    return errors;
+    return errors
   };
 
 
@@ -101,8 +104,15 @@ function CustomerAdd() {
         setAccountNumber(response.data?.account_number);
         setEmail(response.data?.email);
         if(response.data?.nip === null) {setMode(false)}
-      });
+      })
     }
+    Axios('/customers').then(
+      response => {
+        setCustomerList(
+          response.data.filter(e => e.contractor_id !== id) 
+        );
+      }
+    )
   };
 
   useEffect(() => {
@@ -124,7 +134,6 @@ function CustomerAdd() {
   };
 
   const addCompany = (event) => {
-
       Axios.post('/companyCreate', {
         name: name,
         nip: nip.replace('-', ''), 
@@ -161,7 +170,6 @@ function CustomerAdd() {
       navigate("/customers");
     });
   };
-
   
   return (
     <div className='main'>
