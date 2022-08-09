@@ -21,6 +21,9 @@ const Sales = props => {
     rowsPerPageText: 'Rekordów na stronie',
     rangeSeparatorText: 'z',
   };
+
+  let d = new Date();
+
   const columns =  [
     {
       name: 'No.',
@@ -44,7 +47,7 @@ const Sales = props => {
       cell: row => {
         if (row.transport_info === 'Nieustalony') {
           return (
-            <Link to={`/sales/edit/${row.sales_id}`}>
+            <Link to={`/sales/edit/${row.sales_id}`} style={{textDecoration: 'none'}}>
               <div
               style={{backgroundColor: '#41B53D', color: 'white', cursor: 'pointer', width: '120px', textAlign: 'center', fontWeight: '600', borderRadius: '3px', padding: '0'}}
               >+</div>
@@ -59,13 +62,45 @@ const Sales = props => {
     },
     {
       name: 'Data',
-      width: '110px',
+      width: '120px',
       selector: row => row.date === null ? row.date : row.date.substring(0, 10),
+      conditionalCellStyles: [
+        {
+            when: row => row.date !== null && fn_DateCompare(row.date, d) !== 1 && row.status_id < 3,
+            style: {
+                backgroundColor: '#B22222',
+                color: 'white',
+            },
+        },
+      ],
     },
     {
       name: 'Status wysyłki',
       width: '130px',
-      selector: row => row.status
+      selector: row => row.status,
+      conditionalCellStyles: [
+        {
+            when: row => row.status_id < 1,
+            style: {
+                backgroundColor: '#00BFFF',
+                color: 'white',
+            },
+        },
+        {
+            when: row => row.status_id >=1 && row.status_id < 2,
+            style: {
+                backgroundColor: 'rgba(248, 148, 6, 0.9)',
+                color: 'white',
+            },
+        },
+        {
+            when: row => row.status_id >= 2,
+            style: {
+                backgroundColor: 'rgba(63, 195, 128, 0.9)',
+                color: 'white',
+            },
+        },
+      ],
     },
     {
       name: "Zmień status",
@@ -150,8 +185,7 @@ const Sales = props => {
       id: id,
       status_id: ++status
     }).then((response) => {
-      console.log("success", response.data);
-      setRef(2);
+      setRef(Math.random());
     });
   };
 
@@ -161,7 +195,7 @@ const Sales = props => {
       status_id: --status
     }).then((response) => {
       console.log("success", response.data);
-      setRef(0);
+      setRef(Math.random());
     });
   };
 
@@ -171,7 +205,7 @@ const Sales = props => {
       val: val
     }).then((response) => {
       console.log("success", response.data);
-      setRef(4);
+      setRef(Math.random());
     });
   };
 
@@ -199,10 +233,28 @@ const Sales = props => {
     );
   }, [filterText, resetPaginationToggle]);
 
+  function fn_DateCompare(DateA, DateB) {
+
+    var a = new Date(DateA);
+    var b = new Date(DateB);
+
+    var msDateA = Date.UTC(a.getFullYear(), a.getMonth()+1, a.getDate());
+    var msDateB = Date.UTC(b.getFullYear(), b.getMonth()+1, b.getDate());
+
+    if (parseFloat(msDateA) < parseFloat(msDateB))
+      return -1;  // lt
+    else if (parseFloat(msDateA) == parseFloat(msDateB))
+      return 0;  // eq
+    else if (parseFloat(msDateA) > parseFloat(msDateB))
+      return 1;  // gt
+    else
+      return null;  // error
+}
+
   useEffect(() => {
     Axios('/sales').then(
       response => {
-        setSaleList(response.data);
+        setSaleList(response.data.filter(e => e.name !== 'ROBOCZY'));
         setDocId(response.data?.sales_id);
       }
     )
