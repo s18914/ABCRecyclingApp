@@ -518,8 +518,10 @@ app.put("/saleDocumentUpdate", (req, res) => {
   const document_id = req.body.document_id;
   const contractor_Id = req.body.contractor_Id;
   let transport_Id = req.body.transport_Id;
+  console.log("1 transportId = " + transport_Id)
   if(transport_Id === undefined) transport_Id = null;
-
+  console.log("2 transportId = " + transport_Id + " " + document_id + " " + contractor_Id)
+  
   client.query(
     "Update sales set contractor_Id = $1, transport_Id = $2 where document_id = $3",
     [contractor_Id, transport_Id, document_id],
@@ -527,6 +529,7 @@ app.put("/saleDocumentUpdate", (req, res) => {
       if (err) {
         console.log(err);
       } else {
+        console.log(result)
         res.send(result);
       }
     }

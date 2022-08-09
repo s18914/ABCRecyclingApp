@@ -83,10 +83,11 @@ function TransportModal({...props}) {
       carId: carId,
       workerId: workerId
     }).then((data) => {
+      console.log("w transportModal wywołuje handleTA")
       Axios.get(`/lastTransport`).then((response) => {
         props.handleTransportAdd(response.data);
+        console.log(response.data)
       });
-      console.log("success", data.data);
     })
   };
 

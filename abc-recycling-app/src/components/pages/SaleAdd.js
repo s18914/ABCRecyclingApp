@@ -105,13 +105,14 @@ function SaleAdd() {
   const addDocument = () => {
     Axios.get('/saleInit').then((response) => {
       setDocId(response.data[0].init_sale);
+      console.log(response.data[0].init_sale)
     })
   };
 
   const getDocument = (id) => {
     if(!isAddMode) {
       Axios.get(`/document/${id}`).then((response) => {
-        setDocId(response.data?.sale_id)
+        setDocId(id)
         setContractorId(response.data?.contractor_id);
         setTransportId(response.data?.transport_id);
       });
@@ -120,7 +121,7 @@ function SaleAdd() {
 
   const updateDocument = (e) => {
     if(isAddMode) updateProducts();
-     console.log(contractorId)
+     console.log( " transport: " + transportId)
     Axios.put('/saleDocumentUpdate', {
       document_id: docId,
       contractor_Id: contractorId,
@@ -134,7 +135,7 @@ function SaleAdd() {
   const findCompanies = () => {
     Axios('/CompaniesLookup').then(
       response => {
-        setCustomersList(response.data);
+        setCustomersList(response.data.filter(e => e.label !== 'ROBOCZY'));
       }
     )
   };
@@ -149,6 +150,7 @@ function SaleAdd() {
 
   async function handleTransportAdd(val) {
     findTransports();
+    console.log("nowe id trensportu: " + val?.id)
     setTransportId(val?.id);
     setTransportLabel(val);
   };

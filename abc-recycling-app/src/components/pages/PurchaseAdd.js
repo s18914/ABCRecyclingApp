@@ -145,7 +145,7 @@ function PurchaseAdd() {
   const findCompanies = () => {
     Axios('/CompaniesLookup').then(
       response => {
-        setCustomersList(response.data);
+        setCustomersList(response.data.filter(e => e.label !== 'ROBOCZY'))
       }
     )
   };

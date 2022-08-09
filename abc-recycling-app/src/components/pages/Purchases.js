@@ -42,7 +42,7 @@ const Purchases = props => {
       cell: row => {
         if (row.transport_info === 'Nieustalony') {
           return (
-            <Link to={`/purchases/edit/${row.purchase_id}`}>
+            <Link to={`/purchases/edit/${row.purchase_id}`} style={{textDecoration: 'none'}}>
               <div
               style={{backgroundColor: '#41B53D', color: 'white', cursor: 'pointer', width: '120px', textAlign: 'center', fontWeight: '600', borderRadius: '3px', padding: '0'}}
               >+</div>
