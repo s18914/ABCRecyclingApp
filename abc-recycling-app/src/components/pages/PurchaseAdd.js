@@ -114,7 +114,6 @@ function PurchaseAdd() {
     if(!isAddMode) {
       Axios.get(`/purchase/${id}`).then((response) => {
         const data = response.data;
-        console.log(data)
         setDocId(response.data?.document_id);
         setContractorId(response.data?.contractor_id);
         setTransportId(response.data?.transport_id);
@@ -130,13 +129,13 @@ function PurchaseAdd() {
             const company = response.data.filter(e => e.id === data?.contractor_id);
             setContractorId(company[0].id);
             setCustomerLabel(company[0]);
-            console.log(company[0])
           } else {
             setIsCompany(false);
             Axios.get(`/CustomersLookup`).then((response) => {
               const customer = response.data.filter(e => e.id === data?.contractor_id);
               setContractorId(customer[0].id);
               setCustomerLabel(customer[0]);
+              document.getElementById("isCustomercheck").checked = true;
             });
           }
         });
@@ -198,11 +197,6 @@ function PurchaseAdd() {
     setTransportLabel(val);
   };
 
-  async function handleCustomerEdit(val) {
-    setContractorId(val?.id);
-    setCustomerLabel(val);
-  };
-
   function updateProducts() {
     try {
       productList.forEach(prod => {
@@ -235,7 +229,7 @@ function PurchaseAdd() {
       {!isAddMode && <h1>Edytuj dokument zakupu</h1>}
       <div style={{padding: '20px 0'}}>
         <input type="radio" defaultChecked value="Company" name="contractor" onClick={() => {setIsCompany(true)}}/> Firma
-        <input type="radio" value="Customer" name="contractor"  onClick={() => {setIsCompany(false)}} style={{marginLeft: '20px'}} /> Osoba prywatna
+        <input type="radio" id="isCustomercheck" value="Customer" name="contractor"  onClick={() => {setIsCompany(false)}} style={{marginLeft: '20px'}} /> Osoba prywatna
         <input type="radio" value="Company" name="contractor" onClick={() => {setIsCompany(null)}} style={{marginLeft: '20px'}}/> Nowa osoba
       </div>
       <form>

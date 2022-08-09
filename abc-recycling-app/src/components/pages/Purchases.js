@@ -22,22 +22,26 @@ const Purchases = props => {
   const columns =  [
     {
       name: 'No.',
-      width: '60px',
+      width: '90px',
+      sortable: true,
       selector: row => row.purchase_id,
     },
     {
       name: 'Kontrahent',
       width: '280px',
+      sortable: true,
       selector: row => row.name,
     },
     {
         name: 'Cena',
         width: '100px',
+        sortable: true,
         selector: row => row.price,
     },
     {
       name: 'Adres',
       width: '220px',
+      sortable: true,
       padding: '0',
       cell: row => {
         if (row.transport_info === 'Nieustalony') {
@@ -58,6 +62,7 @@ const Purchases = props => {
     {
       name: 'Data',
       width: '140px',
+      sortable: true,
       selector: row => row.date === null ? row.date : row.date.substring(0, 10),
     },
     {
@@ -138,6 +143,8 @@ const Purchases = props => {
         onRowClicked={(row, event) => {
           setDocId(row.purchase_id);
         }}
+        defaultSortFieldId={1}
+        defaultSortAsc={false}
         pagination
         paginationComponentOptions={paginationComponentOptions}
         striped

@@ -24,21 +24,25 @@ const Customers = props => {
     {
       name: 'Klient',
       width: '200px',
+      sortable: true,
       selector: row => row.name,
     },
     {
       name: 'Nazwisko',
       width: '120px',
+      sortable: true,
       selector: row => row.surname,
     },
     {
       name: 'Numer dowodu',
       width: '180px',
+      sortable: true,
       selector: row => row.id_number,
     },
     {
       name: 'NIP',
       width: '150px',
+      sortable: true,
       selector: row => row.nip,
     },
     {
