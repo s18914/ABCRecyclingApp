@@ -13,11 +13,26 @@ function CarAdd() {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({ registration_number: "", overview_date: format(new Date(), `yyyy-MM-dd`) });
   const [formErrors, setFormErrors] = useState(null);
+  const [carsRegistrationNumbers, setCarsRegistrationNumbers] = useState([]);
 
   const submit = () => {
     console.log(formValues);
     isAddMode ? addCar() : updateCar();
   };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const responseCars = await Axios.get(`/cars`)
+        const {data: carsData} = responseCars
+        const filteredCarsList = carsData.filter(({car_id}) => car_id !== id);
+        const filteredCarsRegistrationNumbers = filteredCarsList.map(({registration_number}) => registration_number) // tablice idkow
+        setCarsRegistrationNumbers(filteredCarsRegistrationNumbers)
+      } catch (error) {
+
+      }
+    })()
+  }, []);
 
   useEffect(() => {
     if (id) {
@@ -27,17 +42,18 @@ function CarAdd() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
-    const errors = validate(formValues)
+    const newFormData = { ...formValues, [name]: value };
+    setFormValues(newFormData);
+    const errors = validate(newFormData)
     setFormErrors(errors);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const errors = validate(formValues)
+    const errors  = validate(formValues)
     setFormErrors(errors);
     navigate("/cars");
-    if (!errors) {
+    if (!errors) { 
       submit()
     }
   };
@@ -50,22 +66,22 @@ function CarAdd() {
       errors.registration_number = "To pole nie może być puste";
     } else if (!registrationNumberRegex.test(values.registration_number) && values.registration_number.length !== 7) {
       errors.registration_number = "Numer rejestracyjny powinien składać się z 7 znaków, z czego pierwsze 2 powinny być literami.";
+    } else if (carsRegistrationNumbers.some(registration_number => registration_number === values.registration_number.trim())){
+      errors.registration_number = "Ten numer rejestacyjny istnieje już w bazie danych.";
     }
-
+    
     if (new Date(values.overview_date) < new Date()) {
       errors.overview_date = "Ta data nie może być z przeszłosci";
     }
 
-    return Object.entries(errors).length > 0 ? errors : null;
+    return Object.entries(errors).length > 0 ?  errors : null;
   };
 
   const getCar = async (id) => {
     if (!isAddMode) {
       try {
-        //debugger;
-        const response = await Axios.get(`/car/${id}`)
-        //Destrukturyzacja => z obiektu response wybiera klucze 
-        const { overview_date, registration_number } = response.data
+        const responseCar = await Axios.get(`/car/${id}`)
+        const { overview_date, registration_number } = responseCar.data
         const newFormValues = {
           registration_number,
           overview_date: format(new Date(overview_date), `yyyy-MM-dd`)
@@ -78,9 +94,9 @@ function CarAdd() {
   };
 
   const addCar = async () => {
-    const response = await Axios.post('/carCreate', { ...formValues, overview_date: new Date(formValues.overview_date) })
+    const response = await Axios.post('/carCreate', {...formValues, overview_date: new Date(formValues.overview_date)})
     console.log("success", response.data);
-    if (false) {
+    if (false) { 
       navigate("/cars");
     }
   };
@@ -103,7 +119,7 @@ function CarAdd() {
       {!isAddMode && <h1>Edytuj samochód</h1>}
       <form className='simpleForm' style={{ width: '300px' }} onSubmit={handleSubmit} noValidate>
         <label htmlFor='registration_number'>Numer Rejestracyjny<span className="required">*</span></label>
-        <input type="text" id="registration_number" name="registration_number" maxlength='7' value={formValues.registration_number}
+        <input type="text" id="registration_number" name="registration_number" value={formValues.registration_number}
           onChange={handleChange}>
         </input>
         <p className="required"> {formErrors?.registration_number} </p>

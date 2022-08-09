@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useState } from "react";
 import Axios from "../../request";
 import { useParams, useNavigate } from 'react-router';
@@ -9,13 +9,24 @@ import { FaCheckCircle } from 'react-icons/fa'
 
 
 function WorkerAdd() {
-  const [role_id, setRoleId] = useState(0);
+  // const [role_id, setRoleId] = useState(0);
   const [rolesList, setRolesList] = useState([]);
   const { id } = useParams();
   const navigate = useNavigate();
   let isAddMode = id === undefined;
-  const [formValues, setFormValues] = useState({ name: "", surname: "", id_number: "", role_id: 0 });
+  const [formValues, setFormValues] = useState({ name: "", surname: "", id_number: "", role_id: -1 });
   const [formErrors, setFormErrors] = useState({});
+
+  useEffect(() => {
+    Axios('/roles').then(
+      response => {
+        setRolesList(response.data);
+      }
+    )
+  }, [])
+
+
+  const selectedRole = useMemo(() => rolesList.find(({ id }) => id == formValues.role_id) || null, [formValues, rolesList])
 
   const submit = () => {
     isAddMode ? addWorker() : updateWorker();
@@ -30,6 +41,12 @@ function WorkerAdd() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
+    const errors = validate(formValues)
+    setFormErrors(errors);
+  };
+
+  const handleAutocompleteChange = (value, fieldName) => {
+    setFormValues({ ...formValues, [fieldName]: value });
     const errors = validate(formValues)
     setFormErrors(errors);
   };
@@ -58,7 +75,7 @@ function WorkerAdd() {
 
     if (!values.id_number) {
       errors.id_number = "To pole nie może być puste";
-    } else if (!idRegex.test(values.id_number)) {
+    }else if ((!numberRegex.test(values.id_number) && values.id_number.length !== 10) || !idRegex.test(values.id_number)) {
       errors.id_number = "Numer dowodu powinien składać się z 3 liter oraz 6 cyfr i mieć format: AAAA000000";
     }
 
@@ -108,13 +125,7 @@ function WorkerAdd() {
     }
   };
 
-  const findOptions = () => {
-    Axios('/roles').then(
-      response => {
-        setRolesList(response.data);
-      }
-    )
-  };
+
 
   return (
     <div className='main'>
@@ -125,31 +136,31 @@ function WorkerAdd() {
           <label htmlFor='name'>Imię<span className="required">*</span></label>
           <input type="text" id="name" name="name" maxlength='20' value={formValues.name}
             onChange={handleChange}>
-          </input>
-          <p className="required"> {formErrors.name} </p>
+                      </input>
+          <p className="required"> {formErrors?.name} </p>
           <label htmlFor='surname'>Nazwisko<span className="required">*</span></label>
           <input type="text" id="surname" name="surname" maxlength='27' value={formValues.surname}
             onChange={handleChange}>
           </input>
-          <p className="required"> {formErrors.surname} </p>
+          <p className="required"> {formErrors?.surname} </p>
           <label htmlFor='id_number'>Numer dowodu<span className="required">*</span></label>
           <input type="text" id="id_number" name="id_number" maxlength='9' value={formValues.id_number}
             onChange={handleChange}>
           </input>
-          <p className="required"> {formErrors.id_number} </p>
+          <p className="required"> {formErrors?.id_number} </p>
         </div>
         <div>
           <label htmlFor='role_id'>Stanowisko pracownika<span className="required">*</span></label>
-          <div onClick={findOptions}>
+          <div>
             <Autocomplete
               id="role_id"
               options={rolesList}
-              onChange={(event) => {
-                setRoleId(event.target.value.id);
-                handleChange(event);
+              onChange={(_, value) => {
+                handleAutocompleteChange(value?.id, 'role_id')
               }}
-              getOptionLabel={(option) => option.label}
-              isOptionEqualToValue={(option, value) => option.id === value.id}
+              value={selectedRole}
+              getOptionLabel={(option) => option?.label || ''}
+              isOptionEqualToValue={(option, value) => option.id == value.id}
               sx={{ width: 300 }}
               renderInput={(params) => <TextField {...params} label="Stanowisko" />}
             />

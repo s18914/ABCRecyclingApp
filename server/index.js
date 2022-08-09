@@ -189,7 +189,7 @@ app.get("/car/:id", (req, res) => {
 });
 
 app.get("/cars", (req, res) => {
-  client.query("SELECT car_id, registration_number, to_char(overview_date, 'YYYY-MM-DD') overview_date FROM cars", (err, result) => {
+  client.query("SELECT car_id, registration_number, to_char(overview_date, 'YYYY-MM-DD') overview_date, case when car_id in (select car_id FROM transports) then '0' else '1' END AS can_delete FROM cars", (err, result) => {
     if (err) {
       console.log(err);
     } else {
