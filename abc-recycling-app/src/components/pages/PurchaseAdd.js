@@ -21,6 +21,7 @@ function PurchaseAdd() {
   const [transportId, setTransportId] = useState(null);
   const [isCompany, setIsCompany] = useState(true);
   const [transportLabel, setTransportLabel] = useState({id: 0, label: 'Transport'});
+  const [customerLabel, setCustomerLabel] = useState({id: 0, label: 'Klient'});
 
   //Walidacja
   const [formValues, setFormValues] = useState({ contractorId: "", id_number: "", weight: "", price: "" });
@@ -83,6 +84,7 @@ function PurchaseAdd() {
   };
 
   useEffect(() => {
+    findTransports();
     if(isAddMode && docId === undefined) {
       addDocument();
     }
@@ -110,10 +112,34 @@ function PurchaseAdd() {
 
   const getDocument = (id) => {
     if(!isAddMode) {
-      Axios.get(`/document/${id}`).then((response) => {
+      Axios.get(`/purchase/${id}`).then((response) => {
+        const data = response.data;
+        console.log(data)
         setDocId(response.data?.document_id);
         setContractorId(response.data?.contractor_id);
         setTransportId(response.data?.transport_id);
+        
+        if(response.data?.transport_id !== null){
+          Axios.get(`/getTransportVal/${response.data?.transport_id}`).then((response) => {
+            handleTransportAdd(response.data);
+          });
+        }
+
+        Axios.get(`/CompaniesLookup`).then((response) => {
+          if(response.data.filter(e => e.id === data?.contractor_id).length !== 0){
+            const company = response.data.filter(e => e.id === data?.contractor_id);
+            setContractorId(company[0].id);
+            setCustomerLabel(company[0]);
+            console.log(company[0])
+          } else {
+            setIsCompany(false);
+            Axios.get(`/CustomersLookup`).then((response) => {
+              const customer = response.data.filter(e => e.id === data?.contractor_id);
+              setContractorId(customer[0].id);
+              setCustomerLabel(customer[0]);
+            });
+          }
+        });
       });
     }
   };
@@ -172,6 +198,11 @@ function PurchaseAdd() {
     setTransportLabel(val);
   };
 
+  async function handleCustomerEdit(val) {
+    setContractorId(val?.id);
+    setCustomerLabel(val);
+  };
+
   function updateProducts() {
     try {
       productList.forEach(prod => {
@@ -215,11 +246,17 @@ function PurchaseAdd() {
             <Autocomplete
               id="customer-lookup"
               options={customersList}
-              onChange={(event, value) => {setContractorId(value.id); handleChange(event)}}
-              getOptionLabel={(option) => option.label}
+              onChange={(event, value) => {
+                setContractorId(value.id); 
+                handleChange(event);
+                setCustomerLabel(value);
+              }}
+              value={customerLabel}
+              getOptionLabel={(option) => option.label || ""}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
               checked={isCompany}
               sx={{ width: 300 }}
-              renderInput={(params) => <TextField {...params} label="Wybierz firmę..."/>}
+              renderInput={(params) => <TextField {...params} label="Wybierz firmę..." onChange={(e) => setContractorId(e.target.value.id)}/>}
             />
           </div>
         }
@@ -228,10 +265,16 @@ function PurchaseAdd() {
             <Autocomplete
               id="customer-lookup"
               options={customersList}
-              onChange={(event, value) => {setContractorId(value.id); handleChange(event)}}
-              getOptionLabel={(option) => option.label}
+              onChange={(event, value) => {
+                setContractorId(value.id); 
+                handleChange(event);
+                setCustomerLabel(value)
+              }}
+              value={customerLabel}
+              getOptionLabel={(option) => option.label || ""}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
               sx={{ width: 300 }}
-              renderInput={(params) => <TextField {...params} label="Wybierz osobę..."/>}
+              renderInput={(params) => <TextField {...params} label="Wybierz osobę..." onChange={(e) => setContractorId(e.target.value.id)}/>}
             />
           </div>
         }

@@ -70,7 +70,6 @@ function TransportModal({...props}) {
 
   async function handleAddressAdd(val) {
     findAddresses();
-    console.log("handle adres add: " + val)
     setAddressId(val?.id);
     setAddressLabel(val);
   };
@@ -83,10 +82,8 @@ function TransportModal({...props}) {
       carId: carId,
       workerId: workerId
     }).then((data) => {
-      console.log("w transportModal wywołuje handleTA")
       Axios.get(`/lastTransport`).then((response) => {
         props.handleTransportAdd(response.data);
-        console.log(response.data)
       });
     })
   };
@@ -95,7 +92,6 @@ function TransportModal({...props}) {
     Axios('/CarsLookup').then(
       response => {
         setCarList(response.data);
-        console.log(response.data);
       }
     )
   };
@@ -104,7 +100,6 @@ function TransportModal({...props}) {
     Axios('/WorkersLookup').then(
       response => {
         setWorkersList(response.data);
-        console.log(response.data);
       }
     )
   };

@@ -86,6 +86,18 @@ app.get("/lastTransport", (req, res) => {
   });
 });
 
+app.get("/getTransportVal/:id", (req, res) => {
+  const id = req.params.id;
+  client.query("SELECT label, id from get_transports_4_lookup() WHERE id = $1", [id],  
+  (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows[0]);
+    }
+  });
+});
+
 app.put("/transportUpdate", (req, res) => {
   const id = req.body.id;
   const date = req.body.date;
@@ -417,7 +429,7 @@ app.delete("/customerDelete/:id", (req, res) => {
 });
 
 app.get("/CustomersLookup", (req, res) => {
-  client.query("SELECT id_number || ' ' || name  as label, contractor_id as id FROM customers", (err, result) => {
+  client.query("SELECT id_number || ' ' || COALESCE(name, '')  as label, contractor_id as id FROM customers", (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -577,6 +589,17 @@ app.put("/purchaseDocumentUpdateAndAddPerson", (req, res) => {
 app.get("/document/:id", (req, res) => {
   const id = req.params.id;
   client.query("SELECT d.* FROM documents d where d.document_id = $1", [id], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows[0]);
+    }
+  });
+});
+
+app.get("/purchase/:id", (req, res) => {
+  const id = req.params.id;
+  client.query("SELECT d.* FROM purchases d where d.document_id = $1", [id], (err, result) => {
     if (err) {
       console.log(err);
     } else {

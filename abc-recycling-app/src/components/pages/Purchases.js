@@ -37,7 +37,7 @@ const Purchases = props => {
     },
     {
       name: 'Adres',
-      width: '200px',
+      width: '220px',
       padding: '0',
       cell: row => {
         if (row.transport_info === 'Nieustalony') {
@@ -57,7 +57,7 @@ const Purchases = props => {
     },
     {
       name: 'Data',
-      width: '100px',
+      width: '140px',
       selector: row => row.date === null ? row.date : row.date.substring(0, 10),
     },
     {
