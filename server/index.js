@@ -597,6 +597,17 @@ app.get("/document/:id", (req, res) => {
   });
 });
 
+app.get("/sale/:id", (req, res) => {
+  const id = req.params.id;
+  client.query("SELECT d.* FROM sales d where d.document_id = $1", [id], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows[0]);
+    }
+  });
+});
+
 app.get("/purchase/:id", (req, res) => {
   const id = req.params.id;
   client.query("SELECT d.* FROM purchases d where d.document_id = $1", [id], (err, result) => {

@@ -27,22 +27,26 @@ const Sales = props => {
   const columns =  [
     {
       name: 'No.',
-      width: '60px',
+      width: '90px',
+      sortable: true,
       selector: row => row.sales_id,
     },
     {
       name: 'Kontrahent',
       width: '200px',
+      sortable: true,
       selector: row => row.name,
     },
     {
       name: 'Cena',
       width: '80px',
+      sortable: true,
       selector: row => row.price,
     },
     {
       name: 'Adres',
       width: '200px',
+      sortable: true,
       padding: '0',
       cell: row => {
         if (row.transport_info === 'Nieustalony') {
@@ -63,6 +67,7 @@ const Sales = props => {
     {
       name: 'Data',
       width: '120px',
+      sortable: true,
       selector: row => row.date === null ? row.date : row.date.substring(0, 10),
       conditionalCellStyles: [
         {
@@ -77,6 +82,7 @@ const Sales = props => {
     {
       name: 'Status wysyłki',
       width: '130px',
+      sortable: true,
       selector: row => row.status,
       conditionalCellStyles: [
         {
@@ -272,6 +278,8 @@ const Sales = props => {
         }}
         pagination
         paginationComponentOptions={paginationComponentOptions}
+        defaultSortFieldId={1}
+        defaultSortAsc={false}
         striped
         subHeader
         subHeaderComponent={subHeaderComponent}

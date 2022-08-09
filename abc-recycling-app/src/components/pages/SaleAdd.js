@@ -20,8 +20,8 @@ function SaleAdd() {
   const [contractorId, setContractorId] = useState(0);
   const [transportId, setTransportId] = useState(0);
   const [transportLabel, setTransportLabel] = useState({id: 0, label: 'Transport'});
+  const [customerLabel, setCustomerLabel] = useState({id: 0, label: 'Klient'});
   
-
   //Walidacja
   const [formValues, setFormValues] = useState({ contractorId: "", Weight: "", price: "" });
   const [formErrors, setFormErrors] = useState({});
@@ -105,16 +105,28 @@ function SaleAdd() {
   const addDocument = () => {
     Axios.get('/saleInit').then((response) => {
       setDocId(response.data[0].init_sale);
-      console.log(response.data[0].init_sale)
     })
   };
 
   const getDocument = (id) => {
     if(!isAddMode) {
-      Axios.get(`/document/${id}`).then((response) => {
+      Axios.get(`/sale/${id}`).then((response) => {
+        const data = response.data;
         setDocId(id)
         setContractorId(response.data?.contractor_id);
         setTransportId(response.data?.transport_id);
+
+        if(response.data?.transport_id !== null){
+          Axios.get(`/getTransportVal/${response.data?.transport_id}`).then((response) => {
+            handleTransportAdd(response.data);
+          });
+        }
+
+        Axios.get(`/CompaniesLookup`).then((response) => {
+          const company = response.data.filter(e => e.id === data?.contractor_id);
+          setContractorId(company[0].id);
+          setCustomerLabel(company[0]);
+        });
       });
     }
   };
