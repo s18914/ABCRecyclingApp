@@ -1,17 +1,42 @@
-import React from 'react'
+import React, { useEffect, useMemo } from 'react'
+import DataTable from 'react-data-table-component'
+import { useState } from "react";
+import Axios from "../../request";
+import {Link} from 'react-router-dom';
 
-const Home = () => {
-  return (
-    <div className='main'>
-      <h1>Ogłoszenia</h1>
-      <h2>Najnowsze transporty</h2>
-      <li>ul.Ogrodowa 1, Wrocław</li>
-      <h2>Zaległości finansowe</h2>
-      <li>Kontrahent: Jan Kowalski, Do zapłaty: 1000zł</li>
-      <h2>Terminy najbliższych przeglądów</h2>
-      <li>02.07.2022 Toyota WE8273</li>
-    </div>
-  )
+const Home = props => {
+
+  const [oldCarsList, setOldCarsList] = useState([]);
+  const columns =  [
+    {
+      name: 'Powiadomienia',
+      selector: row => row.info,
+    }
+  ];
+
+  const [notesList, setNotesList] = useState([]);
+  const notesColumns =  [
+    {
+      name: 'Notatki',
+      selector: row => row.info,
+    }
+  ];
+
+  useEffect(() => {
+    Axios('/getOldCars').then(
+      response => {
+        setOldCarsList(response.data);
+      }
+    )
+  }, []);
+
+  // return (
+  //     // <DataTable className='main'
+  //     //   columns={columns}
+  //     //   data={oldCarsList}
+  //     //   noDataComponent=''
+  //     // />
+  // );
 }
 
 export default Home

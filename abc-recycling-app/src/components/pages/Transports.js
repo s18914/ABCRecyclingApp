@@ -2,10 +2,10 @@ import React, { useEffect, useMemo } from 'react'
 import DataTable from 'react-data-table-component'
 import { useState } from "react";
 import Axios from "../../request";
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FaTimes } from 'react-icons/fa'
 import { FaPen } from 'react-icons/fa'
-import {AiOutlinePlusSquare} from 'react-icons/ai'
+import { AiOutlinePlusSquare } from 'react-icons/ai'
 import FilterComponent from "../FilterComponent";
 
 const Transports = props => {
@@ -17,7 +17,7 @@ const Transports = props => {
     rowsPerPageText: 'Rekordów na stronie',
     rangeSeparatorText: 'z',
   };
-  const columns =  [
+  const columns = [
     {
       name: 'Id',
       width: '60px',
@@ -54,10 +54,9 @@ const Transports = props => {
       width: '60px',
       cell: row => (
         <Link to={`/transports/edit/${row.transport_id}`}>
-        <FaPen
-          style={{color: 'grey', cursor: 'pointer', transform: 'scale(1.4)'}} 
-          //onClick={onEdit(task.id)}
-        />
+          <FaPen
+            style={{ color: 'grey', cursor: 'pointer', transform: 'scale(1.4)' }}
+          />
         </Link>
       )
     },
@@ -67,14 +66,14 @@ const Transports = props => {
       width: '60px',
       cell: row => (
         <FaTimes
-            style={{color: '#D83232', cursor: 'pointer', transform: 'scale(1.5)'}}
-            onClick={() => deleteTransport(row.transport_id)}
+          style={{ color: '#D83232', cursor: 'pointer', transform: 'scale(1.5)' }}
+          onClick={() => deleteTransport(row.transport_id)}
         />
       )
     },
   ];
-  
-  const deleteTransport =  (id) => {
+
+  const deleteTransport = (id) => {
     Axios.delete(`/transportDelete/${id}`).then((response) => {
       setTransportList(
         transportList.filter((row) => {
@@ -132,7 +131,7 @@ const Transports = props => {
       />
       <div className='btn-panel'>
         <Link to={'/transports/add'}>
-          <AiOutlinePlusSquare style={{color: 'grey', cursor: 'pointer', transform: 'scale(5.2)'}} />
+          <AiOutlinePlusSquare style={{ color: 'grey', cursor: 'pointer', transform: 'scale(5.2)' }} />
         </Link>
       </div>
     </div>
