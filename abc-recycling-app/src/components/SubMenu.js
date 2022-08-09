@@ -39,7 +39,10 @@ const DropdownLink = styled(Link)`
 const SubMenu = ({ item }) => {
   const [subnav, setSubnav] = useState(false);
 
-  const showSubnav = () => setSubnav(!subnav);
+  const showSubnav = (e) => {
+    e.stopPropagation()
+    setSubnav(!subnav)
+  };
 
   return (
     <>

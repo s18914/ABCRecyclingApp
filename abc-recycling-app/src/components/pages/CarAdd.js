@@ -13,11 +13,28 @@ function CarAdd() {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({ registration_number: "", overview_date: format(new Date(), `yyyy-MM-dd`) });
   const [formErrors, setFormErrors] = useState(null);
+  const [carsRegistrationNumbers, setCarsRegistrationNumbers] = useState([]);
 
   const submit = () => {
     console.log(formValues);
     isAddMode ? addCar() : updateCar();
   };
+
+  useEffect(() => {
+    (async () => {
+      try {
+    
+        // Cars
+        const responseCars = await Axios.get(`/cars`)
+        const {data: carsData} = responseCars
+        const filteredCarsList = carsData.filter(({car_id}) => car_id !== id);
+        const filteredCarsRegistrationNumbers = filteredCarsList.map(({registration_number}) => registration_number) // tablice idkow
+        setCarsRegistrationNumbers(filteredCarsRegistrationNumbers)
+      } catch (error) {
+
+      }
+    })()
+  }, []);
 
   useEffect(() => {
     if (id) {
@@ -27,8 +44,10 @@ function CarAdd() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
-    const errors  = validate(formValues)
+    const newFormData = { ...formValues, [name]: value };
+    setFormValues(newFormData);
+
+    const errors = validate(newFormData)
     setFormErrors(errors);
   };
 
@@ -50,6 +69,8 @@ function CarAdd() {
       errors.registration_number = "To pole nie może być puste";
     } else if (!registrationNumberRegex.test(values.registration_number) && values.registration_number.length !== 7) {
       errors.registration_number = "Numer rejestracyjny powinien składać się z 7 znaków, z czego pierwsze 2 powinny być literami.";
+    } else if (carsRegistrationNumbers.some(registration_number => registration_number === values.registration_number.trim())){
+      errors.registration_number = "Ten numer rejestacyjny istnieje już w bazie danych.";
     }
     
     if (new Date(values.overview_date) < new Date()) {
@@ -62,10 +83,8 @@ function CarAdd() {
   const getCar = async (id) => {
     if (!isAddMode) {
       try {
-        //debugger;
-        const response = await Axios.get(`/car/${id}`)
-        //Destrukturyzacja => z obiektu response wybiera klucze 
-        const { overview_date, registration_number } = response.data
+        const responseCar = await Axios.get(`/car/${id}`)
+        const { overview_date, registration_number } = responseCar.data
         const newFormValues = {
           registration_number,
           overview_date: format(new Date(overview_date), `yyyy-MM-dd`)
