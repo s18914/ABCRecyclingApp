@@ -203,11 +203,16 @@ function SaleAdd() {
           <Autocomplete
             id="customer-lookup"
             options={customersList}
-            onChange={(event, value) => {setContractorId(value.id); handleChange(event);}}
-            getOptionLabel={(option) => option.label}
-            defaultValue={customersList.find(v => v.label[0])} 
+            onChange={(event, value) => {
+              setContractorId(value.id); 
+              handleChange(event);
+              setCustomerLabel(value);
+            }}
+            value={customerLabel}
+            getOptionLabel={(option) => option.label || ""}
+            isOptionEqualToValue={(option, value) => option.id === value.id}
             sx={{ width: 300 }}
-            renderInput={(params) => <TextField {...params} label="Klient"/>}
+            renderInput={(params) => <TextField {...params} label="Wybierz firmę..." onChange={(e) => setContractorId(e.target.value.id)}/>}
           />
         </div>
         <label className="main-label">Wybierz transport: </label>

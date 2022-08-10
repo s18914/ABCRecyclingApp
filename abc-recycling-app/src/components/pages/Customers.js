@@ -72,7 +72,7 @@ const Customers = props => {
       button: true,
       width: '60px',
       cell: row => {
-        if (row.can_delete === "1") {
+        if (row.can_delete === 1) {
           return (
             <FaTimes
             style={{color: '#D83232', cursor: 'pointer', transform: 'scale(1.5)'}}
