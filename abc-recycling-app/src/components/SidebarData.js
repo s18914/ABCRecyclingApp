@@ -13,16 +13,12 @@ export const SidebarData = [
   },
   {
     title: 'Transporty',
-    path: '',
+    path: '/transports',
     icon: <FaIcons.FaTruck />,
     cName: 'nav-text',
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
     subNav: [
-      {    
-        title: 'Lista transportów',
-        path: '/transports',
-      },
       {    
         title: 'Adresy',
         path: '/addresses',
