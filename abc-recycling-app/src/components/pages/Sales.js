@@ -200,7 +200,6 @@ const Sales = props => {
       id: id,
       status_id: --status
     }).then((response) => {
-      console.log("success", response.data);
       setRef(Math.random());
     });
   };
@@ -210,7 +209,6 @@ const Sales = props => {
       id: id,
       val: val
     }).then((response) => {
-      console.log("success", response.data);
       setRef(Math.random());
     });
   };
@@ -289,7 +287,7 @@ const Sales = props => {
           <AiOutlinePlusSquare style={{color: 'grey', cursor: 'pointer', transform: 'scale(2.0)'}} />
         </Link>
       </div>
-      <ProductsOfDocument id={docId} refresh={setDocId}/>
+      <ProductsOfDocument id={docId} refresh={setRef}/>
     </div>
   );
 }

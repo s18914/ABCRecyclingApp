@@ -146,7 +146,6 @@ const Customers = props => {
         setCustomerList(
           (onlyCompanies ? response.data.filter(e => e.type === 'C') : response.data.filter(e => e.type === 'P')).filter(e => e.name !== 'ROBOCZY')
         );
-        console.log(customerList)
       }
     )
   }, [onlyCompanies]);

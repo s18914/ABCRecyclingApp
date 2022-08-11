@@ -27,7 +27,6 @@ function CustomerAdd() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submit = () => {
-    console.log(formValues);
     if(isCompany){
       if(isAddMode) addCompany();
       updateCompany();
@@ -128,7 +127,6 @@ function CustomerAdd() {
       surname: surname, 
       id_number: id_number
     }).then((response) => {
-      console.log("success", response.data);
       navigate("/customers");
     })
   };
@@ -140,7 +138,6 @@ function CustomerAdd() {
         account_number: account_number.replace('-', ''),
         email: email
       }).then((response) => {
-        console.log("success", response.data);
         navigate("/customers");
       })
     
@@ -153,7 +150,6 @@ function CustomerAdd() {
       id_number: id_number,
       id: {id}.id
     }).then((response) => {
-      console.log("success", response.data);
       navigate("/customers");
     });
   };
@@ -166,7 +162,6 @@ function CustomerAdd() {
       email: email,
       id: {id}.id
     }).then((response) => {
-      console.log("success", response.data);
       navigate("/customers");
     });
   };

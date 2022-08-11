@@ -29,12 +29,10 @@ function SaleAdd() {
 
 
   const submit = () => {
-    console.log(formValues);
     updateDocument();
   };
 
   const handleChange = (e) => {
-    console.log(e.target);
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
   };
@@ -48,7 +46,7 @@ function SaleAdd() {
   const validate = (values) => {
     let errors = {};
     const numericRegex = /\d+[\.]\d+/;
-    const numberRegex = /[0-9]+/;
+    const numberRegex = /^-?\d+$/;
 
     if (contractorId === 0) {
       errors.contractorId = "To pole nie może być puste";
@@ -65,7 +63,6 @@ function SaleAdd() {
         if (price === '' || price === null) price = 0;
 
         //Walidacja
-        console.log("price" + price);
         if(!numberRegex.test(price) && !numericRegex.test(price)) {
           errors.price = "W pole ceny została wprowadzona wartość, która nie jest liczbą. Dozwolony format: 0 oraz 0.0";
         }
@@ -133,13 +130,11 @@ function SaleAdd() {
 
   const updateDocument = (e) => {
     if(isAddMode) updateProducts();
-     console.log( " transport: " + transportId)
     Axios.put('/saleDocumentUpdate', {
       document_id: docId,
       contractor_Id: contractorId,
       transport_Id: transportId === 0 ? null : transportId,
     }).then((response) => {
-      console.log("success", response.data);
       navigate("/sales");
     });
   };
@@ -162,7 +157,6 @@ function SaleAdd() {
 
   async function handleTransportAdd(val) {
     findTransports();
-    console.log("nowe id trensportu: " + val?.id)
     setTransportId(val?.id);
     setTransportLabel(val);
   };

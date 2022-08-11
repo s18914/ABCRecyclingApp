@@ -8,7 +8,6 @@ import { ImCancelCircle} from 'react-icons/im'
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { FaCheckCircle} from 'react-icons/fa'
-import {Link} from 'react-router-dom';
 
 function TransportModal({...props}) {
   const [open, setOpen] = React.useState(false);
@@ -23,7 +22,6 @@ function TransportModal({...props}) {
   const [workerId, setWorkerId] = useState(0);
   const [addressId, setAddressId] = useState(0);
   const [addressLabel, setAddressLabel] = useState({id: 0, label: 'Adres'});
-  const [transport, setTransport] = useState();
 
   //Walidacja
   const [formValues, setFormValues] = useState({ address: "", date: "", worker: "", car: "" });
@@ -35,7 +33,6 @@ function TransportModal({...props}) {
   };
 
   const handleChange = (e) => {
-    console.log(e.target);
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
   };

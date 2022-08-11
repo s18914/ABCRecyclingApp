@@ -6,17 +6,18 @@ import Box from '@mui/material/Box';
 import {FaPen, FaCheckCircle} from 'react-icons/fa';
 import StockInfo from "./StockInfo";
 
-function ProductsOfDocument({refresh, ...props}) {
+function ProductsOfDocument({...props}) {
   const [productList, setProductList] = useState([]);
   const [sum, setSum] = useState(0);
   const [open, setOpen] = React.useState(false);
   const [id, setId] = React.useState(undefined);
+  const [ref, setRef] = useState(1);
 
 
   const countSum = (data) => {
     let s = 0;
     data.map((item) => {
-      s = s + parseFloat(item.price);
+      return s = s + parseFloat(item.price);
     })
     return s;
   }
@@ -42,7 +43,6 @@ function ProductsOfDocument({refresh, ...props}) {
   };
 
   const validate = (values) => {
-    console.log("walidacja")
     let errors = {};
     const numericRegex = /\d+[\.]\d+/;
     const numberRegex = /^-?\d+$/;
@@ -55,8 +55,6 @@ function ProductsOfDocument({refresh, ...props}) {
 
       if (weight === '' || weight === null) weight = 0;
       if (price === '' || price === null) price = 0;
-
-      console.log(typeof price + "   " + numberRegex.test(price) + " : " + numericRegex.test(price))
 
       //Walidacja
       if(!numberRegex.test(price) && !numericRegex.test(price)) {
@@ -82,7 +80,7 @@ function ProductsOfDocument({refresh, ...props}) {
         }
       )
     }
-  }, [props.id]);
+  }, [props.id, ref, formErrors]);
 
   //modal
   const handleOpen = () => setOpen(true);
@@ -100,7 +98,6 @@ function ProductsOfDocument({refresh, ...props}) {
         let price = document.getElementById(inputPriceId).value;
         if (weight === '' || weight === null) weight = 0;
         if (price === '' || price === null) price = 0;
-        console.log(id + " " + weight);
 
         Axios.put('/productUpdate', {
           document_id: id,
@@ -108,8 +105,9 @@ function ProductsOfDocument({refresh, ...props}) {
           price: price,
           weight: weight
         }).then((response) => {
-          console.log("success", response.data);
+          setRef(Math.random());
           handleClose();
+          props.refresh(Math.random());
         });
       });
     } catch (error) {
