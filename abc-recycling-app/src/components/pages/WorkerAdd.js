@@ -9,7 +9,6 @@ import { FaCheckCircle } from 'react-icons/fa'
 
 
 function WorkerAdd() {
-  // const [role_id, setRoleId] = useState(0);
   const [rolesList, setRolesList] = useState([]);
   const { id } = useParams();
   const navigate = useNavigate();
@@ -75,7 +74,7 @@ function WorkerAdd() {
 
     if (!values.id_number) {
       errors.id_number = "To pole nie może być puste";
-    }else if ((!numberRegex.test(values.id_number) && values.id_number.length !== 10) || !idRegex.test(values.id_number)) {
+    } else if ((!numberRegex.test(values.id_number) && values.id_number.length !== 10) || !idRegex.test(values.id_number)) {
       errors.id_number = "Numer dowodu powinien składać się z 3 liter oraz 6 cyfr i mieć format: AAAA000000";
     }
 
@@ -136,7 +135,7 @@ function WorkerAdd() {
           <label htmlFor='name'>Imię<span className="required">*</span></label>
           <input type="text" id="name" name="name" maxlength='20' value={formValues.name}
             onChange={handleChange}>
-                      </input>
+          </input>
           <p className="required"> {formErrors?.name} </p>
           <label htmlFor='surname'>Nazwisko<span className="required">*</span></label>
           <input type="text" id="surname" name="surname" maxlength='27' value={formValues.surname}

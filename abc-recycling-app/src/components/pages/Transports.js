@@ -77,7 +77,6 @@ const Transports = props => {
     Axios.delete(`/transportDelete/${id}`).then((response) => {
       setTransportList(
         transportList.filter((row) => {
-          console.log(id + " to moje id")
           return row.transport_id !== id;
         })
       );

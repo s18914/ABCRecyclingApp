@@ -36,13 +36,13 @@ connect();
 app.post("/transportCreate", (req, res) => {
   const date = req.body.date;
   const phone = req.body.phone;
-  const addressId = req.body.addressId;
-  const carId = req.body.carId;
-  const workerId = req.body.workerId;
+  const address_id = req.body.address_id;
+  const car_id = req.body.car_id;
+  const worker_id = req.body.worker_id;
 
   client.query(
     "INSERT INTO transports (date, phone, address_id, car_id, worker_id) VALUES ($1,$2,$3,$4,$5)",
-    [date, phone, addressId, carId, workerId],
+    [date, phone, address_id, car_id, worker_id],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -54,7 +54,7 @@ app.post("/transportCreate", (req, res) => {
 });
 
 app.get("/transports", (req, res) => {
-  client.query("SELECT transport_id, transport_address, phone, registration_number, to_char(transport_date, 'YYYY-MM-DD') transport_date, transport_worker FROM get_transports()", (err, result) => {
+  client.query("SELECT t.transport_id, to_char(t.date, 'dd-mm-yyyy') as transport_date, t.phone, c.registration_number, concat(a.street, ' ', a.house_number, ' ', a.flat_number, ', ', z.zip_code, ' ', z.city) as transport_address, concat(w.name, ' ', w.surname) as transport_worker FROM public.transports t inner join public.addresses a on a.address_id = t.address_id inner join public.zip_codes z on z.zip_code_id = a.zip_code_id inner join public.workers w on w.worker_id = t.worker_id inner join public.cars c on c.car_id = t.car_id;", (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -66,7 +66,7 @@ app.get("/transports", (req, res) => {
 
 app.get("/transport/:id", (req, res) => {
   const id = req.params.id;
-  client.query("SELECT address_id, date, phone, car_id, worker_id FROM get_transports() WHERE transport_id = $1", [id], (err, result) => {
+  client.query("SELECT address_id, date, phone, car_id, worker_id FROM transports WHERE transport_id = $1", [id], (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -102,13 +102,13 @@ app.put("/transportUpdate", (req, res) => {
   const id = req.body.id;
   const date = req.body.date;
   const phone = req.body.phone;
-  const addressId = req.body.addressId;
-  const carId = req.body.carId;
-  const workerId = req.body.workerId;
+  const address_id = req.body.address_id;
+  const car_id = req.body.car_id;
+  const worker_id = req.body.worker_id;
 
   client.query(
     "Update transports set address_id = $1, date = $2, phone = $3, car_id = $4, worker_id = $5 where transport_id = $6",
-    [addressId, date, phone, carId, workerId, id],
+    [address_id, date, phone, car_id, worker_id, id],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -243,7 +243,7 @@ app.get("/CarsLookup", (req, res) => {
 
 //Address
 app.get("/addresses", (req, res) => {
-  client.query("SELECT * from get_addresses()", (err, result) => {
+  client.query("SELECT a.address_id, a.street, a.house_number, a.flat_number, z.city, z.province, z.zip_code, case when a.address_id in (select address_id FROM transports) then '0' else '1' END AS can_delete FROM public.addresses a inner join zip_codes z on z.zip_code_id = a.zip_code_id;", (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -701,7 +701,7 @@ app.post("/workerCreate", (req, res) => {
 });
 
 app.get("/workers", (req, res) => {
-  client.query("SELECT w.worker_id, w.name, w.surname, w.id_number, r.name as role_name FROM public.workers w inner join public.roles r on r.role_id = w.role_id;", (err, result) => {
+  client.query("SELECT w.worker_id, w.name, w.surname, w.id_number, r.name as role_name, case when w.worker_id in (select worker_id FROM transports) then '0' else '1' END AS can_delete FROM public.workers w inner join public.roles r on r.role_id = w.role_id;", (err, result) => {
     if (err) {
       console.log(err);
     } else {
