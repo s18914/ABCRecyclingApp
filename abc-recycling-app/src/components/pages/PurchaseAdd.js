@@ -29,7 +29,6 @@ function PurchaseAdd() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submit = () => {
-    console.log(formValues);
     updateDocument();
   };
 
@@ -68,7 +67,6 @@ function PurchaseAdd() {
         if (weight === '' || weight === null) weight = 0;
         if (price === '' || price === null) price = 0;
 
-        console.log(price + "   " + numberRegex.test(price) + " : " + numericRegex.test(price))
         //Walidacja
         if(!numberRegex.test(price) && !numericRegex.test(price)) {
           errors.price = "W pole CENY została wprowadzona wartość, która nie jest liczbą. Dozwolony format: 0 oraz 0.0";
@@ -150,7 +148,6 @@ function PurchaseAdd() {
         id_number: id_number,
         transport_Id: transportId,
       }).then((response) => {
-        console.log("success", response.data);
         navigate("/purchases");
       });
     } else {
@@ -159,7 +156,6 @@ function PurchaseAdd() {
         contractor_Id: contractorId,
         transport_Id: transportId,
       }).then((response) => {
-        console.log("success", response.data);
         navigate("/purchases");
       }); 
     }

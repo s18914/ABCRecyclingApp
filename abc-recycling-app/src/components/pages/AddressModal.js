@@ -24,7 +24,6 @@ function AddressModal({...props}) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submit = () => {
-    console.log(formValues);
     addAddress();
   };
 

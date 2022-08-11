@@ -19,6 +19,7 @@ const Purchases = props => {
   };
   const [filterText, setFilterText] = React.useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
+  const [ref, setRef] = useState(1);
   const columns =  [
     {
       name: 'No.',
@@ -156,7 +157,7 @@ const Purchases = props => {
           <AiOutlinePlusSquare style={{color: 'grey', cursor: 'pointer', transform: 'scale(2.2)'}} />
         </Link>
       </div>
-      <ProductsOfDocument id={docId}/>
+      <ProductsOfDocument id={docId} refresh={setRef}/>
     </div>
   );
 }
