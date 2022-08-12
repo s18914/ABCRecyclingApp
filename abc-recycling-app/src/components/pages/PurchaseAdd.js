@@ -54,7 +54,7 @@ function PurchaseAdd() {
     } else if (isCompany === null && !values.id_number) {
       errors.contractorId = "To pole nie może być puste";
     } else if (isCompany === null && (!idRegex.test(values.id_number) || values.id_number.length !== 9)) {
-      errors.contractorId = "Numer dowodu powinien składać się z 4 liter oraz 6 cyfr i mieć format: AAA000000";
+      errors.contractorId = "Numer dowodu powinien składać się z 3 liter oraz 6 cyfr i mieć format: AAA000000";
     }
 
     if(isAddMode){
@@ -104,6 +104,7 @@ function PurchaseAdd() {
 
   const addDocument = () => {
     Axios.get('/purchaseInit').then((response) => {
+      console.log("moje nowe id: "+ response.data[0].init_purchase)
       setDocId(response.data[0].init_purchase);
     })
   };
@@ -151,11 +152,13 @@ function PurchaseAdd() {
         navigate("/purchases");
       });
     } else {
+      console.log(docId+ " " +  contractorId + " " +  transportId)
       Axios.put('/purchaseDocumentUpdate', {
         document_id: docId,
         contractor_Id: contractorId,
         transport_Id: transportId,
       }).then((response) => {
+        console.log(response)
         navigate("/purchases");
       }); 
     }
