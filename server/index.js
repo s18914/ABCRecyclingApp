@@ -357,7 +357,7 @@ app.get("/zipCodes", (req, res) => {
 
 //Klient
 app.get("/customers", (req, res) => {
-  client.query("SELECT c.contractor_id as id, *, c.name, CASE WHEN f.nip is not null then 'C' else 'P' END AS type, case when c.contractor_id in (select contractor_id FROM purchases union SELECT contractor_id FROM sales) then '0' else '1' END AS can_delete FROM contractors c left join companies f on c.contractor_id= f.contractor_id left join customers k on c.contractor_id= k.contractor_id", (err, result) => {
+  client.query("SELECT c.contractor_id as id, *, c.name, CASE WHEN f.nip is not null then 'C' else 'P' END AS type, case when c.contractor_id in (select contractor_id FROM purchases union SELECT contractor_id FROM sales) then 0 else 1 END AS can_delete FROM contractors c left join companies f on c.contractor_id= f.contractor_id left join customers k on c.contractor_id= k.contractor_id", (err, result) => {
     if (err) {
       console.log(err);
     } else {

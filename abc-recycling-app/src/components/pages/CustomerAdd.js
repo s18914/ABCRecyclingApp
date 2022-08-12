@@ -50,10 +50,10 @@ function CustomerAdd() {
   const validate = (values) => {
     let errors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    const numberRegex = /[0-9]*/;
+    const numberRegex = /^-?\d+$/;
     const nipRegex = /[0-9]{4}-[0-9]{3}-[0-9]{3}/;
     const idRegex = /([a-z]|[A-Z]){3}[0-9]{6}/;
-    const accountRegex = /[0-9]{2}-[0-9]{8}-[0-9]{19}/;
+    const accountRegex = /[0-9]{2}-[0-9]{8}-[0-9]{16}/;
 
     if(isCompany){
 
@@ -71,7 +71,7 @@ function CustomerAdd() {
 
       if (!values.account_number) {
         errors.account_number = "To pole nie może być puste";
-      } else if ((!numberRegex.test(values.account_number) && values.account_number.length !== 26) && !accountRegex.test(values.account_number)) {
+      } else if (!((numberRegex.test(values.account_number) && values.account_number.length === 26) || accountRegex.test(values.account_number))) {
         errors.account_number = "Numer konta powinien składać się z 26 cyfr i mieć format: 00-00000000-0000000000000000 lub być pisany ciągiem";
       }
 
@@ -102,20 +102,21 @@ function CustomerAdd() {
         setNip(response.data?.nip);
         setAccountNumber(response.data?.account_number);
         setEmail(response.data?.email);
+        setFormValues({ name: response.data?.name, surname: response.data?.surname, id_number: response.data?.id_number, nip: response.data?.nip, account_number: response.data?.account_number, email: response.data?.email });
         if(response.data?.nip === null) {setMode(false)}
       })
     }
     Axios('/customers').then(
       response => {
         setCustomerList(
-          response.data.filter(e => e.contractor_id !== id) 
+          response.data.filter(e => e.id !== id)
         );
       }
     )
   };
 
   useEffect(() => {
-    getCustomer({id}.id);
+    if(!customer) getCustomer({id}.id);
     if (Object.keys(formErrors).length === 0 && isSubmitting) {
       submit();
     }
@@ -134,8 +135,8 @@ function CustomerAdd() {
   const addCompany = (event) => {
       Axios.post('/companyCreate', {
         name: name,
-        nip: nip.replace('-', ''), 
-        account_number: account_number.replace('-', ''),
+        nip: nip, 
+        account_number: account_number,
         email: email
       }).then((response) => {
         navigate("/customers");
@@ -210,13 +211,13 @@ function CustomerAdd() {
             <p className="required"> {formErrors.name} </p>
             <label>Wpisz numer NIP<span className="required">*</span></label>
             <input type="text" id="nip" name="nip" placeholder="NIP [10 cyfr]" defaultValue={customer?.nip}
-              onChange={(e) => {setNip(e.target.value); handleChange(e);}}
+              onChange={(e) => {setNip(e.target.value.replaceAll('-', '')); handleChange(e);}}
               >
             </input>
             <p className="required"> {formErrors.nip} </p>
             <label>Wpisz numer konta<span className="required">*</span></label>
             <input type="text" id="account_number" name="account_number" placeholder="Nr konta.." defaultValue={customer?.account_number} onChange={(e) => {
-                setAccountNumber(e.target.value);
+                setAccountNumber(e.target.value.replaceAll('-', ''));
                 handleChange(e);
               }}>
             </input>
