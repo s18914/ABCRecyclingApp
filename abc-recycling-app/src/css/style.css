@@ -331,6 +331,21 @@ body .main .login .btn {
   color: white;
   border: 1px solid #479c65;
   margin: 0;
-
+}
+body .item1 {
+  grid-area: item1;
+}
+body .item2 {
+  grid-area: item2;
+}
+body .item3 {
+  grid-area: item3;
+}
+body .grid-container {
+  padding: 3% 8% 3% 250px;
+  display: grid;
+  grid-template-areas: "item2 item1" "item3 item1";
+  gap: 10px;
+}
 
 /*# sourceMappingURL=style.css.map */
