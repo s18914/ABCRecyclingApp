@@ -308,5 +308,28 @@ body .main .stock-info ol {
 body .main .stock-info ol div {
   margin-left: 5px;
 }
+body .main .login {
+  display: flex;
+  flex-direction: column;
+}
+body .main .login input, body .main .login select {
+  padding: 12px 20px;
+  width: 300px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+body .main .login .btn {
+  width: 200px;
+  height: auto;
+  background-color: rgb(122, 189, 122);
+  font-size: 15px;
+  padding: 8px;
+  color: white;
+  border: 1px solid #479c65;
+  margin: 0;
+}
 
 /*# sourceMappingURL=style.css.map */

@@ -4,8 +4,33 @@ const pg = require("pg");
 const cors = require("cors");
 require('dotenv').config();
 
-app.use(cors());
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
+
+app.use(cors({
+  origin: ["http://localhost:3000"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true,
+}));
 app.use(express.json());
+
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(
+  session({
+    key: "userId",
+    secret: "subscribe",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      expires: 60 * 60 * 24,
+    },
+  })
+);
 
 const { Client } = require('pg');
 let client;
@@ -31,6 +56,47 @@ function connect() {
 }
 
 connect();
+
+//Login
+app.get("/login", (req, res) => {
+  if (req.session.user) {
+    res.send({ loggedIn: true, user: req.session.user });
+  } else {
+    res.send({ loggedIn: false });
+  }
+});
+
+app.post("/login", (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  // bcrypt.hash(password, saltRounds, (err, hash) => {
+  //   console.log(hash);
+  // });
+
+  client.query(
+    "SELECT * FROM workers WHERE username = $1;",
+    [username],
+    (err, result) => {
+      if (err) {
+        res.send({ err: err });
+      }
+      if (result.rowCount > 0) {
+
+        bcrypt.compare(password, result.rows[0].password, (error, response) => {
+          if (response) {
+            req.session.user = result;
+            res.send(result);
+          } else {
+            res.send({ message: "Zły login lub hasło." });
+          }
+        });
+      } else {
+        res.send({ message: "Dane nie są poprawne." });
+      }
+    }
+  );
+});
 
 //Transport
 app.post("/transportCreate", (req, res) => {
