@@ -16,7 +16,6 @@ function CarAdd() {
   const [carsRegistrationNumbers, setCarsRegistrationNumbers] = useState([]);
 
   const submit = () => {
-    console.log(formValues);
     isAddMode ? addCar() : updateCar();
   };
 
@@ -26,7 +25,7 @@ function CarAdd() {
         const responseCars = await Axios.get(`/cars`)
         const {data: carsData} = responseCars
         const filteredCarsList = carsData.filter(({car_id}) => car_id !== id);
-        const filteredCarsRegistrationNumbers = filteredCarsList.map(({registration_number}) => registration_number) // tablice idkow
+        const filteredCarsRegistrationNumbers = filteredCarsList.map(({registration_number}) => registration_number) 
         setCarsRegistrationNumbers(filteredCarsRegistrationNumbers)
       } catch (error) {
 
@@ -52,7 +51,6 @@ function CarAdd() {
     e.preventDefault();
     const errors  = validate(formValues)
     setFormErrors(errors);
-    navigate("/cars");
     if (!errors) { 
       submit()
     }
@@ -94,11 +92,12 @@ function CarAdd() {
   };
 
   const addCar = async () => {
-    const response = await Axios.post('/carCreate', {...formValues, overview_date: new Date(formValues.overview_date)})
-    console.log("success", response.data);
-    if (false) { 
+    const response = await Axios.post('/carCreate', {
+      ...formValues, 
+      overview_date: new Date(formValues.overview_date)
+    }).then((response) => {
       navigate("/cars");
-    }
+    })
   };
 
   const updateCar = async () => {
@@ -106,11 +105,9 @@ function CarAdd() {
       ...formValues,
       overview_date: new Date(formValues.overview_date),
       id
-    })
-    console.log("success", response.data);
-    if (false) {
+    }).then((response) => {
       navigate("/cars");
-    }
+    })
   };
 
   return (

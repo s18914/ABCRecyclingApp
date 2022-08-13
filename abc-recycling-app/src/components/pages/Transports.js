@@ -64,20 +64,30 @@ const Transports = props => {
       name: "",
       button: true,
       width: '60px',
-      cell: row => (
-        <FaTimes
-          style={{ color: '#D83232', cursor: 'pointer', transform: 'scale(1.5)' }}
-          onClick={() => deleteTransport(row.transport_id)}
-        />
-      )
+      cell: row => {
+        if (row.can_delete === '1') {
+          return (
+            <FaTimes
+              style={{ color: '#D83232', cursor: 'pointer', transform: 'scale(1.5)' }}
+              onClick={() => deleteTransport(row.transport_id)}
+            />
+          );
+        } else {
+          return (
+            <FaTimes
+              style={{ color: 'grey', cursor: 'pointer', transform: 'scale(1.5)' }}
+            />
+          );
+        }
+      }
     },
   ];
 
-  const deleteTransport = (id) => {
-    Axios.delete(`/transportDelete/${id}`).then((response) => {
+  const deleteTransport = (transport_id) => {
+    Axios.delete(`/transportDelete/${transport_id}`).then((response) => {
       setTransportList(
         transportList.filter((row) => {
-          return row.transport_id !== id;
+          return row.transport_id !== transport_id;
         })
       );
     });

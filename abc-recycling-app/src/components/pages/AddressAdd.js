@@ -95,22 +95,20 @@ function AddressAdd() {
   };
 
   const addAddress = async () => {
-    const response = await Axios.post('/addressCreate', { ...formValues })
-    console.log("success", response.data);
-    if (false) {
+    const response = await Axios.post('/addressCreate', {
+      ...formValues
+    }).then((response) => {
       navigate("/addresses");
-    }
+    })
   };
 
   const updateAddress = async () => {
     const response = await Axios.put('/addressUpdate', {
       ...formValues,
       id
-    })
-    console.log("success", response.data);
-    if (false) {
+    }).then((response) => {
       navigate("/addresses");
-    }
+    })
   };
 
   return (

@@ -54,7 +54,7 @@ app.post("/transportCreate", (req, res) => {
 });
 
 app.get("/transports", (req, res) => {
-  client.query("SELECT t.transport_id, to_char(t.date, 'dd-mm-yyyy') as transport_date, t.phone, c.registration_number, concat(a.street, ' ', a.house_number, ' ', a.flat_number, ', ', z.zip_code, ' ', z.city) as transport_address, concat(w.name, ' ', w.surname) as transport_worker FROM public.transports t inner join public.addresses a on a.address_id = t.address_id inner join public.zip_codes z on z.zip_code_id = a.zip_code_id inner join public.workers w on w.worker_id = t.worker_id inner join public.cars c on c.car_id = t.car_id;", (err, result) => {
+  client.query("SELECT t.transport_id, to_char(t.date, 'dd-mm-yyyy') as transport_date, t.phone, c.registration_number, concat(a.street, ' ', a.house_number, ' ', a.flat_number, ', ', z.zip_code, ' ', z.city) as transport_address, concat(w.name, ' ', w.surname) as transport_worker, case when t.transport_id in (select transport_id FROM sales union select transport_id FROM purchases) then '0' else '1' END AS can_delete FROM public.transports t inner join public.addresses a on a.address_id = t.address_id inner join public.zip_codes z on z.zip_code_id = a.zip_code_id inner join public.workers w on w.worker_id = t.worker_id inner join public.cars c on c.car_id = t.car_id;", (err, result) => {
     if (err) {
       console.log(err);
     } else {

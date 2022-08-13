@@ -61,11 +61,11 @@ const Workers = props => {
       button: true,
       width: '60px',
       cell: row => {
-        if (row.can_delete === "1") {
+        if (row.can_delete === '1') {
           return (
             <FaTimes
               style={{ color: '#D83232', cursor: 'pointer', transform: 'scale(1.5)' }}
-              onClick={() => deleteWorker(row.id)}
+              onClick={() => deleteWorker(row.worker_id)}
             />
           );
         } else {
@@ -79,11 +79,11 @@ const Workers = props => {
     },
   ];
 
-  const deleteWorker = (id) => {
-    Axios.delete(`/workerDelete/${id}`).then((response) => {
+  const deleteWorker = (worker_id) => {
+    Axios.delete(`/workerDelete/${worker_id}`).then((response) => {
       setWorkersList(
         workersList.filter((row) => {
-          return row.worker_id !== id;
+          return row.worker_id !== worker_id;
         })
       );
     });

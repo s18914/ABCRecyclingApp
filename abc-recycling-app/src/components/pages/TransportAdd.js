@@ -44,9 +44,9 @@ function TransportAdd() {
     )
   }, [])
 
-  const selectedAddress = useMemo(() => addressList.find(({ id }) => id == formValues.address_id) || null, [formValues, addressList])
-  const selectedWorker = useMemo(() => workersList.find(({ id }) => id == formValues.worker_id) || null, [formValues, workersList])
-  const selectedCar = useMemo(() => carsList.find(({ id }) => id == formValues.car_id) || null, [formValues, carsList])
+  const selectedAddress = useMemo(() => addressList.find(({ id }) => id === formValues.address_id) || null, [formValues, addressList])
+  const selectedWorker = useMemo(() => workersList.find(({ id }) => id === formValues.worker_id) || null, [formValues, workersList])
+  const selectedCar = useMemo(() => carsList.find(({ id }) => id === formValues.car_id) || null, [formValues, carsList])
 
   const submit = () => {
     isAddMode ? addTransport() : updateTransport();
@@ -115,11 +115,12 @@ function TransportAdd() {
   };
 
   const addTransport = async () => {
-    const response = await Axios.post('/transportCreate', { ...formValues, date: new Date(formValues.date) })
-    console.log("success", response.data);
-    if (false) {
+    const response = await Axios.post('/transportCreate', {
+      ...formValues,
+      date: new Date(formValues.date)
+    }).then((response) => {
       navigate("/transports");
-    }
+    })
   };
 
   const updateTransport = async () => {
@@ -127,11 +128,9 @@ function TransportAdd() {
       ...formValues,
       date: new Date(formValues.date),
       id
-    })
-    console.log("success", response.data);
-    if (false) {
+    }).then((response) => {
       navigate("/transports");
-    }
+    })
   };
 
   return (

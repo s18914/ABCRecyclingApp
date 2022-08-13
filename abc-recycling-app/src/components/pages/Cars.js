@@ -53,7 +53,7 @@ const Cars = props => {
           return (
             <FaTimes
               style={{ color: '#D83232', cursor: 'pointer', transform: 'scale(1.5)' }}
-              onClick={() => deleteCar(row.id)}
+              onClick={() => deleteCar(row.car_id)}
             />
           );
         } else {
@@ -91,11 +91,11 @@ const Cars = props => {
     );
   }, [filterText, resetPaginationToggle]);
 
-  const deleteCar = (id) => {
-    Axios.delete(`/carDelete/${id}`).then((response) => {
+  const deleteCar = (car_id) => {
+    Axios.delete(`/carDelete/${car_id}`).then((response) => {
       setCarsList(
         carsList.filter((row) => {
-          return row.car_id !== id;
+          return row.car_id !== car_id;
         })
       );
     });

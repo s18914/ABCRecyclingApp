@@ -15,6 +15,7 @@ function WorkerAdd() {
   let isAddMode = id === undefined;
   const [formValues, setFormValues] = useState({ name: "", surname: "", id_number: "", role_id: -1 });
   const [formErrors, setFormErrors] = useState({});
+  const [workersIdNumbers, setworkersIdNumbers] = useState([]);
 
   useEffect(() => {
     Axios('/roles').then(
@@ -24,12 +25,25 @@ function WorkerAdd() {
     )
   }, [])
 
-
-  const selectedRole = useMemo(() => rolesList.find(({ id }) => id == formValues.role_id) || null, [formValues, rolesList])
+  const selectedRole = useMemo(() => rolesList.find(({ id }) => id === formValues.role_id) || null, [formValues, rolesList])
 
   const submit = () => {
     isAddMode ? addWorker() : updateWorker();
   };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const responseWorkers = await Axios.get(`/workers`)
+        const {data: workersData} = responseWorkers
+        const filteredWorkrsList = workersData.filter(({worker_id}) => worker_id !== id);
+        const filteredWorkersIdNumbrs = filteredWorkrsList.map(({id_number}) => id_number) 
+        setworkersIdNumbers(filteredWorkersIdNumbrs)
+      } catch (error) {
+
+      }
+    })()
+  }, []);
 
   useEffect(() => {
     if (id) {
@@ -38,8 +52,8 @@ function WorkerAdd() {
   }, [id])
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
+    const { fieldName, value } = e.target;
+    setFormValues({ ...formValues, [fieldName]: value });
     const errors = validate(formValues)
     setFormErrors(errors);
   };
@@ -76,7 +90,10 @@ function WorkerAdd() {
       errors.id_number = "To pole nie może być puste";
     } else if ((!numberRegex.test(values.id_number) && values.id_number.length !== 10) || !idRegex.test(values.id_number)) {
       errors.id_number = "Numer dowodu powinien składać się z 3 liter oraz 6 cyfr i mieć format: AAAA000000";
+    } else if (workersIdNumbers.some(id_number => id_number === values.id_number)){
+      errors.id_number = "Ten numer dowodu istnieje już w bazie danych.";
     }
+
 
     if (!values.role_id) {
       errors.role_id = "To pole nie może być puste";
@@ -88,9 +105,7 @@ function WorkerAdd() {
   const getWorker = async (id) => {
     if (!isAddMode) {
       try {
-        //debugger;
         const response = await Axios.get(`/worker/${id}`)
-        //Destrukturyzacja => z obiektu response wybiera klucze 
         const { name, surname, id_number, role_id } = response.data
         const newFormValues = {
           name,
@@ -106,25 +121,21 @@ function WorkerAdd() {
   };
 
   const addWorker = async () => {
-    const response = await Axios.post('/workerCreate', { ...formValues })
-    console.log("success", response.data);
-    if (false) {
+    const response = await Axios.post('/workerCreate', {
+      ...formValues
+    }).then((response) => {
       navigate("/workers");
-    }
+    })
   };
 
   const updateWorker = async () => {
     const response = await Axios.put('/workerUpdate', {
       ...formValues,
       id
-    })
-    console.log("success", response.data);
-    if (false) {
+    }).then((response) => {
       navigate("/workers");
-    }
+    })
   };
-
-
 
   return (
     <div className='main'>
@@ -133,7 +144,7 @@ function WorkerAdd() {
       <form>
         <div className='simpleForm' style={{ width: '300px' }} onSubmit={handleSubmit} noValidate>
           <label htmlFor='name'>Imię<span className="required">*</span></label>
-          <input type="text" id="name" name="name" maxlength='20' value={formValues.name}
+          <input type="text" id="name" name="name" maxLength='20' value={formValues.name}
             onChange={handleChange}>
           </input>
           <p className="required"> {formErrors?.name} </p>
@@ -159,7 +170,7 @@ function WorkerAdd() {
               }}
               value={selectedRole}
               getOptionLabel={(option) => option?.label || ''}
-              isOptionEqualToValue={(option, value) => option.id == value.id}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
               sx={{ width: 300 }}
               renderInput={(params) => <TextField {...params} label="Stanowisko" />}
             />
