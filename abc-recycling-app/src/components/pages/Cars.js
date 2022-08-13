@@ -2,10 +2,10 @@ import React, { useEffect, useMemo } from 'react'
 import DataTable from 'react-data-table-component'
 import { useState } from "react";
 import Axios from "../../request";
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FaTimes } from 'react-icons/fa'
 import { FaPen } from 'react-icons/fa'
-import {AiOutlinePlusSquare} from 'react-icons/ai'
+import { AiOutlinePlusSquare } from 'react-icons/ai'
 import FilterComponent from "../FilterComponent";
 
 
@@ -18,18 +18,21 @@ const Cars = props => {
     rowsPerPageText: 'Rekordów na stronie',
     rangeSeparatorText: 'z',
   };
-  const columns =  [
+  const columns = [
     {
       name: 'Id',
       width: '60px',
+      sortable: true,
       selector: row => row.car_id,
     },
     {
       name: 'Numer rejestracyjny',
+      sortable: true,
       selector: row => row.registration_number,
     },
     {
       name: 'Data wazności przeglądu',
+      sortable: true,
       selector: row => row.overview_date,
     },
     {
@@ -38,9 +41,9 @@ const Cars = props => {
       width: '60px',
       cell: row => (
         <Link to={`/cars/edit/${row.car_id}`}>
-        <FaPen
-          style={{color: 'grey', cursor: 'pointer', transform: 'scale(1.4)'}} 
-        />
+          <FaPen
+            style={{ color: 'grey', cursor: 'pointer', transform: 'scale(1.4)' }}
+          />
         </Link>
       )
     },
@@ -48,12 +51,22 @@ const Cars = props => {
       name: "",
       button: true,
       width: '60px',
-      cell: row => (
-        <FaTimes
-            style={{color: '#D83232', cursor: 'pointer', transform: 'scale(1.5)'}}
-            onClick={() => deleteCar(row.car_id)}
-        />
-      )
+      cell: row => {
+        if (row.can_delete === '1') {
+          return (
+            <FaTimes
+              style={{ color: '#D83232', cursor: 'pointer', transform: 'scale(1.5)' }}
+              onClick={() => deleteCar(row.car_id)}
+            />
+          );
+        } else {
+          return (
+            <FaTimes
+              style={{ color: 'grey', cursor: 'pointer', transform: 'scale(1.5)' }}
+            />
+          );
+        }
+      }
     }
   ];
 
@@ -80,12 +93,12 @@ const Cars = props => {
       />
     );
   }, [filterText, resetPaginationToggle]);
-  
-  const deleteCar = (id) => {
-    Axios.delete(`/carDelete/${id}`).then((response) => {
+
+  const deleteCar = (car_id) => {
+    Axios.delete(`/carDelete/${car_id}`).then((response) => {
       setCarsList(
         carsList.filter((row) => {
-          return row.car_id !== id;
+          return row.car_id !== car_id;
         })
       );
     });
@@ -114,7 +127,7 @@ const Cars = props => {
       />
       <div className='btn-panel'>
         <Link to={'/cars/add'}>
-          <AiOutlinePlusSquare style={{color: 'grey', cursor: 'pointer', transform: 'scale(5.2)'}} />
+          <AiOutlinePlusSquare style={{ color: 'grey', cursor: 'pointer', transform: 'scale(5.2)' }} />
         </Link>
       </div>
     </div>

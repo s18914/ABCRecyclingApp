@@ -12,6 +12,7 @@ const Transports = props => {
 
   const [transportList, setTransportList] = useState([]);
   const [filterText, setFilterText] = React.useState("");
+  const [ref, setRef] = useState(1);
   const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
   const paginationComponentOptions = {
     rowsPerPageText: 'Rekordów na stronie',
@@ -21,31 +22,37 @@ const Transports = props => {
     {
       name: 'Id',
       width: '60px',
+      sortable: true,
       selector: row => row.transport_id,
     },
     {
       name: 'Adres',
       width: '300px',
+      sortable: true,
       selector: row => row.transport_address,
     },
     {
       name: 'Telefon',
       width: '180px',
+      sortable: true,
       selector: row => row.phone,
     },
     {
       name: 'Data',
       width: '160px',
+      sortable: true,
       selector: row => row.transport_date,
     },
     {
       name: 'Ciężarówka',
       width: '180px',
+      sortable: true,
       selector: row => row.registration_number,
     },
     {
       name: 'Kierowca',
       width: '180px',
+      sortable: true,
       selector: row => row.transport_worker,
     },
     {
@@ -64,21 +71,30 @@ const Transports = props => {
       name: "",
       button: true,
       width: '60px',
-      cell: row => (
-        <FaTimes
-          style={{ color: '#D83232', cursor: 'pointer', transform: 'scale(1.5)' }}
-          onClick={() => deleteTransport(row.transport_id)}
-        />
-      )
+      cell: row => {
+        if (row.can_delete === '1') {
+          return (
+            <FaTimes
+              style={{ color: '#D83232', cursor: 'pointer', transform: 'scale(1.5)' }}
+              onClick={() => deleteTransport(row.transport_id)}
+            />
+          );
+        } else {
+          return (
+            <FaTimes
+              style={{ color: 'grey', cursor: 'pointer', transform: 'scale(1.5)' }}
+            />
+          );
+        }
+      }
     },
   ];
 
-  const deleteTransport = (id) => {
-    Axios.delete(`/transportDelete/${id}`).then((response) => {
+  const deleteTransport = (transport_id) => {
+    Axios.delete(`/transportDelete/${transport_id}`).then((response) => {
       setTransportList(
         transportList.filter((row) => {
-          console.log(id + " to moje id")
-          return row.transport_id !== id;
+          return row.transport_id !== transport_id;
         })
       );
     });

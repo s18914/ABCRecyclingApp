@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Axios from "../../request";
 import { useParams, useNavigate } from "react-router-dom";
 import { ImCancelCircle } from 'react-icons/im'
@@ -11,9 +11,6 @@ import { FaCheckCircle, FaPlus } from 'react-icons/fa'
 import { format } from 'date-fns'
 
 function TransportAdd() {
-  const [carId, setCarId] = useState(0);
-  const [workerId, setWorkerId] = useState(0);
-  const [addressId, setAddressId] = useState(0);
   const [carsList, setCarList] = useState([]);
   const [workersList, setWorkersList] = useState([]);
   const [addressList, setAddressList] = useState([]);
@@ -23,8 +20,35 @@ function TransportAdd() {
   const [formValues, setFormValues] = useState({ phone: "", date: format(new Date(), `yyyy-MM-dd`), address_id: 0, car_id: 0, worker_id: 0 });
   const [formErrors, setFormErrors] = useState(null);
 
+  useEffect(() => {
+    Axios('/addressLookup').then(
+      response => {
+        setAddressList(response.data);
+      }
+    )
+  }, [])
+
+  useEffect(() => {
+    Axios('/WorkersLookup').then(
+      response => {
+        setWorkersList(response.data);
+      }
+    )
+  }, [])
+
+  useEffect(() => {
+    Axios('/CarsLookup').then(
+      response => {
+        setCarList(response.data);
+      }
+    )
+  }, [])
+
+  const selectedAddress = useMemo(() => addressList.find(({ id }) => id === formValues.address_id) || null, [formValues, addressList])
+  const selectedWorker = useMemo(() => workersList.find(({ id }) => id === formValues.worker_id) || null, [formValues, workersList])
+  const selectedCar = useMemo(() => carsList.find(({ id }) => id === formValues.car_id) || null, [formValues, carsList])
+
   const submit = () => {
-    console.log(formValues);
     isAddMode ? addTransport() : updateTransport();
   };
 
@@ -37,6 +61,12 @@ function TransportAdd() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
+    const errors = validate(formValues)
+    setFormErrors(errors);
+  };
+
+  const handleAutocompleteChange = (value, fieldName) => {
+    setFormValues({ ...formValues, [fieldName]: value });
     const errors = validate(formValues)
     setFormErrors(errors);
   };
@@ -85,11 +115,12 @@ function TransportAdd() {
   };
 
   const addTransport = async () => {
-    const response = await Axios.post('/transportCreate', { ...formValues, date: new Date(formValues.date) })
-    console.log("success", response.data);
-    if (false) {
+    const response = await Axios.post('/transportCreate', {
+      ...formValues,
+      date: new Date(formValues.date)
+    }).then((response) => {
       navigate("/transports");
-    }
+    })
   };
 
   const updateTransport = async () => {
@@ -97,38 +128,9 @@ function TransportAdd() {
       ...formValues,
       date: new Date(formValues.date),
       id
-    })
-    console.log("success", response.data);
-    if (false) {
+    }).then((response) => {
       navigate("/transports");
-    }
-  };
-
-  const findCars = () => {
-    Axios('/CarsLookup').then(
-      response => {
-        setCarList(response.data);
-        console.log(response.data);
-      }
-    )
-  };
-
-  const findDrivers = () => {
-    Axios('/WorkersLookup').then(
-      response => {
-        setWorkersList(response.data);
-        console.log(response.data);
-      }
-    )
-  };
-
-  const findAddresses = () => {
-    Axios('/addressLookup').then(
-      response => {
-        setAddressList(response.data);
-        console.log(response.data);
-      }
-    )
+    })
   };
 
   return (
@@ -150,14 +152,15 @@ function TransportAdd() {
 
         <div>
           <label htmlFor='address_id'>Wybierz adres</label>
-          <div onClick={findAddresses}>
+          <div>
             <Autocomplete
-              id="addressLookup"
+              id="address_id"
               options={addressList}
-              onChange={(event, newValue) => {
-                setAddressId(newValue.id);
+              onChange={(_, value) => {
+                handleAutocompleteChange(value?.id, 'address_id')
               }}
-              getOptionLabel={(option) => option.label}
+              value={selectedAddress}
+              getOptionLabel={(option) => option?.label || ''}
               isOptionEqualToValue={(option, value) => option.id === value.id}
               sx={{ width: 300 }}
               renderInput={(params) => <TextField {...params} label="Adres" />}
@@ -167,14 +170,15 @@ function TransportAdd() {
 
 
           <label htmlFor='car_id'>Wybierz ciężarówkę</label>
-          <div onClick={findCars}>
+          <div>
             <Autocomplete
-              id="carsLookup"
+              id="car_id"
               options={carsList}
-              onChange={(event, newValue) => {
-                setCarId(newValue.id);
+              onChange={(_, value) => {
+                handleAutocompleteChange(value?.id, 'car_id')
               }}
-              getOptionLabel={(option) => option.label}
+              value={selectedCar}
+              getOptionLabel={(option) => option?.label || ''}
               sx={{ width: 300 }}
               renderInput={(params) => <TextField {...params} label="Ciężarówka" />}
             />
@@ -182,14 +186,15 @@ function TransportAdd() {
           </div>
 
           <label htmlFor='worker_id'>Wybierz kierowcę</label>
-          <div onClick={findDrivers}>
+          <div>
             <Autocomplete
-              id="WorkersLookup"
+              id="worker_id"
               options={workersList}
-              onChange={(event, newValue) => {
-                setWorkerId(newValue.id);
+              onChange={(_, value) => {
+                handleAutocompleteChange(value?.id, 'worker_id')
               }}
-              getOptionLabel={(option) => option.label}
+              value={selectedWorker}
+              getOptionLabel={(option) => option?.label || ''}
               sx={{ width: 300 }}
               renderInput={(params) => <TextField {...params} label="Kierowca" />}
             />

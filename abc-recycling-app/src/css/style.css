@@ -239,7 +239,8 @@ body .main form .required {
   font-size: small;
   margin: 0 0 10px 0;
 }
-body .main .simpleForm input, body .main .simpleForm select {
+body .main .simpleForm input,
+body .main .simpleForm select {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -330,6 +331,6 @@ body .main .login .btn {
   color: white;
   border: 1px solid #479c65;
   margin: 0;
-}
+
 
 /*# sourceMappingURL=style.css.map */

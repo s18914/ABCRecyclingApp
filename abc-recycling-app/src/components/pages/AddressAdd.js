@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Axios from "../../request";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaCheckCircle } from 'react-icons/fa'
@@ -8,16 +8,25 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
 function AddressAdd() {
-  const [zip_code_id, setZipCodeId] = useState(0);
+  //const [zip_code_id, setZipCodeId] = useState(0);
   const [zipCodesList, setZipCodesList] = useState([]);
   const { id } = useParams();
   let isAddMode = id === undefined;
   const navigate = useNavigate();
-  const [formValues, setFormValues] = useState({ street: "", house_number: 0, flat_number: 0, zip_code_id: 0 });
+  const [formValues, setFormValues] = useState({ street: "", house_number: 0, flat_number: 0, zip_code_id: -1 });
   const [formErrors, setFormErrors] = useState(null);
 
+  useEffect(() => {
+    Axios('/ZipCodesLookup').then(
+      response => {
+        setZipCodesList(response.data);
+      }
+    )
+  }, [])
+
+  const selectedZipCode = useMemo(() => zipCodesList.find(({ id }) => id == formValues.zip_code_id) || null, [formValues, zipCodesList])
+
   const submit = () => {
-    console.log(formValues);
     isAddMode ? addAddress() : updateAddress();
   };
 
@@ -30,6 +39,12 @@ function AddressAdd() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
+    const errors = validate(formValues)
+    setFormErrors(errors);
+  };
+
+  const handleAutocompleteChange = (value, fieldName) => {
+    setFormValues({ ...formValues, [fieldName]: value });
     const errors = validate(formValues)
     setFormErrors(errors);
   };
@@ -58,7 +73,7 @@ function AddressAdd() {
       errors.zip_code_id = "To pole nie może być puste";
     }
 
-    return errors;
+    return Object.entries(errors).length > 0 ? errors : null;
   };
 
   const getAddress = async (id) => {
@@ -80,30 +95,20 @@ function AddressAdd() {
   };
 
   const addAddress = async () => {
-    const response = await Axios.post('/carCreate', { ...formValues })
-    console.log("success", response.data);
-    if (false) {
+    const response = await Axios.post('/addressCreate', {
+      ...formValues
+    }).then((response) => {
       navigate("/addresses");
-    }
+    })
   };
 
   const updateAddress = async () => {
     const response = await Axios.put('/addressUpdate', {
       ...formValues,
       id
-    })
-    console.log("success", response.data);
-    if (false) {
+    }).then((response) => {
       navigate("/addresses");
-    }
-  };
-
-  const findZipCodes = () => {
-    Axios('/ZipCodesLookup').then(
-      response => {
-        setZipCodesList(response.data || []);
-      }
-    )
+    })
   };
 
   return (
@@ -124,15 +129,15 @@ function AddressAdd() {
         </div>
         <div>
           <label htmlFor='ZipCodesLookup'>Kod pocztowy<span className="required">*</span></label>
-          <div onClick={findZipCodes}>
+          <div>
             <Autocomplete
-              id="ZipCodesLookup"
+              id="zip_code_id"
               options={zipCodesList}
-              onChange={(event, value) => {
-                setZipCodeId(value.id);
-                handleChange(event);
+              onChange={(_, value) => {
+                handleAutocompleteChange(value?.id, 'zip_code_id')
               }}
-              getOptionLabel={(option) => option.label}
+              value={selectedZipCode}
+              getOptionLabel={(option) => option?.label || ''}
               isOptionEqualToValue={(option, value) => option.id === value.id}
               sx={{ width: 300 }}
               renderInput={(params) => <TextField {...params} label="Kod pocztowy" />}
