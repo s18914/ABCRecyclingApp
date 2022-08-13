@@ -85,9 +85,10 @@ function CustomerAdd() {
         errors.id_number = "Proszę uzupełnić numer dowodu";
       } else if (!idRegex.test(values.id_number) || values.id_number.length !== 9) {
         errors.id_number = "Numer dowodu powinien składać się z 3 liter oraz 6 cyfr i mieć format: AAA000000";
+      } else if (customerList.find(c => c.id_number === values.id_number) !== undefined){
+        errors.id_number = "Taki numer dowodu istnieje już w bazie danych";
       }
     }
-
     return errors
   };
 

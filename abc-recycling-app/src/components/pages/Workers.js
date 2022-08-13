@@ -14,6 +14,7 @@ const Workers = props => {
   const [workersList, setWorkersList] = useState([]);
   const [filterText, setFilterText] = React.useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
+  const [role, setRole] = useState("");
   const paginationComponentOptions = {
     rowsPerPageText: 'Rekordów na stronie',
     rangeSeparatorText: 'z',
@@ -84,8 +85,11 @@ const Workers = props => {
     },
   ];
 
-  const deleteWorker = (worker_id) => {
-    Axios.delete(`/workerDelete/${worker_id}`).then((response) => {
+
+  Axios.defaults.withCredentials = true;
+  
+  const deleteWorker =  (id) => {
+    Axios.delete(`/workerDelete/${id}`).then((response) => {
       setWorkersList(
         workersList.filter((row) => {
           return row.worker_id !== worker_id;
@@ -95,6 +99,13 @@ const Workers = props => {
   };
 
   useEffect(() => {
+    Axios.get("http://localhost:3001/login").then((response) => {
+      if (response.data.loggedIn == true) {
+        console.log(response.data.user.rows[0].role_id)
+        setRole(response.data.user.rows[0].role_id);
+      }
+    });
+
     Axios('/workers').then(
       response => {
         setWorkersList(response.data);
@@ -129,22 +140,26 @@ const Workers = props => {
 
   return (
     <div className='main'>
-      <DataTable
-        title="Lista pracowników"
-        columns={columns}
-        data={filteredItems}
-        noDataComponent='brak rekordów'
-        pagination
-        paginationComponentOptions={paginationComponentOptions}
-        striped
-        subHeader
-        subHeaderComponent={subHeaderComponent}
-      />
-      <div className='btn-panel'>
-        <Link to={'/workers/add'}>
-          <AiOutlinePlusSquare style={{ color: 'grey', cursor: 'pointer', transform: 'scale(5.2)' }} />
-        </Link>
-      </div>
+      {role !== 2 ? <h2>Brak dostępu</h2> :
+      <>
+        <DataTable
+          title="Lista pracowników"
+          columns={columns}
+          data={filteredItems}
+          noDataComponent='brak rekordów'
+          pagination
+          paginationComponentOptions={paginationComponentOptions}
+          striped
+          subHeader
+          subHeaderComponent={subHeaderComponent}
+        />
+        <div className='btn-panel'>
+          <Link to={'/workers/add'}>
+            <AiOutlinePlusSquare style={{color: 'grey', cursor: 'pointer', transform: 'scale(5.2)'}} />
+          </Link>
+        </div>
+      </>
+}
     </div>
   );
 }

@@ -309,20 +309,28 @@ body .main .stock-info ol {
 body .main .stock-info ol div {
   margin-left: 5px;
 }
-body .item1 {
-  grid-area: item1;
+body .main .login {
+  display: flex;
+  flex-direction: column;
 }
-body .item2 {
-  grid-area: item2;
+body .main .login input, body .main .login select {
+  padding: 12px 20px;
+  width: 300px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
-body .item3 {
-  grid-area: item3;
-}
-body .grid-container {
-  padding: 3% 8% 3% 250px;
-  display: grid;
-  grid-template-areas: "item2 item1" "item3 item1";
-  gap: 10px;
-}
+body .main .login .btn {
+  width: 200px;
+  height: auto;
+  background-color: rgb(122, 189, 122);
+  font-size: 15px;
+  padding: 8px;
+  color: white;
+  border: 1px solid #479c65;
+  margin: 0;
+
 
 /*# sourceMappingURL=style.css.map */

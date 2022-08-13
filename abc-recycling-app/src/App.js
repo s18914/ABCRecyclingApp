@@ -1,5 +1,6 @@
 import React from 'react';
 import Navbar from './components/Navbar'
+import Login from './components/Login';
 import { BrowserRouter as Router, Routes , Route } from 'react-router-dom';
 import Home from './components/pages/Home';
 import Transports from './components/pages/Transports';
@@ -28,6 +29,7 @@ const App = () => {
       <Router>
         <Navbar/>
         <Routes>
+          <Route path='/login' exact element={<Login/>} />
           <Route path='/' exact element={<Home/>} />
           <Route path='/transports'exact element={<Transports/>} />
           <Route path='/transports/add'exact element={<TransportAdd/>} />

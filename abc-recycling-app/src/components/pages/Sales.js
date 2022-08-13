@@ -9,6 +9,7 @@ import {FaTimes, FaPen} from 'react-icons/fa'
 import {AiOutlinePlusSquare} from 'react-icons/ai'
 import {GiReceiveMoney} from 'react-icons/gi'
 import FilterComponent from "../FilterComponent";
+import { useNavigate } from "react-router-dom";
 
 const Sales = props => {
   
@@ -21,7 +22,7 @@ const Sales = props => {
     rowsPerPageText: 'Rekordów na stronie',
     rangeSeparatorText: 'z',
   };
-
+  const navigate = useNavigate();
   let d = new Date();
 
   const columns =  [
@@ -253,9 +254,17 @@ const Sales = props => {
       return 1;  // gt
     else
       return null;  // error
-}
+  }
 
+  Axios.defaults.withCredentials = true;
   useEffect(() => {
+    Axios.get("http://localhost:3001/login").then((response) => {
+      console.log(response.data.loggedIn)
+      if (response.data.loggedIn !== true) {
+        navigate("/login");
+      }
+    });
+
     Axios('/sales').then(
       response => {
         setSaleList(response.data.filter(e => e.name !== 'ROBOCZY'));
