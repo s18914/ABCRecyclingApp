@@ -92,7 +92,7 @@ const Workers = props => {
     Axios.delete(`/workerDelete/${id}`).then((response) => {
       setWorkersList(
         workersList.filter((row) => {
-          return row.worker_id !== worker_id;
+          return row.worker_id !== id;
         })
       );
     });
