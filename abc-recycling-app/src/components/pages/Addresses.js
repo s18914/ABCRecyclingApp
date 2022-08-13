@@ -21,26 +21,32 @@ const Addresses = props => {
     {
       name: 'Id',
       width: '60px',
+      sortable: true,
       selector: row => row.address_id,
     },
     {
       name: 'Ulica:',
+      sortable: true,
       selector: row => row.street,
     },
     {
       name: 'Numer domu',
+      sortable: true,
       selector: row => row.house_number,
     },
     {
       name: 'Numer lokalu',
+      sortable: true,
       selector: row => row.flat_number,
     },
     {
       name: 'Miasto',
+      sortable: true,
       selector: row => row.city,
     },
     {
       name: 'Województwo',
+      sortable: true,
       selector: row => row.province,
     },
     {

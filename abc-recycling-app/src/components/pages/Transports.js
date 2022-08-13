@@ -12,6 +12,7 @@ const Transports = props => {
 
   const [transportList, setTransportList] = useState([]);
   const [filterText, setFilterText] = React.useState("");
+  const [ref, setRef] = useState(1);
   const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
   const paginationComponentOptions = {
     rowsPerPageText: 'Rekordów na stronie',
@@ -21,31 +22,37 @@ const Transports = props => {
     {
       name: 'Id',
       width: '60px',
+      sortable: true,
       selector: row => row.transport_id,
     },
     {
       name: 'Adres',
       width: '300px',
+      sortable: true,
       selector: row => row.transport_address,
     },
     {
       name: 'Telefon',
       width: '180px',
+      sortable: true,
       selector: row => row.phone,
     },
     {
       name: 'Data',
       width: '160px',
+      sortable: true,
       selector: row => row.transport_date,
     },
     {
       name: 'Ciężarówka',
       width: '180px',
+      sortable: true,
       selector: row => row.registration_number,
     },
     {
       name: 'Kierowca',
       width: '180px',
+      sortable: true,
       selector: row => row.transport_worker,
     },
     {

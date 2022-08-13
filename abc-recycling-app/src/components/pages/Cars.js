@@ -22,14 +22,17 @@ const Cars = props => {
     {
       name: 'Id',
       width: '60px',
+      sortable: true,
       selector: row => row.car_id,
     },
     {
       name: 'Numer rejestracyjny',
+      sortable: true,
       selector: row => row.registration_number,
     },
     {
       name: 'Data wazności przeglądu',
+      sortable: true,
       selector: row => row.overview_date,
     },
     {

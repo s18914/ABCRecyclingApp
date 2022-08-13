@@ -22,26 +22,31 @@ const Workers = props => {
     {
       name: 'Id',
       width: '60px',
+      sortable: true,
       selector: row => row.worker_id,
     },
     {
       name: 'Imię',
       width: '200px',
+      sortable: true,
       selector: row => row.name,
     },
     {
       name: 'Nazwisko',
       width: '200px',
+      sortable: true,
       selector: row => row.surname,
     },
     {
       name: 'Numer dowodu',
       width: '200px',
+      sortable: true,
       selector: row => row.id_number,
     },
     {
       name: 'Rola',
       width: '200px',
+      sortable: true,
       selector: row => row.role_name,
     },
     {

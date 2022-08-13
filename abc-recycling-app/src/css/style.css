@@ -239,7 +239,8 @@ body .main form .required {
   font-size: small;
   margin: 0 0 10px 0;
 }
-body .main .simpleForm input, body .main .simpleForm select {
+body .main .simpleForm input,
+body .main .simpleForm select {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -307,6 +308,21 @@ body .main .stock-info ol {
 }
 body .main .stock-info ol div {
   margin-left: 5px;
+}
+body .item1 {
+  grid-area: item1;
+}
+body .item2 {
+  grid-area: item2;
+}
+body .item3 {
+  grid-area: item3;
+}
+body .grid-container {
+  padding: 3% 8% 3% 250px;
+  display: grid;
+  grid-template-areas: "item2 item1" "item3 item1";
+  gap: 10px;
 }
 
 /*# sourceMappingURL=style.css.map */
