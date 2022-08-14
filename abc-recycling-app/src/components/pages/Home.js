@@ -3,14 +3,13 @@ import DataTable from 'react-data-table-component'
 import { useState } from "react";
 import Axios from "../../request";
 import StockInfo from "./StockInfo";
-import "../../../node_modules/react-vis/dist/style.css";
 
 const Home = props => {
 
   const [oldCarsList, setOldCarsList] = useState([]);
   const [oldSalesList, setOldSalesList] = useState([]);
 
-  const columns = [
+  const columnsCars = [
     {
       name: 'Powiadomienia',
       selector: row => row.info,
@@ -30,6 +29,9 @@ const Home = props => {
         setOldCarsList(response.data);
       }
     )
+  }, []);
+
+  useEffect(() => {
     Axios('/getOldSales').then(
       response => {
         setOldSalesList(response.data);
@@ -47,7 +49,7 @@ const Home = props => {
       </div>
       <div className='item2'>
       <DataTable className='main'
-          columns={columns}
+          columns={columnsCars}
           data={oldCarsList}
           noDataComponent=''
         />
