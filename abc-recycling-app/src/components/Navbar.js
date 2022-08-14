@@ -32,18 +32,17 @@ function Navbar() {
     <>
       <IconContext.Provider value={{ color: '#fff' }}>
         <div className='header'>
-          {role === "" ? 
-          <>
-            <AiOutlineLogin style={{transform: 'scale(3.0)', color: 'white', cursor: 'pointer', padding: '0 85px'}} onClick={() => {navigate("/login")}}/>
+          {role === "" ?
             <Link to='#' className='menu-bars'>
-              <FaIcons.FaBars  />
+              <FaIcons.FaBars style={{color: 'grey'}} />
             </Link>
-          </> : 
+          : 
             <Link to='#' className='menu-bars'>
               <FaIcons.FaBars onClick={showSidebar} />
             </Link>
           }
-          <img src={Logo} alt="abc-recycling" />
+          <img src={Logo} alt="abc-recycling" style={{marginRight: '70px'}}/>
+          <AiOutlineLogin style={{transform: 'scale(3.0)', color: 'white', cursor: 'pointer', padding: '0 45px', }} onClick={() => {navigate("/login")}}/>
         </div>
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
           <ul className='nav-menu-items' onClick={showSidebar}>
