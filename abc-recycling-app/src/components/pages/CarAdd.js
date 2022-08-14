@@ -63,7 +63,7 @@ function CarAdd() {
     if (!values.registration_number) {
       errors.registration_number = "To pole nie może być puste";
     } else if (!registrationNumberRegex.test(values.registration_number) && values.registration_number.length !== 7) {
-      errors.registration_number = "Numer rejestracyjny powinien składać się z 7 znaków, z czego pierwsze 2 powinny być literami.";
+      errors.registration_number = "Numer rejestracyjny powinien składać się z 7 znaków, z czego pierwsze 2-3 powinny być literami.";
     } else if (carsRegistrationNumbers.some(registration_number => registration_number === values.registration_number.trim())){
       errors.registration_number = "Ten numer rejestacyjny istnieje już w bazie danych.";
     }
@@ -116,7 +116,7 @@ function CarAdd() {
       {!isAddMode && <h1>Edytuj samochód</h1>}
       <form className='simpleForm' style={{ width: '300px' }} onSubmit={handleSubmit} noValidate>
         <label htmlFor='registration_number'>Numer Rejestracyjny<span className="required">*</span></label>
-        <input type="text" id="registration_number" name="registration_number" value={formValues.registration_number}
+        <input type="text" id="registration_number" name="registration_number" maxLength='8' value={formValues.registration_number}
           onChange={handleChange}>
         </input>
         <p className="required"> {formErrors?.registration_number} </p>

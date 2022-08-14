@@ -81,6 +81,7 @@ function TransportAdd() {
 
   const validate = (values) => {
     let errors = {};
+    const phoneRegex = /([0-9]){9}/;
 
     if (!values.address_id) {
       errors.address_id = "To pole nie może być puste";
@@ -90,6 +91,10 @@ function TransportAdd() {
     }
     if (!values.worker_id) {
       errors.worker_id = "To pole nie może być puste";
+    }
+    
+    if (!phoneRegex.test(values.phone) && values.phone !== 9) {
+      errors.phone = "Numer telefonu powinien składać się z samych cyfr i mieć max 10 znaków.";
     }
 
     if (new Date(values.date) < new Date()) {
@@ -149,7 +154,7 @@ function TransportAdd() {
           <p className="required"> {formErrors?.date} </p>
 
           <label htmlFor='phone'>Wpisz telefon odbiorcy</label>
-          <input type="text" id="phone" name="phone" maxlength='9' value={formValues.phone} onChange={handleChange}>
+          <input type="text" id="phone" name="phone" maxLength='9' value={formValues.phone} onChange={handleChange}>
           </input>
         </div>
         <p className="required"> {formErrors?.phone} </p>
