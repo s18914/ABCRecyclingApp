@@ -7,13 +7,14 @@ import { FaTimes } from 'react-icons/fa'
 import { FaPen } from 'react-icons/fa'
 import { AiOutlinePlusSquare } from 'react-icons/ai'
 import FilterComponent from "../FilterComponent";
+import { useNavigate } from "react-router-dom";
 
 const Transports = props => {
 
   const [transportList, setTransportList] = useState([]);
   const [filterText, setFilterText] = React.useState("");
-  const [ref, setRef] = useState(1);
   const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
+  const navigate = useNavigate();
   const paginationComponentOptions = {
     rowsPerPageText: 'Rekordów na stronie',
     rangeSeparatorText: 'z',
@@ -90,6 +91,8 @@ const Transports = props => {
     },
   ];
 
+  Axios.defaults.withCredentials = true;
+
   const deleteTransport = (transport_id) => {
     Axios.delete(`/transportDelete/${transport_id}`).then((response) => {
       setTransportList(
@@ -125,6 +128,13 @@ const Transports = props => {
   }, [filterText, resetPaginationToggle]);
 
   useEffect(() => {
+    Axios.get("http://localhost:3001/login").then((response) => {
+      console.log(response.data.loggedIn)
+      if (response.data.loggedIn !== true) {
+        navigate("/login");
+      }
+    });
+
     Axios('/transports').then(
       response => {
         setTransportList(response.data);

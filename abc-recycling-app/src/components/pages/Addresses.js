@@ -7,12 +7,14 @@ import { FaTimes } from 'react-icons/fa'
 import { FaPen } from 'react-icons/fa'
 import { AiOutlinePlusSquare } from 'react-icons/ai'
 import FilterComponent from "../FilterComponent";
+import { useNavigate } from "react-router-dom";
 
 const Addresses = props => {
 
   const [addressesList, setAddressesList] = useState([]);
   const [filterText, setFilterText] = React.useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
+  const navigate = useNavigate();
   const paginationComponentOptions = {
     rowsPerPageText: 'Rekordów na stronie',
     rangeSeparatorText: 'z',
@@ -84,6 +86,8 @@ const Addresses = props => {
     }
   ];
 
+  Axios.defaults.withCredentials = true;
+
   const deleteaddress = (address_id) => {
     Axios.delete(`/addressDelete/${address_id}`).then((response) => {
       setAddressesList(
@@ -95,6 +99,13 @@ const Addresses = props => {
   };
 
   useEffect(() => {
+    Axios.get("http://localhost:3001/login").then((response) => {
+      console.log(response.data.loggedIn)
+      if (response.data.loggedIn !== true) {
+        navigate("/login");
+      }
+    });
+
     Axios('/addresses').then(
       response => {
         setAddressesList(response.data);

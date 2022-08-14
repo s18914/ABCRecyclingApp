@@ -910,6 +910,17 @@ app.get("/getOldCars", (req, res) => {
   });
 });
 
+//oldPurchases
+app.get("/getOldSales", (req, res) => {
+  client.query("SELECT * from get_old_sales()", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows);
+    }
+  });
+});
+
 app.listen(3001, () => {
   console.log("Your server is running on port 3001");
 });
