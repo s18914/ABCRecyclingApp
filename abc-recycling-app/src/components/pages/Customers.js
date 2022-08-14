@@ -7,6 +7,7 @@ import { FaTimes, FaBuilding, FaUserAlt} from 'react-icons/fa'
 import { FaPen } from 'react-icons/fa'
 import {AiOutlinePlusSquare} from 'react-icons/ai'
 import FilterComponent from "../FilterComponent";
+import { useNavigate } from "react-router-dom";
 
 const Customers = props => {
   
@@ -20,6 +21,8 @@ const Customers = props => {
     rowsPerPageText: 'Rekordów na stronie',
     rangeSeparatorText: 'z',
   };
+  Axios.defaults.withCredentials = true;
+  const navigate = useNavigate();
   const columns =  [
     {
       name: 'Klient',
@@ -141,6 +144,13 @@ const Customers = props => {
   }, [filterText, resetPaginationToggle]);
 
   useEffect(() => {
+    Axios.get("http://localhost:3001/login").then((response) => {
+      console.log(response.data.loggedIn)
+      if (response.data.loggedIn !== true) {
+        navigate("/login");
+      }
+    });
+
     Axios('/customers').then(
       response => {
         setCustomerList(

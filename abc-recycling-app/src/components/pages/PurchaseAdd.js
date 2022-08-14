@@ -22,6 +22,7 @@ function PurchaseAdd() {
   const [isCompany, setIsCompany] = useState(true);
   const [transportLabel, setTransportLabel] = useState({id: 0, label: 'Transport'});
   const [customerLabel, setCustomerLabel] = useState({id: 0, label: 'Klient'});
+  Axios.defaults.withCredentials = true;
 
   //Walidacja
   const [formValues, setFormValues] = useState({ contractorId: "", id_number: "", weight: "", price: "" });
@@ -82,6 +83,13 @@ function PurchaseAdd() {
   };
 
   useEffect(() => {
+    Axios.get("http://localhost:3001/login").then((response) => {
+      console.log(response.data.loggedIn)
+      if (response.data.loggedIn !== true) {
+        navigate("/login");
+      }
+    });
+    
     findTransports();
     if(isAddMode && docId === undefined) {
       addDocument();

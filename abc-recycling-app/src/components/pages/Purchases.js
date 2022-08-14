@@ -8,6 +8,7 @@ import { FaTimes } from 'react-icons/fa'
 import { FaPen } from 'react-icons/fa'
 import {AiOutlinePlusSquare} from 'react-icons/ai'
 import FilterComponent from "../FilterComponent";
+import { useNavigate } from "react-router-dom";
 
 const Purchases = props => {
 
@@ -20,6 +21,8 @@ const Purchases = props => {
   const [filterText, setFilterText] = React.useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
   const [ref, setRef] = useState(1);
+  Axios.defaults.withCredentials = true;
+  const navigate = useNavigate();
   const columns =  [
     {
       name: 'No.',
@@ -126,6 +129,13 @@ const Purchases = props => {
   }, [filterText, resetPaginationToggle]);
 
   useEffect(() => {
+    Axios.get("http://localhost:3001/login").then((response) => {
+      console.log(response.data.loggedIn)
+      if (response.data.loggedIn !== true) {
+        navigate("/login");
+      }
+    });
+
     Axios('/purchases').then(
       response => {
         setPurchaseList(response.data.filter(e => e.name !== 'ROBOCZY'));
