@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const [loginStatus, setLoginStatus] = useState("");
+  const navigate = useNavigate();
 
   Axios.defaults.withCredentials = true;
 
@@ -19,7 +21,8 @@ const Login = () => {
       if (response.data.message) {
         setLoginStatus(response.data.message);
       } else {
-        setLoginStatus(response.data.rows[0].username);
+        navigate("/");
+        setLoginStatus("Zalogowany");
       }
     });
   };
@@ -29,7 +32,7 @@ const Login = () => {
       if (response.data.loggedIn == true) {
         console.log("zalogowany")
         console.log(response)
-        setLoginStatus(response.data.user.rows[0].username);
+        setLoginStatus("Zalogowany");
       }
       console.log(response)
     });
@@ -55,7 +58,7 @@ const Login = () => {
         />
         <button className="btn" onClick={login} style={{padding: '10px', }}> Zaloguj </button>
       </div>
-      Zalogowany jako:<h2>{loginStatus}</h2>
+      <h2>{loginStatus}</h2>
     </div>
   );
 }
