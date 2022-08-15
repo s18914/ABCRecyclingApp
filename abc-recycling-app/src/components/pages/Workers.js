@@ -99,19 +99,20 @@ const Workers = props => {
   };
 
   useEffect(() => {
-    Axios.get("http://localhost:3001/login").then((response) => {
-      if (response.data.loggedIn === true) {
-        console.log(response.data.user.rows[0].role_id)
-        setRole(response.data.user.rows[0].role_id);
-      }
-    });
-
+    if(!role) {
+      Axios.get("http://localhost:3001/login").then((response) => {
+        if (response.data.loggedIn == true) {
+          console.log(response.data.user.rows[0].role_id)
+          setRole(response.data.user.rows[0].role_id);
+        }
+      });
+    }
     Axios('/workers').then(
       response => {
         setWorkersList(response.data);
       }
     )
-  }, []);
+  }, [role]);
 
   const filteredItems = workersList.filter(
     item =>
@@ -140,7 +141,7 @@ const Workers = props => {
 
   return (
     <div className='main'>
-      {role !== 2 ? <h2>Brak dostępu</h2> :
+      {role !== '2' ? <h2>Brak dostępu</h2> :
       <>
         <DataTable
           title="Lista pracowników"
