@@ -22,8 +22,8 @@ const Cars = props => {
   };
   const columns = [
     {
-      name: 'Id',
-      width: '60px',
+      name: 'No.',
+      width: '90px',
       sortable: true,
       selector: row => row.car_id,
     },

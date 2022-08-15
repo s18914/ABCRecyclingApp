@@ -21,8 +21,8 @@ const Workers = props => {
   };
   const columns = [
     {
-      name: 'Id',
-      width: '60px',
+      name: 'No.',
+      width: '90px',
       sortable: true,
       selector: row => row.worker_id,
     },
@@ -101,7 +101,7 @@ const Workers = props => {
   useEffect(() => {
     if(!role) {
       Axios.get("http://localhost:3001/login").then((response) => {
-        if (response.data.loggedIn == true) {
+        if (response.data.loggedIn === true) {
           console.log(response.data.user.rows[0].role_id)
           setRole(response.data.user.rows[0].role_id);
         }

@@ -19,7 +19,7 @@ const Home = props => {
   const columnsSales = [
     {
       name: 'Najważniejsze informacje o sprzedaży',
-      selector: row => row.infoSale,
+      selector: row => row.infosale,
     }
   ];
 
@@ -45,20 +45,18 @@ const Home = props => {
         Strona główna
       </div>
       <div className='main' style={{ gridArea: 'item1', paddingLeft: '20px' }}>
-      <StockInfo/>
+        <StockInfo />
       </div>
       <div className='item2'>
-      <DataTable className='main'
+        <DataTable className='main'
           columns={columnsCars}
           data={oldCarsList}
-          noDataComponent=''
         />
       </div>
       <div className='item3'>
-      <DataTable className='main'
+        <DataTable className='main'
           columns={columnsSales}
           data={oldSalesList}
-          noDataComponent=''
         />
       </div>
     </div>
