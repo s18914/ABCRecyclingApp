@@ -107,7 +107,6 @@ const Workers = props => {
         }
       });
     }
-    
     Axios('/workers').then(
       response => {
         setWorkersList(response.data);

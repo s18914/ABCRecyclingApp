@@ -908,6 +908,17 @@ app.get("/getOldCars", (req, res) => {
   });
 });
 
+//oldSales
+app.get("/getOldSales", (req, res) => {
+  client.query("SELECT case  when (t.date < current_date and s.is_paid is not true) then concat('Dokument sprzedaży o numerze: ', s.document_id, ' posiada nieuregulowane płatności po terminie.') when (s.is_paid is not true) then concat('Dokument sprzedaży o numerze: ', s.document_id, ' posiada nieuregulowane płatności.') end as infoSale FROM public.sales s left join public.transports t on t.transport_id = s.transport_id;", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result.rows);
+    }
+  });
+});
+
 app.listen(3001, () => {
   console.log("Your server is running on port 3001");
 });

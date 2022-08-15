@@ -3,15 +3,23 @@ import DataTable from 'react-data-table-component'
 import { useState } from "react";
 import Axios from "../../request";
 import StockInfo from "./StockInfo";
-import "../../../node_modules/react-vis/dist/style.css";
 
 const Home = props => {
 
   const [oldCarsList, setOldCarsList] = useState([]);
-  const columns = [
+  const [oldSalesList, setOldSalesList] = useState([]);
+
+  const columnsCars = [
     {
       name: 'Powiadomienia',
       selector: row => row.info,
+    }
+  ];
+
+  const columnsSales = [
+    {
+      name: 'Najważniejsze informacje o sprzedaży',
+      selector: row => row.infoSale,
     }
   ];
 
@@ -23,23 +31,33 @@ const Home = props => {
     )
   }, []);
 
-  return (
+  useEffect(() => {
+    Axios('/getOldSales').then(
+      response => {
+        setOldSalesList(response.data);
+      }
+    )
+  }, []);
 
+  return (
     <div className='grid-container'>
-      <div class='item1' >
+      <div className='itemHeader'>
+        Strona główna
+      </div>
+      <div className='main' style={{ gridArea: 'item1', paddingLeft: '20px' }}>
       <StockInfo/>
       </div>
-      <div class='item2'>
+      <div className='item2'>
       <DataTable className='main'
-          columns={columns}
+          columns={columnsCars}
           data={oldCarsList}
           noDataComponent=''
         />
       </div>
-      <div class='item3'>
+      <div className='item3'>
       <DataTable className='main'
-          columns={columns}
-          data={oldCarsList}
+          columns={columnsSales}
+          data={oldSalesList}
           noDataComponent=''
         />
       </div>

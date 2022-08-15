@@ -4,8 +4,6 @@ import Axios from "../../request";
 import { useParams, useNavigate } from "react-router-dom";
 import { ImCancelCircle } from 'react-icons/im'
 import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
 import Autocomplete from '@mui/material/Autocomplete';
 import { FaCheckCircle, FaPlus } from 'react-icons/fa'
 import { format } from 'date-fns'
@@ -83,9 +81,20 @@ function TransportAdd() {
 
   const validate = (values) => {
     let errors = {};
+    const phoneRegex = /([0-9]){9}/;
 
-    if (!values.phone) {
-      errors.phone = "To pole nie może być puste";
+    if (!values.address_id) {
+      errors.address_id = "To pole nie może być puste";
+    }
+    if (!values.car_id) {
+      errors.car_id = "To pole nie może być puste";
+    }
+    if (!values.worker_id) {
+      errors.worker_id = "To pole nie może być puste";
+    }
+    
+    if (!phoneRegex.test(values.phone) && values.phone !== 9) {
+      errors.phone = "Numer telefonu powinien składać się z samych cyfr i mieć max 10 znaków.";
     }
 
     if (new Date(values.date) < new Date()) {
@@ -145,13 +154,13 @@ function TransportAdd() {
           <p className="required"> {formErrors?.date} </p>
 
           <label htmlFor='phone'>Wpisz telefon odbiorcy</label>
-          <input type="text" id="phone" name="phone" maxlength='9' value={formValues.phone} onChange={handleChange}>
+          <input type="text" id="phone" name="phone" maxLength='9' value={formValues.phone} onChange={handleChange}>
           </input>
         </div>
         <p className="required"> {formErrors?.phone} </p>
 
         <div>
-          <label htmlFor='address_id'>Wybierz adres</label>
+          <label htmlFor='address_id'>Wybierz adres<span className="required">*</span></label>
           <div>
             <Autocomplete
               id="address_id"
@@ -166,10 +175,9 @@ function TransportAdd() {
               renderInput={(params) => <TextField {...params} label="Adres" />}
             />
           </div>
-          <FaPlus style={{ verticalAlign: 'middle', margin: '5px', fontSize: '20px' }} title='Dodaj nowy adres' className='icon'> </FaPlus>
+          <p className="required"> {formErrors?.address_id} </p>
 
-
-          <label htmlFor='car_id'>Wybierz ciężarówkę</label>
+          <label htmlFor='car_id'>Wybierz ciężarówkę<span className="required">*</span></label>
           <div>
             <Autocomplete
               id="car_id"
@@ -182,10 +190,10 @@ function TransportAdd() {
               sx={{ width: 300 }}
               renderInput={(params) => <TextField {...params} label="Ciężarówka" />}
             />
-            <FaPlus style={{ verticalAlign: 'middle', margin: '5px', fontSize: '20px' }} title='Dodaj nową ciężarówkę' className='icon'> </FaPlus>
           </div>
+          <p className="required"> {formErrors?.car_id} </p>
 
-          <label htmlFor='worker_id'>Wybierz kierowcę</label>
+          <label htmlFor='worker_id'>Wybierz kierowcę<span className="required">*</span></label>
           <div>
             <Autocomplete
               id="worker_id"
@@ -199,6 +207,7 @@ function TransportAdd() {
               renderInput={(params) => <TextField {...params} label="Kierowca" />}
             />
           </div>
+          <p className="required"> {formErrors?.worker_id} </p>
 
         </div>
 

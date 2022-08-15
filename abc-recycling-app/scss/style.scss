@@ -401,22 +401,26 @@ body {
 
     }
 
-    .item1 {
-        grid-area: item1;
+    .itemHeader {
+        grid-area: itemHeader;
+        font-weight: 100;
     }
 
     .item2 {
         grid-area: item2;
+        border-style: outset;
     }
 
     .item3 {
         grid-area: item3;
+        border-style: outset;
     }
 
     .grid-container {
         padding: 3% 8% 3% 250px;
         display: grid;
         grid-template-areas:
+            'itemHeader itemHeader'
             'item2 item1'
             'item3 item1';
         gap: 10px;
