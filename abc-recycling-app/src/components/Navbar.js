@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Axios from "axios";
+import Axios from "../request";
 import * as FaIcons from "react-icons/fa";
 import {AiOutlineLogin, AiOutlineClose} from "react-icons/ai";
 import { Link } from 'react-router-dom';
@@ -19,7 +19,7 @@ function Navbar() {
 
   Axios.defaults.withCredentials = true;
   useEffect(() => {
-    Axios.get("http://localhost:3001/login").then((response) => {
+    Axios.get("/login").then((response) => {
       if (response.data.loggedIn == true) {
         setRole(response.data.user.rows[0].role_id);
       }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Axios from "axios";
+import Axios from "../request";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -13,7 +13,7 @@ const Login = () => {
 
   const login = () => {
     console.log(username)
-    Axios.post("http://localhost:3001/login", {
+    Axios.post("/login", {
       username: username,
       password: password,
     }).then((response) => {
@@ -28,7 +28,7 @@ const Login = () => {
   };
 
   useEffect(() => {
-    Axios.get("http://localhost:3001/login").then((response) => {
+    Axios.get("/login").then((response) => {
       if (response.data.loggedIn == true) {
         console.log("zalogowany")
         console.log(response)
