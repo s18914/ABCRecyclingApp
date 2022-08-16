@@ -19,6 +19,7 @@ function SaleAdd() {
   const [productList, setProductList] = useState([]);
   const [contractorId, setContractorId] = useState(0);
   const [transportId, setTransportId] = useState(0);
+  const [prevTransportId, setPrevTransportId] = useState(0);
   const [transportLabel, setTransportLabel] = useState({id: 0, label: 'Transport'});
   const [customerLabel, setCustomerLabel] = useState({id: 0, label: 'Klient'});
   Axios.defaults.withCredentials = true;
@@ -113,6 +114,16 @@ function SaleAdd() {
     })
   };
 
+  const changeStatus =  (id, status) => {
+    console.log(id + "  " + status)
+    Axios.put('/SaleUpdateStatus', {
+      id: id,
+      status_id: status
+    }).then((response) => {
+      console.log(response)
+    });
+  };
+
   const getDocument = (id) => {
     if(!isAddMode) {
       Axios.get(`/sale/${id}`).then((response) => {
@@ -120,6 +131,7 @@ function SaleAdd() {
         setDocId(id)
         setContractorId(response.data?.contractor_id);
         setTransportId(response.data?.transport_id);
+        setPrevTransportId(response.data?.transport_id);
 
         if(response.data?.transport_id !== null){
           Axios.get(`/getTransportVal/${response.data?.transport_id}`).then((response) => {
@@ -145,6 +157,10 @@ function SaleAdd() {
     }).then((response) => {
       navigate("/sales");
     });
+
+    console.log(transportId +" " + prevTransportId)
+
+    if(transportId !== 0 && prevTransportId === null ) changeStatus(docId, 1)
   };
 
   const findCompanies = () => {
