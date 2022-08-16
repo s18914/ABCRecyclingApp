@@ -42,7 +42,7 @@ function Navbar() {
             </Link>
           }
           <img src={Logo} alt="abc-recycling" style={{marginRight: '70px'}}/>
-          <AiOutlineLogin style={{transform: 'scale(3.0)', color: 'white', cursor: 'pointer', padding: '0 45px', }} onClick={() => {navigate("/login")}}/>
+          <AiOutlineLogin style={{transform: 'scale(3.0)', color: 'white', cursor: 'pointer', padding: '0 45px', marginLeft: 'auto'}} onClick={() => {navigate("/login")}}/>
         </div>
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
           <ul className='nav-menu-items' onClick={showSidebar}>

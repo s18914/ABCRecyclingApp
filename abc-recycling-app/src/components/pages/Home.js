@@ -51,12 +51,14 @@ const Home = props => {
         <DataTable className='main'
           columns={columnsCars}
           data={oldCarsList}
+          noDataComponent='brak rekordów'
         />
       </div>
       <div className='item3'>
         <DataTable className='main'
           columns={columnsSales}
           data={oldSalesList}
+          noDataComponent='brak rekordów'
         />
       </div>
     </div>

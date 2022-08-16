@@ -205,7 +205,7 @@ function CustomerAdd() {
           {!isAddMode && <h1>Edytuj firmę</h1>}
           <form className='simpleForm' onSubmit={handleSubmit} noValidate>
             <label>Wpisz nazwę<span className="required">*</span></label>
-            <input type="text" id="name" name="name" placeholder="Nazwa.." defaultValue={customer?.name}
+            <input type="text" id="name" name="name" maxLength="50" placeholder="Nazwa.." defaultValue={customer?.name}
               onChange={(e) => {setName(e.target.value); handleChange(e);}}
               >
             </input>
@@ -243,18 +243,18 @@ function CustomerAdd() {
           {!isAddMode && <h1>Edytuj klienta</h1>}
           <form className='simpleForm'>
             <label>Wpisz imię</label>
-            <input type="text" id="name" name="name" placeholder="Imię.." defaultValue={customer?.name}
+            <input type="text" id="name" name="name" maxLength="30" placeholder="Imię.." defaultValue={customer?.name}
               onChange={(e) => {setName(e.target.value); handleChange(e);}}
               >
             </input>
             <label>Wpisz nazwisko</label>
-            <input type="text" id="surname" name="surname" placeholder="Nazwisko.." defaultValue={customer?.surname} onChange={(e) => {
+            <input type="text" id="surname" name="surname" maxLength="30" placeholder="Nazwisko.." defaultValue={customer?.surname} onChange={(e) => {
                 setSurname(e.target.value);
                 handleChange(e);
               }}>
             </input>
             <label>Wpisz numer dowodu<span className="required">*</span></label>
-            <input type="text" id="id_number" name="id_number" placeholder="Numer dowodu np. ABC123456" defaultValue={customer?.id_number} onChange={(e) => {
+            <input type="text" id="id_number" name="id_number" maxLength="9" placeholder="Numer dowodu np. ABC123456" defaultValue={customer?.id_number} onChange={(e) => {
                 setIdNumber(e.target.value);
                 handleChange(e);
               }}>

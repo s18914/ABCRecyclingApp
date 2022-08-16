@@ -144,17 +144,17 @@ function WorkerAdd() {
       <form>
         <div className='simpleForm' style={{ width: '300px' }} onSubmit={handleSubmit} noValidate>
           <label htmlFor='name'>Imię<span className="required">*</span></label>
-          <input type="text" id="name" name="name" maxLength='20' value={formValues.name}
+          <input type="text" id="name" name="name" maxLength="30" value={formValues.name}
             onChange={handleChange}>
           </input>
           <p className="required"> {formErrors?.name} </p>
           <label htmlFor='surname'>Nazwisko<span className="required">*</span></label>
-          <input type="text" id="surname" name="surname" maxlength='27' value={formValues.surname}
+          <input type="text" id="surname" name="surname" maxlength="30" value={formValues.surname}
             onChange={handleChange}>
           </input>
           <p className="required"> {formErrors?.surname} </p>
           <label htmlFor='id_number'>Numer dowodu<span className="required">*</span></label>
-          <input type="text" id="id_number" name="id_number" maxlength='9' value={formValues.id_number}
+          <input type="text" id="id_number" name="id_number" maxlength="9" value={formValues.id_number}
             onChange={handleChange}>
           </input>
           <p className="required"> {formErrors?.id_number} </p>
