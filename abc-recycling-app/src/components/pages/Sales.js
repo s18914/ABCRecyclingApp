@@ -258,7 +258,7 @@ const Sales = props => {
 
   Axios.defaults.withCredentials = true;
   useEffect(() => {
-    Axios.get("http://localhost:3001/login").then((response) => {
+    Axios.get("/login").then((response) => {
       console.log(response.data.loggedIn)
       if (response.data.loggedIn !== true) {
         navigate("/login");
