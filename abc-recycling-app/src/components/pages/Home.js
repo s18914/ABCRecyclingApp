@@ -3,11 +3,13 @@ import DataTable from 'react-data-table-component'
 import { useState } from "react";
 import Axios from "../../request";
 import StockInfo from "./StockInfo";
+import { useNavigate } from "react-router-dom";
 
 const Home = props => {
 
   const [oldCarsList, setOldCarsList] = useState([]);
   const [oldSalesList, setOldSalesList] = useState([]);
+  const navigate = useNavigate();
 
   const columnsCars = [
     {
@@ -37,6 +39,17 @@ const Home = props => {
         setOldSalesList(response.data);
       }
     )
+  }, []);
+
+  Axios.defaults.withCredentials = true;
+
+  useEffect(() => {
+    Axios.get("http://localhost:3001/login").then((response) => {
+      console.log(response.data.loggedIn)
+      if (response.data.loggedIn !== true) {
+        navigate("/login");
+      }
+    });
   }, []);
 
   return (
