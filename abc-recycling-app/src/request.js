@@ -1,7 +1,6 @@
 const axios = require("axios");
 export default axios.create(
   {
-    baseURL: process.env.REACT_APP_API_KEY,
     withCredentials: true
   }
 );

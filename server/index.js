@@ -58,7 +58,6 @@ function connect() {
 }
 
 connect();
-console.log(path.join(__dirname, "..", "abc-recycling-app", "public","index.html"));
 app.use(express.static(
   path.join(__dirname,"../abc-recycling-app/build")));
 
@@ -927,6 +926,6 @@ app.get("/getOldSales", (req, res) => {
   });
 });
 
-app.listen(3001, () => {
+app.listen(process.env.PORT || 3001, () => {
   console.log("Your server is running on port 3001");
 });
