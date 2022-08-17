@@ -20,12 +20,14 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const sameSite = process.env.SAME_SITE || "none";
+
 app.use(
   session({
     secret: "subscribe",
     maxAge: 1000 * 60 * 60 * 24,
-    sameSite: "none",
-    secure: true
+    sameSite,
+    secure: sameSite === "none" 
   })
 );
 
