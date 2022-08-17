@@ -62,8 +62,9 @@ app.use(express.static(
   path.join(__dirname,"../abc-recycling-app/build")));
 
 
+
 //Login
-app.get("/login", (req, res) => {
+app.get("/api/login", (req, res) => {
   if (req.session.user) {
     res.send({ loggedIn: true, user: req.session.user });
   } else {
@@ -71,7 +72,7 @@ app.get("/login", (req, res) => {
   }
 });
 
-app.post("/login", (req, res) => {
+app.post("/api/login", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
@@ -104,7 +105,7 @@ app.post("/login", (req, res) => {
 });
 
 //Transport
-app.post("/transportCreate", (req, res) => {
+app.post("/api/transportCreate", (req, res) => {
   const date = req.body.date;
   const phone = req.body.phone;
   const address_id = req.body.address_id;
@@ -124,7 +125,7 @@ app.post("/transportCreate", (req, res) => {
   );
 });
 
-app.get("/transports", (req, res) => {
+app.get("/api/transports", (req, res) => {
   client.query("SELECT t.transport_id, to_char(t.date, 'yyyy-mm-dd') as transport_date, t.phone, c.registration_number, concat(a.street, ' ', a.house_number, ' ', a.flat_number, ', ', z.zip_code, ' ', z.city) as transport_address, concat(w.name, ' ', w.surname) as transport_worker, case when t.transport_id in (select transport_id FROM sales union select transport_id FROM purchases) then '0' else '1' END AS can_delete FROM public.transports t inner join public.addresses a on a.address_id = t.address_id inner join public.zip_codes z on z.zip_code_id = a.zip_code_id inner join public.workers w on w.worker_id = t.worker_id inner join public.cars c on c.car_id = t.car_id;", (err, result) => {
     if (err) {
       console.log(err);
@@ -135,7 +136,7 @@ app.get("/transports", (req, res) => {
   });
 });
 
-app.get("/transport/:id", (req, res) => {
+app.get("/api/transport/:id", (req, res) => {
   const id = req.params.id;
   client.query("SELECT address_id, date, phone, car_id, worker_id FROM transports WHERE transport_id = $1", [id], (err, result) => {
     if (err) {
@@ -146,7 +147,7 @@ app.get("/transport/:id", (req, res) => {
   });
 });
 
-app.get("/lastTransport", (req, res) => {
+app.get("/api/lastTransport", (req, res) => {
   client.query("SELECT label, id from get_transports_4_lookup() order by id desc LIMIT 1",
     (err, result) => {
       if (err) {
@@ -157,7 +158,7 @@ app.get("/lastTransport", (req, res) => {
     });
 });
 
-app.get("/getTransportVal/:id", (req, res) => {
+app.get("/api/getTransportVal/:id", (req, res) => {
   const id = req.params.id;
   client.query("SELECT label, id from get_transports_4_lookup() WHERE id = $1", [id],  
   (err, result) => {
@@ -169,7 +170,7 @@ app.get("/getTransportVal/:id", (req, res) => {
   });
 });
 
-app.put("/transportUpdate", (req, res) => {
+app.put("/api/transportUpdate", (req, res) => {
   const id = req.body.id;
   const date = req.body.date;
   const phone = req.body.phone;
@@ -191,7 +192,7 @@ app.put("/transportUpdate", (req, res) => {
 });
 
 
-app.delete("/transportDelete/:id", (req, res) => {
+app.delete("/api/transportDelete/:id", (req, res) => {
   const id = req.params.id;
   client.query("DELETE FROM transports WHERE transport_id = $1",
     [id],
@@ -204,7 +205,7 @@ app.delete("/transportDelete/:id", (req, res) => {
     });
 });
 
-app.get("/TransportsLookup", (req, res) => {
+app.get("/api/TransportsLookup", (req, res) => {
   client.query("SELECT * from get_transports_4_lookup()", (err, result) => {
     if (err) {
       console.log(err);
@@ -217,7 +218,7 @@ app.get("/TransportsLookup", (req, res) => {
 
 //ZipCode
 
-app.get("/ZipCodesLookup", (req, res) => {
+app.get("/api/ZipCodesLookup", (req, res) => {
   client.query("SELECT * from get_zip_codes_4_lookup()", (err, result) => {
     if (err) {
       console.log(err);
@@ -229,7 +230,7 @@ app.get("/ZipCodesLookup", (req, res) => {
 });
 
 //Car
-app.post("/carCreate", (req, res) => {
+app.post("/api/carCreate", (req, res) => {
   const registration_number = req.body.registration_number;
   const overview_date = req.body.overview_date;
 
@@ -246,7 +247,7 @@ app.post("/carCreate", (req, res) => {
   );
 });
 
-app.get("/car/:id", (req, res) => {
+app.get("/api/car/:id", (req, res) => {
   const id = req.params.id;
   client.query("SELECT * FROM cars WHERE car_id = $1",
     [id],
@@ -259,7 +260,7 @@ app.get("/car/:id", (req, res) => {
     });
 });
 
-app.get("/cars", (req, res) => {
+app.get("/api/cars", (req, res) => {
   client.query("SELECT car_id, registration_number, to_char(overview_date, 'YYYY-MM-DD') overview_date, case when car_id in (select car_id FROM transports) then '0' else '1' END AS can_delete FROM cars", (err, result) => {
     if (err) {
       console.log(err);
@@ -270,7 +271,7 @@ app.get("/cars", (req, res) => {
   });
 });
 
-app.put("/carUpdate", (req, res) => {
+app.put("/api/carUpdate", (req, res) => {
   const id = req.body.id;
   const registration_number = req.body.registration_number;
   const overview_date = req.body.overview_date;
@@ -288,7 +289,7 @@ app.put("/carUpdate", (req, res) => {
   );
 });
 
-app.delete("/carDelete/:id", (req, res) => {
+app.delete("/api/carDelete/:id", (req, res) => {
   const id = req.params.id;
   client.query("DELETE FROM cars WHERE car_id = $1",
     [id],
@@ -301,7 +302,7 @@ app.delete("/carDelete/:id", (req, res) => {
     });
 });
 
-app.get("/CarsLookup", (req, res) => {
+app.get("/api/CarsLookup", (req, res) => {
   client.query("SELECT * from get_car_4_lookup()", (err, result) => {
     if (err) {
       console.log(err);
@@ -313,7 +314,7 @@ app.get("/CarsLookup", (req, res) => {
 });
 
 //Address
-app.get("/addresses", (req, res) => {
+app.get("/api/addresses", (req, res) => {
   client.query("SELECT a.address_id, a.street, a.house_number, a.flat_number, z.city, z.province, z.zip_code, case when a.address_id in (select address_id FROM transports) then '0' else '1' END AS can_delete FROM public.addresses a inner join zip_codes z on z.zip_code_id = a.zip_code_id;", (err, result) => {
     if (err) {
       console.log(err);
@@ -324,7 +325,7 @@ app.get("/addresses", (req, res) => {
   });
 });
 
-app.post("/addressCreate", (req, res) => {
+app.post("/api/addressCreate", (req, res) => {
   const street = req.body.street;
   const house_number = req.body.house_number;
   const flat_number = req.body.flat_number;
@@ -344,7 +345,7 @@ app.post("/addressCreate", (req, res) => {
   );
 });
 
-app.get("/address/:id", (req, res) => {
+app.get("/api/address/:id", (req, res) => {
   const id = req.params.id;
   client.query("SELECT street, house_number, flat_number, zip_code_id FROM addresses WHERE address_id = $1",
     [id],
@@ -357,7 +358,7 @@ app.get("/address/:id", (req, res) => {
     });
 });
 
-app.get("/lastAddress", (req, res) => {
+app.get("/api/lastAddress", (req, res) => {
   client.query("SELECT concat(a.street, ' ', a.house_number, ' ', a.flat_number, ', ', z.city) as label, a.address_id as id FROM addresses a inner join public.zip_codes z on z.zip_code_id = a.zip_code_id order by address_id desc LIMIT 1",
     (err, result) => {
       if (err) {
@@ -369,7 +370,7 @@ app.get("/lastAddress", (req, res) => {
 });
 
 
-app.put("/addressUpdate", (req, res) => {
+app.put("/api/addressUpdate", (req, res) => {
   const street = req.body.street;
   const house_number = req.body.house_number;
   const flat_number = req.body.flat_number;
@@ -389,7 +390,7 @@ app.put("/addressUpdate", (req, res) => {
   );
 });
 
-app.delete("/addressDelete/:id", (req, res) => {
+app.delete("/api/addressDelete/:id", (req, res) => {
   const id = req.params.id;
   client.query("DELETE FROM addresses WHERE address_id = $1",
     [id],
@@ -402,7 +403,7 @@ app.delete("/addressDelete/:id", (req, res) => {
     });
 });
 
-app.get("/addressLookup", (req, res) => {
+app.get("/api/addressLookup", (req, res) => {
   client.query("SELECT * FROM get_addresses_lookup()", (err, result) => {
     if (err) {
       console.log(err);
@@ -415,7 +416,7 @@ app.get("/addressLookup", (req, res) => {
 
 //ZIPCode
 
-app.get("/zipCodes", (req, res) => {
+app.get("/api/zipCodes", (req, res) => {
   client.query("SELECT zip_code, province, city FROM zip_codes", (err, result) => {
     if (err) {
       console.log(err);
@@ -427,7 +428,7 @@ app.get("/zipCodes", (req, res) => {
 });
 
 //Klient
-app.get("/customers", (req, res) => {
+app.get("/api/customers", (req, res) => {
   client.query("SELECT c.contractor_id as id, *, c.name, CASE WHEN f.nip is not null then 'C' else 'P' END AS type, case when c.contractor_id in (select contractor_id FROM purchases union SELECT contractor_id FROM sales) then 0 else 1 END AS can_delete FROM contractors c left join companies f on c.contractor_id= f.contractor_id left join customers k on c.contractor_id= k.contractor_id", (err, result) => {
     if (err) {
       console.log(err);
@@ -438,7 +439,7 @@ app.get("/customers", (req, res) => {
   });
 });
 
-app.get("/customer/:id", (req, res) => {
+app.get("/api/customer/:id", (req, res) => {
   const id = req.params.id;
   client.query("SELECT c.*, cu.*, co.*, c.name FROM contractors c left join customers cu on cu.contractor_id = c.contractor_id left join companies co on co.contractor_id = c.contractor_id where c.contractor_id = $1", [id], (err, result) => {
     if (err) {
@@ -449,7 +450,7 @@ app.get("/customer/:id", (req, res) => {
   });
 });
 
-app.post("/customerCreate", (req, res) => {
+app.post("/api/customerCreate", (req, res) => {
   const name = req.body.name;
   const surname = req.body.surname;
   const id_number = req.body.id_number;
@@ -467,7 +468,7 @@ app.post("/customerCreate", (req, res) => {
   );
 });
 
-app.put("/customerUpdate", (req, res) => {
+app.put("/api/customerUpdate", (req, res) => {
   const name = req.body.name;
   const surname = req.body.surname;
   const id_number = req.body.id_number;
@@ -486,7 +487,7 @@ app.put("/customerUpdate", (req, res) => {
   );
 });
 
-app.delete("/customerDelete/:id", (req, res) => {
+app.delete("/api/customerDelete/:id", (req, res) => {
   const id = req.params.id;
   client.query("DELETE FROM contractors WHERE contractor_id = $1",
     [id],
@@ -499,7 +500,7 @@ app.delete("/customerDelete/:id", (req, res) => {
     });
 });
 
-app.get("/CustomersLookup", (req, res) => {
+app.get("/api/CustomersLookup", (req, res) => {
   client.query("SELECT id_number || ' ' || COALESCE(name, '')  as label, contractor_id as id FROM customers", (err, result) => {
     if (err) {
       console.log(err);
@@ -511,7 +512,7 @@ app.get("/CustomersLookup", (req, res) => {
 });
 
 //company
-app.post("/companyCreate", (req, res) => {
+app.post("/api/companyCreate", (req, res) => {
   const name = req.body.name;
   const nip = req.body.nip;
   const account_number = req.body.account_number;
@@ -530,7 +531,7 @@ app.post("/companyCreate", (req, res) => {
   );
 });
 
-app.put("/companyUpdate", (req, res) => {
+app.put("/api/companyUpdate", (req, res) => {
   const name = req.body.name;
   const nip = req.body.nip;
   const account_number = req.body.account_number;
@@ -550,7 +551,7 @@ app.put("/companyUpdate", (req, res) => {
   );
 });
 
-app.get("/CompaniesLookup", (req, res) => {
+app.get("/api/CompaniesLookup", (req, res) => {
   client.query("SELECT name as label, contractor_id as id FROM companies", (err, result) => {
     if (err) {
       console.log(err);
@@ -562,7 +563,7 @@ app.get("/CompaniesLookup", (req, res) => {
 });
 
 //Purchase
-app.get("/purchases", (req, res) => {
+app.get("/api/purchases", (req, res) => {
   client.query("SELECT * from get_purchases()", (err, result) => {
     if (err) {
       console.log(err);
@@ -575,7 +576,7 @@ app.get("/purchases", (req, res) => {
 
 
 //Documents
-app.get("/saleInit", (req, res) => {
+app.get("/api/saleInit", (req, res) => {
   client.query("select init_sale(0)", (err, result) => {
     if (err) {
       console.log(err);
@@ -586,7 +587,7 @@ app.get("/saleInit", (req, res) => {
   });
 });
 
-app.get("/purchaseInit", (req, res) => {
+app.get("/api/purchaseInit", (req, res) => {
   client.query("select init_purchase(0)", (err, result) => {
     if (err) {
       console.log(err);
@@ -597,7 +598,7 @@ app.get("/purchaseInit", (req, res) => {
   });
 });
 
-app.put("/saleDocumentUpdate", (req, res) => {
+app.put("/api/saleDocumentUpdate", (req, res) => {
   const document_id = req.body.document_id;
   const contractor_Id = req.body.contractor_Id;
   let transport_Id = req.body.transport_Id;
@@ -617,7 +618,7 @@ app.put("/saleDocumentUpdate", (req, res) => {
   );
 });
 
-app.put("/purchaseDocumentUpdate", (req, res) => {
+app.put("/api/purchaseDocumentUpdate", (req, res) => {
   const document_id = req.body.document_id;
   const contractor_Id = req.body.contractor_Id;
   let transport_Id = req.body.transport_Id;
@@ -636,7 +637,7 @@ app.put("/purchaseDocumentUpdate", (req, res) => {
   );
 });
 
-app.put("/purchaseDocumentUpdateAndAddPerson", (req, res) => {
+app.put("/api/purchaseDocumentUpdateAndAddPerson", (req, res) => {
   const document_id = req.body.document_id;
   const id_number = req.body.id_number;
   const transport_Id = req.body.transport_Id;
@@ -655,7 +656,7 @@ app.put("/purchaseDocumentUpdateAndAddPerson", (req, res) => {
   );
 });
 
-app.get("/document/:id", (req, res) => {
+app.get("/api/document/:id", (req, res) => {
   const id = req.params.id;
   client.query("SELECT d.* FROM documents d where d.document_id = $1", [id], (err, result) => {
     if (err) {
@@ -666,7 +667,7 @@ app.get("/document/:id", (req, res) => {
   });
 });
 
-app.get("/sale/:id", (req, res) => {
+app.get("/api/sale/:id", (req, res) => {
   const id = req.params.id;
   client.query("SELECT d.* FROM sales d where d.document_id = $1", [id], (err, result) => {
     if (err) {
@@ -677,7 +678,7 @@ app.get("/sale/:id", (req, res) => {
   });
 });
 
-app.get("/purchase/:id", (req, res) => {
+app.get("/api/purchase/:id", (req, res) => {
   const id = req.params.id;
   client.query("SELECT d.* FROM purchases d where d.document_id = $1", [id], (err, result) => {
     if (err) {
@@ -688,7 +689,7 @@ app.get("/purchase/:id", (req, res) => {
   });
 });
 
-app.delete("/documentDelete/:id", (req, res) => {
+app.delete("/api/documentDelete/:id", (req, res) => {
   const id = req.params.id;
   client.query("DELETE FROM documents WHERE document_id = $1",
     [id],
@@ -702,7 +703,7 @@ app.delete("/documentDelete/:id", (req, res) => {
 });
 
 //Sale
-app.get("/sales", (req, res) => {
+app.get("/api/sales", (req, res) => {
   client.query("SELECT * from get_sales()", (err, result) => {
     if (err) {
       console.log(err);
@@ -713,7 +714,7 @@ app.get("/sales", (req, res) => {
   });
 });
 
-app.put("/saleUpdateStatus", (req, res) => {
+app.put("/api/saleUpdateStatus", (req, res) => {
   const id = req.body.id;
   const status_id = req.body.status_id;
   if (status_id >= 0 && status_id <= 3) {
@@ -727,7 +728,7 @@ app.put("/saleUpdateStatus", (req, res) => {
   }
 });
 
-app.put("/SaleUpdatePayment", (req, res) => {
+app.put("/api/SaleUpdatePayment", (req, res) => {
   const id = req.body.id;
   const val = req.body.val;
 
@@ -752,7 +753,7 @@ app.put("/SaleUpdatePayment", (req, res) => {
 });
 
 //Worker
-app.post("/workerCreate", (req, res) => {
+app.post("/api/workerCreate", (req, res) => {
   const name = req.body.name;
   const surname = req.body.surname;
   const id_number = req.body.id_number;
@@ -771,7 +772,7 @@ app.post("/workerCreate", (req, res) => {
   );
 });
 
-app.get("/workers", (req, res) => {
+app.get("/api/workers", (req, res) => {
   client.query("SELECT w.worker_id, w.name, w.surname, w.id_number, r.name as role_name, case when w.worker_id in (select worker_id FROM transports) then '0' else '1' END AS can_delete FROM public.workers w inner join public.roles r on r.role_id = w.role_id;", (err, result) => {
     if (err) {
       console.log(err);
@@ -782,7 +783,7 @@ app.get("/workers", (req, res) => {
   });
 });
 
-app.get("/worker/:id", (req, res) => {
+app.get("/api/worker/:id", (req, res) => {
   const id = req.params.id;
   client.query("SELECT * FROM public.workers w inner join public.roles r on r.role_id = w.role_id WHERE worker_id = $1",
     [id],
@@ -795,7 +796,7 @@ app.get("/worker/:id", (req, res) => {
     });
 });
 
-app.put("/workerUpdate", (req, res) => {
+app.put("/api/workerUpdate", (req, res) => {
   const id = req.body.id;
   const name = req.body.name;
   const surname = req.body.surname;
@@ -815,7 +816,7 @@ app.put("/workerUpdate", (req, res) => {
   );
 });
 
-app.delete("/workerDelete/:id", (req, res) => {
+app.delete("/api/workerDelete/:id", (req, res) => {
   const id = req.params.id;
   client.query("DELETE FROM workers WHERE worker_id = $1",
     [id],
@@ -828,7 +829,7 @@ app.delete("/workerDelete/:id", (req, res) => {
     });
 });
 
-app.get("/WorkersLookup", (req, res) => {
+app.get("/api/WorkersLookup", (req, res) => {
   client.query("SELECT * from get_drivers_4_lookup()", (err, result) => {
     if (err) {
       console.log(err);
@@ -841,7 +842,7 @@ app.get("/WorkersLookup", (req, res) => {
 
 //WorkerRole
 
-app.get("/roles", (req, res) => {
+app.get("/api/roles", (req, res) => {
   client.query("SELECT name as label, role_id as id FROM roles", (err, result) => {
     if (err) {
       console.log(err);
@@ -853,7 +854,7 @@ app.get("/roles", (req, res) => {
 });
 
 //Product
-app.get("/documentProducts/:id", (req, res) => {
+app.get("/api/documentProducts/:id", (req, res) => {
   const id = req.params.id;
   client.query("SELECT * from get_document_products($1)", [id], (err, result) => {
     if (err) {
@@ -865,7 +866,7 @@ app.get("/documentProducts/:id", (req, res) => {
 });
 
 //ProductsType
-app.get("/productTypes", (req, res) => {
+app.get("/api/productTypes", (req, res) => {
   client.query("SELECT type_id, name, 0 as weight, 0 as price from product_type", (err, result) => {
     if (err) {
       console.log(err);
@@ -875,7 +876,7 @@ app.get("/productTypes", (req, res) => {
   });
 });
 
-app.get("/getStock", (req, res) => {
+app.get("/api/getStock", (req, res) => {
   client.query("SELECT * from get_stock()", (err, result) => {
     if (err) {
       console.log(err);
@@ -885,7 +886,7 @@ app.get("/getStock", (req, res) => {
   });
 });
 
-app.put("/productUpdate", (req, res) => {
+app.put("/api/productUpdate", (req, res) => {
   const document_id = req.body.document_id;
   const type_id = req.body.type_id;
   const price = req.body.price;
@@ -905,7 +906,7 @@ app.put("/productUpdate", (req, res) => {
 });
 
 //CarsAfterOverviewDate
-app.get("/getOldCars", (req, res) => {
+app.get("/api/getOldCars", (req, res) => {
   client.query("SELECT * from get_old_cars()", (err, result) => {
     if (err) {
       console.log(err);
@@ -916,7 +917,7 @@ app.get("/getOldCars", (req, res) => {
 });
 
 //oldSales
-app.get("/getOldSales", (req, res) => {
+app.get("/api/getOldSales", (req, res) => {
   client.query("select * from get_old_sales()", (err, result) => {
     if (err) {
       console.log(err);
@@ -925,6 +926,12 @@ app.get("/getOldSales", (req, res) => {
     }
   });
 });
+
+app.get("*", (req,res) => {
+  res.sendFile(
+    path.join(__dirname,"../abc-recycling-app/build/index.html")
+  )
+})
 
 app.listen(process.env.PORT || 3001, () => {
   console.log("Your server is running on port 3001");

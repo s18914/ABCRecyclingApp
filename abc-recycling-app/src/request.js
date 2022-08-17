@@ -1,6 +1,7 @@
 const axios = require("axios");
 export default axios.create(
   {
-    withCredentials: true
+    withCredentials: true,
+    baseURL: "/api"
   }
 );
