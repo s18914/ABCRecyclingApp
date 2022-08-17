@@ -4,6 +4,8 @@ const pg = require("pg");
 const cors = require("cors");
 require('dotenv').config();
 
+const path = require("path");
+
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const session = require('cookie-session');
@@ -56,6 +58,10 @@ function connect() {
 }
 
 connect();
+console.log(path.join(__dirname, "..", "abc-recycling-app", "public","index.html"));
+app.use(express.static(
+  path.join(__dirname,"../abc-recycling-app/build")));
+
 
 //Login
 app.get("/login", (req, res) => {
