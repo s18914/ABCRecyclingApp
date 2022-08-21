@@ -102,7 +102,6 @@ const Workers = props => {
     if(!role) {
       Axios.get("/login").then((response) => {
         if (response.data.loggedIn === true) {
-          console.log(response.data.user.rows[0].role_id)
           setRole(response.data.user.rows[0].role_id);
         }
       });

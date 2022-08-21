@@ -785,7 +785,7 @@ app.get("/api/workers", (req, res) => {
 
 app.get("/api/worker/:id", (req, res) => {
   const id = req.params.id;
-  client.query("SELECT * FROM public.workers w inner join public.roles r on r.role_id = w.role_id WHERE worker_id = $1",
+  client.query("SELECT w.worker_id, w.name, w.surname, w.id_number, r.role_id, r.name as role_name FROM public.workers w inner join public.roles r on r.role_id = w.role_id WHERE worker_id = $1",
     [id],
     (err, result) => {
       if (err) {

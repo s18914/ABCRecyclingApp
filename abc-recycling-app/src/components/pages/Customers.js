@@ -145,7 +145,6 @@ const Customers = props => {
 
   useEffect(() => {
     Axios.get("/login").then((response) => {
-      console.log(response.data.loggedIn)
       if (response.data.loggedIn !== true) {
         navigate("/login");
       }

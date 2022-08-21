@@ -25,7 +25,8 @@ function WorkerAdd() {
     )
   }, [])
 
-  const selectedRole = useMemo(() => rolesList.find(({ id }) => id === formValues.role_id) || null, [formValues, rolesList])
+
+  const selectedRole = useMemo(() => rolesList.find(({ id }) => id == formValues.role_id) || null, [formValues, rolesList])
 
   const submit = () => {
     isAddMode ? addWorker() : updateWorker();
@@ -35,16 +36,14 @@ function WorkerAdd() {
     (async () => {
       try {
         const responseWorkers = await Axios.get(`/workers`)
-        const {data: workersData} = responseWorkers
-        const filteredWorkrsList = workersData.filter(({worker_id}) => worker_id !== id);
-        const filteredWorkersIdNumbrs = filteredWorkrsList.map(({id_number}) => id_number) 
+        const { data: workersData } = responseWorkers
+        const filteredWorkrsList = workersData.filter(({ worker_id }) => worker_id !== id);
+        const filteredWorkersIdNumbrs = filteredWorkrsList.map(({ id_number }) => id_number)
         setworkersIdNumbers(filteredWorkersIdNumbrs)
       } catch (error) {
-
       }
     })()
   }, []);
-
   useEffect(() => {
     if (id) {
       getWorker(id)
@@ -52,8 +51,8 @@ function WorkerAdd() {
   }, [id])
 
   const handleChange = (e) => {
-    const { fieldName, value } = e.target;
-    setFormValues({ ...formValues, [fieldName]: value });
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
     const errors = validate(formValues)
     setFormErrors(errors);
   };
@@ -89,11 +88,10 @@ function WorkerAdd() {
     if (!values.id_number) {
       errors.id_number = "To pole nie może być puste";
     } else if ((!numberRegex.test(values.id_number) && values.id_number.length !== 10) || !idRegex.test(values.id_number)) {
-      errors.id_number = "Numer dowodu powinien składać się z 3 liter oraz 6 cyfr i mieć format: AAAA000000";
-    } else if (workersIdNumbers.some(id_number => id_number === values.id_number)){
+      errors.id_number = "Numer dowodu powinien składać się z 3 liter oraz 6 cyfr i mieć format: AAA000000";
+    } else if (workersIdNumbers.some(id_number => id_number === values.id_number)) {
       errors.id_number = "Ten numer dowodu istnieje już w bazie danych.";
     }
-
 
     if (!values.role_id) {
       errors.role_id = "To pole nie może być puste";
@@ -137,6 +135,8 @@ function WorkerAdd() {
     })
   };
 
+
+
   return (
     <div className='main'>
       {isAddMode && <h1>Dodaj nowego pracownika</h1>}
@@ -144,17 +144,17 @@ function WorkerAdd() {
       <form>
         <div className='simpleForm' style={{ width: '300px' }} onSubmit={handleSubmit} noValidate>
           <label htmlFor='name'>Imię<span className="required">*</span></label>
-          <input type="text" id="name" name="name" maxLength="30" value={formValues.name}
+          <input type="text" id="name" name="name" maxlength='20' value={formValues.name}
             onChange={handleChange}>
           </input>
           <p className="required"> {formErrors?.name} </p>
           <label htmlFor='surname'>Nazwisko<span className="required">*</span></label>
-          <input type="text" id="surname" name="surname" maxlength="30" value={formValues.surname}
+          <input type="text" id="surname" name="surname" maxlength='27' value={formValues.surname}
             onChange={handleChange}>
           </input>
           <p className="required"> {formErrors?.surname} </p>
           <label htmlFor='id_number'>Numer dowodu<span className="required">*</span></label>
-          <input type="text" id="id_number" name="id_number" maxlength="9" value={formValues.id_number}
+          <input type="text" id="id_number" name="id_number" maxlength='9' value={formValues.id_number}
             onChange={handleChange}>
           </input>
           <p className="required"> {formErrors?.id_number} </p>
@@ -170,7 +170,7 @@ function WorkerAdd() {
               }}
               value={selectedRole}
               getOptionLabel={(option) => option?.label || ''}
-              isOptionEqualToValue={(option, value) => option.id === value.id}
+              isOptionEqualToValue={(option, value) => option.id == value.id}
               sx={{ width: 300 }}
               renderInput={(params) => <TextField {...params} label="Stanowisko" />}
             />

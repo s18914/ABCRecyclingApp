@@ -12,12 +12,10 @@ const Login = () => {
   Axios.defaults.withCredentials = true;
 
   const login = () => {
-    console.log(username)
     Axios.post("/login", {
       username: username,
       password: password,
     }).then((response) => {
-      console.log(response)
       if (response.data.message) {
         setLoginStatus(response.data.message);
       } else {
@@ -30,11 +28,8 @@ const Login = () => {
   useEffect(() => {
     Axios.get("/login").then((response) => {
       if (response.data.loggedIn == true) {
-        console.log("zalogowany")
-        console.log(response)
         setLoginStatus("Zalogowany");
       }
-      console.log(response)
     });
   }, []);
 

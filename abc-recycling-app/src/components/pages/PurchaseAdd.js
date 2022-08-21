@@ -84,7 +84,6 @@ function PurchaseAdd() {
 
   useEffect(() => {
     Axios.get("/login").then((response) => {
-      console.log(response.data.loggedIn)
       if (response.data.loggedIn !== true) {
         navigate("/login");
       }
@@ -112,7 +111,6 @@ function PurchaseAdd() {
 
   const addDocument = () => {
     Axios.get('/purchaseInit').then((response) => {
-      console.log("moje nowe id: "+ response.data[0].init_purchase)
       setDocId(response.data[0].init_purchase);
     })
   };
@@ -160,7 +158,6 @@ function PurchaseAdd() {
         navigate("/purchases");
       });
     } else {
-      console.log(docId+ " " +  contractorId + " " +  transportId)
       Axios.put('/purchaseDocumentUpdate', {
         document_id: docId,
         contractor_Id: contractorId,

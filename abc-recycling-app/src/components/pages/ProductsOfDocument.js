@@ -37,7 +37,6 @@ function ProductsOfDocument({...props}) {
     setIsSubmitting(true);
 
     if (Object.keys(formErrors).length === 0 && isSubmitting) {
-      console.log("submit w effect");
       submit();
     }
   };

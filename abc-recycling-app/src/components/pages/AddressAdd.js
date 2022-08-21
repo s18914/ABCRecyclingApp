@@ -8,7 +8,6 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
 function AddressAdd() {
-  //const [zip_code_id, setZipCodeId] = useState(0);
   const [zipCodesList, setZipCodesList] = useState([]);
   const { id } = useParams();
   let isAddMode = id === undefined;

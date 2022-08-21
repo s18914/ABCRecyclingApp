@@ -80,7 +80,6 @@ function SaleAdd() {
 
   useEffect(() => {
     Axios.get("/login").then((response) => {
-      console.log(response.data.loggedIn)
       if (response.data.loggedIn !== true) {
         navigate("/login");
       }
@@ -115,7 +114,6 @@ function SaleAdd() {
   };
 
   const changeStatus =  (id, status) => {
-    console.log(id + "  " + status)
     Axios.put('/SaleUpdateStatus', {
       id: id,
       status_id: status
@@ -157,9 +155,6 @@ function SaleAdd() {
     }).then((response) => {
       navigate("/sales");
     });
-
-    console.log(transportId +" " + prevTransportId)
-
     if(transportId !== 0 && prevTransportId === null ) changeStatus(docId, 1)
   };
 
