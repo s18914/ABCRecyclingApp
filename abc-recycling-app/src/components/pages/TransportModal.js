@@ -46,7 +46,7 @@ function TransportModal({...props}) {
   const validate = (values) => {
     let errors = {};
 
-    if (addressId === 0) {
+    if (addressId === 0 || addressId === null) {
       errors.address = "To pole nie może być puste";
     } 
 
@@ -54,11 +54,11 @@ function TransportModal({...props}) {
       errors.date = "To pole nie może być puste";
     } 
 
-    if (workerId === 0) {
+    if (workerId === 0 || addressId === null) {
       errors.worker = "To pole nie może być puste";
     } 
 
-    if (carId === 0) {
+    if (carId === 0 || addressId === null) {
       errors.car = "To pole nie może być puste";
     } 
     
@@ -72,12 +72,13 @@ function TransportModal({...props}) {
   };
 
   const addTransport = (event) => {
+    
     Axios.post('/transportCreate', {
-      addressId: addressId,
+      address_id: addressId,
       date: date, 
       phone: phone, 
-      carId: carId,
-      workerId: workerId
+      car_id: carId,
+      worker_id: workerId
     }).then((data) => {
       Axios.get(`/lastTransport`).then((response) => {
         props.handleTransportAdd(response.data);
@@ -143,21 +144,22 @@ function TransportModal({...props}) {
             <div>
             <label>Wybierz adres<span className="required">*</span></label>
             <p className="required"> {formErrors.address} </p>
-            <div style={{display: 'inline-block', verticalAlign: 'middle', marginTop: '10px'}}>
+            <div style={{display: 'inline-block', verticalAlign: 'middle', marginTop: '10px'}} onClick={findAddresses}>
                 <Autocomplete
                   disablePortal
                   id="addressLookup"
                   options={addressList}
                   onChange={(event, newValue) => {
-                      setAddressId(newValue.id);
+                      setAddressId(newValue?.id);
                       handleChange(event);
                       setAddressLabel(newValue);
+                      console.log("tutaj" + newValue);
                   }}
                   value={addressLabel}
                   getOptionLabel={(option) => option.label || ""}
                   isOptionEqualToValue={(option, value) => option.id === value.id}
                   sx={{ width: 300 }}
-                  renderInput={(params) => <TextField {...params} label="Adres" onChange={(e) => setAddressId(e.target.value)}/>}
+                  renderInput={(params) => <TextField {...params} label="Adres" onChange={(e) => setAddressId(e.target.value)}/>} 
                 />
             </div>
             <AddressModal handleAddressAdd={handleAddressAdd}/>
@@ -189,6 +191,7 @@ function TransportModal({...props}) {
                   onChange={(event, newValue) => {
                     setCarId(newValue.id);
                     handleChange(event);
+                    console.log("tutaj" + newValue);
                   }}
                   getOptionLabel={(option) => option.label}
                   sx={{ width: 300 }}
