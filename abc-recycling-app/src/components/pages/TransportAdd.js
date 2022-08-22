@@ -73,7 +73,6 @@ function TransportAdd() {
     e.preventDefault();
     const errors = validate(formValues)
     setFormErrors(errors);
-    navigate("/transports");
     if (!errors) {
       submit()
     }
