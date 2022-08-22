@@ -155,7 +155,7 @@ function SaleAdd() {
     }).then((response) => {
       navigate("/sales");
     });
-    if(transportId !== 0 && prevTransportId === null ) changeStatus(docId, 1)
+    if(transportId !== 0 && (prevTransportId === null || prevTransportId === 0) ) changeStatus(docId, 1);
   };
 
   const findCompanies = () => {
@@ -215,7 +215,7 @@ function SaleAdd() {
         <div onClick={findCompanies}>
           <Autocomplete
             id="customer-lookup"
-            options={customersList}
+            options={customersList.sort()}
             onChange={(event, value) => {
               setContractorId(value.id); 
               handleChange(event);
@@ -233,7 +233,7 @@ function SaleAdd() {
           <Autocomplete
             id="transport-lookup"
             disablePortal
-            options={transportsList}
+            options={transportsList.sort()}
             onChange={(event, value) => {
               setTransportId(value.id)
               handleChange(event);

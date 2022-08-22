@@ -135,7 +135,7 @@ function AddressModal({...props}) {
             <div onClick={findZipCodes}>
               <Autocomplete
                 id="ZipCodesLookup"
-                options={zipCodesList}
+                options={zipCodesList.sort()}
                 onChange={(event, value) => {
                   setZipCodeId(value.id);
                   handleChange(event);
