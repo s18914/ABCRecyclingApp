@@ -30,6 +30,7 @@ function TransportModal({...props}) {
 
   const submit = () => {
     addTransport();
+    handleClose();
   };
 
   const handleChange = (e) => {
@@ -40,7 +41,6 @@ function TransportModal({...props}) {
   const handleSubmit = (e) => {
     setFormErrors(validate(formValues));
     setIsSubmitting(true);
-    handleClose();
   };
 
   const validate = (values) => {
@@ -54,11 +54,11 @@ function TransportModal({...props}) {
       errors.date = "To pole nie może być puste";
     } 
 
-    if (workerId === 0 || addressId === null) {
+    if (workerId === 0 || workerId === null) {
       errors.worker = "To pole nie może być puste";
     } 
 
-    if (carId === 0 || addressId === null) {
+    if (carId === 0 || carId === null) {
       errors.car = "To pole nie może być puste";
     } 
     
@@ -153,7 +153,6 @@ function TransportModal({...props}) {
                       setAddressId(newValue?.id);
                       handleChange(event);
                       setAddressLabel(newValue);
-                      console.log("tutaj" + newValue);
                   }}
                   value={addressLabel}
                   getOptionLabel={(option) => option.label || ""}

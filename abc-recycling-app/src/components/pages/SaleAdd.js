@@ -215,7 +215,7 @@ function SaleAdd() {
         <div onClick={findCompanies}>
           <Autocomplete
             id="customer-lookup"
-            options={customersList.sort()}
+            options={customersList}
             onChange={(event, value) => {
               setContractorId(value.id); 
               handleChange(event);
@@ -233,7 +233,7 @@ function SaleAdd() {
           <Autocomplete
             id="transport-lookup"
             disablePortal
-            options={transportsList.sort()}
+            options={transportsList}
             onChange={(event, value) => {
               setTransportId(value.id)
               handleChange(event);
