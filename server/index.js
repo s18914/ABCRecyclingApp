@@ -28,7 +28,7 @@ const sameSite = process.env.SAME_SITE || "none";
 app.use(
   session({
     secret: "subscribe",
-    maxAge: 1000 * 60 * 60 * 24,
+    maxAge: 1000 * 60 * 60,
     sameSite,
     secure: sameSite === "none" 
   })
@@ -60,8 +60,6 @@ function connect() {
 connect();
 app.use(express.static(
   path.join(__dirname,"../abc-recycling-app/build")));
-
-
 
 //Login
 app.get("/api/login", (req, res) => {
@@ -103,6 +101,15 @@ app.post("/api/login", (req, res) => {
     }
   );
 });
+
+// app.post("/api/logout", (req, res) => {
+  
+//   console.log(108)
+//   res.cookie('session', '1', { expires: new Date(Date.now())})
+//   req.sessionOptions.expires = new Date();
+//   req.session = null
+
+// });
 
 //Transport
 app.post("/api/transportCreate", (req, res) => {
@@ -501,7 +508,7 @@ app.delete("/api/customerDelete/:id", (req, res) => {
 });
 
 app.get("/api/CustomersLookup", (req, res) => {
-  client.query("SELECT id_number || ' ' || COALESCE(name, '')  as label, contractor_id as id FROM customers", (err, result) => {
+  client.query("SELECT id_number || ' ' || COALESCE(name, '')  as label, contractor_id as id FROM customers order by label", (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -552,7 +559,7 @@ app.put("/api/companyUpdate", (req, res) => {
 });
 
 app.get("/api/CompaniesLookup", (req, res) => {
-  client.query("SELECT name as label, contractor_id as id FROM companies", (err, result) => {
+  client.query("SELECT name as label, contractor_id as id FROM companies order by label", (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -843,7 +850,7 @@ app.get("/api/WorkersLookup", (req, res) => {
 //WorkerRole
 
 app.get("/api/roles", (req, res) => {
-  client.query("SELECT name as label, role_id as id FROM roles", (err, result) => {
+  client.query("SELECT name as label, role_id as id FROM roles order by label", (err, result) => {
     if (err) {
       console.log(err);
     } else {
