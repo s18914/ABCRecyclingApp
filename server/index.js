@@ -30,7 +30,8 @@ app.use(
     secret: "subscribe",
     maxAge: 1000 * 60 * 60,
     sameSite,
-    secure: sameSite === "none" 
+    secure: sameSite === "none" ,
+    httpOnly: false
   })
 );
 
@@ -101,15 +102,6 @@ app.post("/api/login", (req, res) => {
     }
   );
 });
-
-// app.post("/api/logout", (req, res) => {
-  
-//   console.log(108)
-//   res.cookie('session', '1', { expires: new Date(Date.now())})
-//   req.sessionOptions.expires = new Date();
-//   req.session = null
-
-// });
 
 //Transport
 app.post("/api/transportCreate", (req, res) => {

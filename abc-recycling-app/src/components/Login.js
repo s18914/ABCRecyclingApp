@@ -25,13 +25,11 @@ const Login = () => {
     });
   };
 
-  // const logout = () => {
-  //   Axios.post("/logout").then((response) => {
-  //     console.log(30)
-  //     response.clearCookie('session', { path: 'http://localhost:3001/' })
-  //     setLoginStatus("Wylogowany");
-  //   });
-  // };
+  const logout = () => {
+    document.cookie = "session=;expires=Thu, 01 Jan 1970 00:00:00 GMT; domain=localhost";
+    document.cookie = "session.sig=;expires=Thu, 01 Jan 1970 00:00:00 GMT; domain=localhost";
+    navigate("/");
+  };
 
   useEffect(() => {
     Axios.get("/login").then((response) => {
@@ -60,9 +58,11 @@ const Login = () => {
           }}
         />
         <button className="btn" onClick={login} style={{padding: '10px', }}> Zaloguj </button>
+        {document.cookie.length < 2 ? null : 
+        <button className="btn" onClick={logout} style={{padding: '10px', }}> Wyloguj </button>
+        }
       </div>
       <h2>{loginStatus}</h2>
-      {/* <button className="btn" onClick={logout} style={{padding: '10px', }}> Wyloguj </button> */}
     </div>
   );
 }
