@@ -772,7 +772,7 @@ app.post("/api/workerCreate", (req, res) => {
 });
 
 app.get("/api/workers", (req, res) => {
-  client.query("SELECT w.worker_id, w.name, w.surname, w.id_number, r.name as role_name, case when w.worker_id in (select worker_id FROM transports) then '0' else '1' END AS can_delete FROM public.workers w inner join public.roles r on r.role_id = w.role_id;", (err, result) => {
+  client.query("SELECT w.worker_id, w.name, w.surname, w.id_number, r.name as role_name, case when w.worker_id in (select worker_id FROM transports) then '0' else '1' END AS can_delete FROM public.workers w inner join public.roles r on r.role_id = w.role_id where w.password is null;", (err, result) => {
     if (err) {
       console.log(err);
     } else {
