@@ -28,7 +28,7 @@ const Login = () => {
   const logout = () => {
     document.cookie = "session=;expires=Thu, 01 Jan 1970 00:00:00 GMT; domain=localhost";
     document.cookie = "session.sig=;expires=Thu, 01 Jan 1970 00:00:00 GMT; domain=localhost";
-    document.cookie = "session=;expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=abcrecycling.onrender.com";
+    document.cookie = "session=;expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
     document.cookie = "session.sig=;expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
     navigate("/");
   };
@@ -61,7 +61,7 @@ const Login = () => {
         />
         <button className="btn" onClick={login} style={{padding: '10px', }}> Zaloguj </button>
         {document.cookie.length < 2 ? null : 
-        <button className="btn" onClick={logout} style={{padding: '10px', }}> Wyloguj </button>
+        <button className="btn" onClick={logout} style={{padding: '10px', margin: '5px 0', backgroundColor: '#cd5151' }}> Wyloguj </button>
         }
       </div>
       <h2>{loginStatus}</h2>

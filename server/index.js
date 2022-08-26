@@ -28,7 +28,7 @@ const sameSite = process.env.SAME_SITE || "none";
 app.use(
   session({
     secret: "subscribe",
-    maxAge: 1000 * 60 * 60,
+    maxAge: 1000 * 60 * 60 * 12,
     sameSite,
     secure: sameSite === "none" ,
     httpOnly: false
